@@ -2083,14 +2083,16 @@
       formStatus.className = 'form-status';
 
       try {
-        // URLSearchParams como body → el navegador envía Content-Type: application/x-www-form-urlencoded
-        // que Apps Script recibe correctamente en e.parameter
-        const params = new URLSearchParams({ name, phone, email, company, website, budget, service, additionalInfo });
-        await fetch(APPS_SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          body: params   // objeto URLSearchParams, NO .toString()
-        });
+        const url = new URL(APPS_SCRIPT_URL);
+        url.searchParams.set('name',           name);
+        url.searchParams.set('phone',          phone);
+        url.searchParams.set('email',          email);
+        url.searchParams.set('company',        company);
+        url.searchParams.set('website',        website);
+        url.searchParams.set('budget',         budget);
+        url.searchParams.set('service',        service);
+        url.searchParams.set('additionalInfo', additionalInfo);
+        await fetch(url.toString(), { mode: 'no-cors' });
         showStatus('success', '¡Recibimos tu solicitud! Un asesor se pondrá en contacto contigo en menos de 24 horas.');
         leadForm.reset();
       } catch (err) {
