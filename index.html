@@ -2047,8 +2047,7 @@
     }
 
     // ── LEAD FORM ──
-    // Pega aquí la URL de tu Google Apps Script desplegado como Web App
-    const APPS_SCRIPT_URL = 'REEMPLAZA_CON_TU_URL_DE_APPS_SCRIPT';
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwYl3U9jkjO8My4sSqiJ4n7mlVAgSrVGPCF94W-isfooaExNXjThlnekDUvQ0rOAYdR_A/exec';
 
     const leadForm = document.getElementById('leadForm');
     const submitBtn = document.getElementById('submitBtn');
@@ -2057,13 +2056,13 @@
     leadForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      const name = document.getElementById('f-name').value.trim();
-      const phone = document.getElementById('f-phone').value.trim();
-      const email = document.getElementById('f-email').value.trim();
-      const company = document.getElementById('f-company').value.trim();
-      const website = document.getElementById('f-url').value.trim();
-      const budget = document.getElementById('f-budget').value;
-      const service = document.getElementById('f-service').value;
+      const name           = document.getElementById('f-name').value.trim();
+      const phone          = document.getElementById('f-phone').value.trim();
+      const email          = document.getElementById('f-email').value.trim();
+      const company        = document.getElementById('f-company').value.trim();
+      const website        = document.getElementById('f-url').value.trim();
+      const budget         = document.getElementById('f-budget').value;
+      const service        = document.getElementById('f-service').value;
       const additionalInfo = document.getElementById('f-info').value.trim();
 
       if (!name || !email || !budget || !service) {
@@ -2074,7 +2073,6 @@
         showStatus('error', 'Por favor ingresa un correo electrónico válido.');
         return;
       }
-
       if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes('REEMPLAZA')) {
         showStatus('error', 'El formulario aún no está configurado. Contacta al administrador.');
         return;
@@ -2085,11 +2083,13 @@
       formStatus.className = 'form-status';
 
       try {
+        // URLSearchParams como body → el navegador envía Content-Type: application/x-www-form-urlencoded
+        // que Apps Script recibe correctamente en e.parameter
         const params = new URLSearchParams({ name, phone, email, company, website, budget, service, additionalInfo });
         await fetch(APPS_SCRIPT_URL, {
           method: 'POST',
           mode: 'no-cors',
-          body: params.toString()
+          body: params   // objeto URLSearchParams, NO .toString()
         });
         showStatus('success', '¡Recibimos tu solicitud! Un asesor se pondrá en contacto contigo en menos de 24 horas.');
         leadForm.reset();
