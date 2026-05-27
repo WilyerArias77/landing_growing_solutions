@@ -177,7 +177,7 @@
       left: 0;
       right: 0;
       z-index: 100;
-      padding: 16px 0;
+      padding: 12px 0;
       background: rgba(248, 249, 255, 0.95);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid rgba(219, 219, 224, 0.8);
@@ -185,7 +185,7 @@
     }
 
     nav.scrolled {
-      padding: 10px 0;
+      padding: 8px 0;
       box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
     }
 
@@ -254,6 +254,24 @@
       display: flex;
       align-items: center;
       gap: 10px;
+    }
+
+    .nav-cta .btn {
+      padding: 16px 36px;
+      font-size: 0.95rem;
+    }
+
+    .hero-subtitle {
+      display: inline-block;
+      font-size: clamp(0.85rem, 1.4vw, 1rem);
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+      margin-bottom: 18px;
+      padding: 7px 18px;
+      background: rgba(13, 60, 255, 0.06);
+      border: 1px solid rgba(13, 60, 255, 0.15);
+      border-radius: 8px;
     }
 
     .hamburger {
@@ -327,7 +345,7 @@
       align-items: center;
       position: relative;
       overflow: hidden;
-      padding-top: 80px;
+      padding-top: 130px;
     }
 
     .hero-bg {
@@ -571,12 +589,12 @@
 
     /* ── SECTIONS ── */
     .section {
-      padding: 96px 0;
+      padding: 72px 0;
     }
 
     .section-header {
       text-align: center;
-      margin-bottom: 64px;
+      margin-bottom: 48px;
     }
 
     .section-tag {
@@ -758,6 +776,7 @@
     /* ── VALUE PROPOSITION ── */
     .value-section {
       background: var(--surface);
+      padding-top: 24px;
     }
 
     .value-grid {
@@ -1025,7 +1044,7 @@
 
     /* ── CTA ── */
     .cta-section {
-      padding: 96px 0;
+      padding: 72px 0;
       position: relative;
       overflow: hidden;
     }
@@ -1531,10 +1550,10 @@
   <nav id="navbar">
     <div class="container">
       <a href="#" class="logo">
-        <div class="logo-icon">GS</div>
-        <div class="logo-text">
-          Growing
-          <span>Solutions</span>
+        <img src="../logo4.png" alt="Growing Solutions" style="height:64px;width:auto;object-fit:contain;" />
+        <div style="line-height:1.25;">
+          <div style="font-size:1.2rem;font-weight:800;color:#08335D;letter-spacing:-0.01em;">GROWING SOLUTIONS</div>
+          <div style="font-size:0.68rem;font-weight:600;color:#00A896;letter-spacing:0.04em;">Servicios Contables, Financieros y Desarrollos con IA</div>
         </div>
       </a>
       <ul class="nav-links">
@@ -1898,10 +1917,19 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <a href="#" class="logo">
-            <div class="logo-icon">GS</div>
-            <div class="logo-text">
-              Growing
-              <span>Solutions</span>
+            <svg width="40" height="40" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="26" width="8" height="16" rx="1.5" fill="rgba(255,255,255,0.85)"/>
+              <rect x="13" y="19" width="8" height="23" rx="1.5" fill="rgba(255,255,255,0.85)"/>
+              <rect x="23" y="12" width="8" height="30" rx="1.5" fill="rgba(255,255,255,0.85)"/>
+              <path d="M6 30 L17 20 L27 13 L37 5" stroke="#2ee8c7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M31 5 L37 5 L37 11" stroke="#2ee8c7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <circle cx="6" cy="30" r="2.2" fill="#2ee8c7"/>
+              <circle cx="17" cy="20" r="2.2" fill="#2ee8c7"/>
+              <circle cx="27" cy="13" r="2.2" fill="#2ee8c7"/>
+            </svg>
+            <div style="line-height:1.15;">
+              <div style="font-size:1.15rem;font-weight:800;color:#ffffff;letter-spacing:-0.01em;">GROWING</div>
+              <div style="font-size:0.72rem;font-weight:600;color:#2ee8c7;letter-spacing:0.18em;text-transform:uppercase;">SOLUTIONS</div>
             </div>
           </a>
           <p>Soluciones integrales en contabilidad, finanzas, automatización y tecnología para microempresas y pymes en
@@ -1933,7 +1961,7 @@
           <h4>Contáctanos</h4>
           <ul>
             <li><a href="https://wa.me/573242754406" target="_blank" rel="noopener">WhatsApp</a></li>
-            <li><a href="mailto:growingupsolutions2026@gmail.com">growingupsolutions2026@gmail.com</a></li>
+            <li><a href="mailto:growingsolutions.email@gmail.com">growingsolutions.email@gmail.com</a></li>
             <li><a href="#">Colombia</a></li>
           </ul>
         </div>
@@ -2019,6 +2047,9 @@
     }
 
     // ── LEAD FORM ──
+    // Pega aquí la URL de tu Google Apps Script desplegado como Web App
+    const APPS_SCRIPT_URL = 'REEMPLAZA_CON_TU_URL_DE_APPS_SCRIPT';
+
     const leadForm = document.getElementById('leadForm');
     const submitBtn = document.getElementById('submitBtn');
     const formStatus = document.getElementById('formStatus');
@@ -2027,9 +2058,9 @@
       e.preventDefault();
 
       const name = document.getElementById('f-name').value.trim();
-      const company = document.getElementById('f-company').value.trim();
-      const email = document.getElementById('f-email').value.trim();
       const phone = document.getElementById('f-phone').value.trim();
+      const email = document.getElementById('f-email').value.trim();
+      const company = document.getElementById('f-company').value.trim();
       const website = document.getElementById('f-url').value.trim();
       const budget = document.getElementById('f-budget').value;
       const service = document.getElementById('f-service').value;
@@ -2044,23 +2075,24 @@
         return;
       }
 
+      if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes('REEMPLAZA')) {
+        showStatus('error', 'El formulario aún no está configurado. Contacta al administrador.');
+        return;
+      }
+
       submitBtn.disabled = true;
       submitBtn.textContent = 'Enviando...';
-      formStatus.style.display = 'none';
+      formStatus.className = 'form-status';
 
       try {
-        const res = await fetch('/api/submit-lead', {
+        const params = new URLSearchParams({ name, phone, email, company, website, budget, service, additionalInfo });
+        await fetch(APPS_SCRIPT_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, company, email, phone, website, budget, service, additionalInfo })
+          mode: 'no-cors',
+          body: params.toString()
         });
-        const data = await res.json();
-        if (res.ok) {
-          showStatus('success', '¡Recibimos tu solicitud! Un asesor se pondrá en contacto contigo en menos de 24 horas.');
-          leadForm.reset();
-        } else {
-          showStatus('error', data.message || 'Ocurrió un error. Intenta de nuevo.');
-        }
+        showStatus('success', '¡Recibimos tu solicitud! Un asesor se pondrá en contacto contigo en menos de 24 horas.');
+        leadForm.reset();
       } catch (err) {
         showStatus('error', 'No se pudo enviar el formulario. Verifica tu conexión e intenta de nuevo.');
       } finally {
@@ -2071,6 +2103,7 @@
 
     function showStatus(type, message) {
       formStatus.className = 'form-status ' + type;
+      formStatus.style.display = 'block';
       formStatus.textContent = message;
     }
   </script>
