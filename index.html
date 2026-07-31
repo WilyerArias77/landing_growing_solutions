@@ -261,6 +261,79 @@
       font-size: 0.95rem;
     }
 
+    .lang-toggle {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .lang-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+
+    .lang-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .lang-btn.active {
+      border-color: var(--primary);
+      background: var(--green-glow);
+      color: var(--primary);
+    }
+
+    .lang-flag {
+      border-radius: 2px;
+      flex-shrink: 0;
+      display: block;
+    }
+
+    .mobile-menu .lang-toggle {
+      justify-content: center;
+      gap: 12px;
+      padding-bottom: 24px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid var(--border-light);
+      width: 100%;
+    }
+
+    /* Desktop nav shows flags only (compact); accessible name via title attribute */
+    .nav-cta .lang-btn {
+      padding: 9px 10px;
+    }
+
+    .nav-cta .lang-btn span {
+      display: none;
+    }
+
+    .wa-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Desktop nav shows the WhatsApp icon only (compact); accessible name via title attribute */
+    .nav-cta .wa-btn {
+      padding: 10px 12px;
+      gap: 0;
+    }
+
+    .nav-cta .wa-btn span {
+      display: none;
+    }
+
     .hero-subtitle {
       display: inline-block;
       font-size: clamp(0.85rem, 1.4vw, 1rem);
@@ -1239,6 +1312,15 @@
       transform: none;
     }
 
+    .hp-field {
+      position: absolute;
+      left: -9999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
     .form-status {
       margin-top: 16px;
       padding: 14px 20px;
@@ -1278,17 +1360,19 @@
       margin-bottom: 48px;
     }
 
-    .footer-brand .logo-text {
-      color: #ffffff;
+    .footer-logo {
+      display: inline-flex;
+      align-items: center;
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 10px 14px;
     }
 
-    .footer-brand .logo-text span {
-      color: #4d6fff;
-    }
-
-    .footer-brand .logo-icon {
-      background: var(--grad-accent);
-      color: #ffffff;
+    .footer-logo img {
+      height: 32px;
+      width: auto;
+      object-fit: contain;
+      display: block;
     }
 
     .footer-brand p {
@@ -1374,11 +1458,19 @@
     }
 
     /* ── WHATSAPP FLOATING ── */
-    .whatsapp-float {
+    .whatsapp-float-group {
       position: fixed;
       bottom: 28px;
       right: 28px;
       z-index: 90;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .whatsapp-float {
+      position: relative;
       width: 60px;
       height: 60px;
       border-radius: 50%;
@@ -1444,7 +1536,9 @@
         display: none;
       }
 
-      .nav-cta .btn {
+      .nav-cta .btn,
+      .nav-cta .wa-toggle,
+      .nav-cta .lang-toggle {
         display: none;
       }
 
@@ -1512,9 +1606,13 @@
         justify-content: center;
       }
 
-      .whatsapp-float {
+      .whatsapp-float-group {
         bottom: 20px;
         right: 20px;
+        gap: 10px;
+      }
+
+      .whatsapp-float {
         width: 54px;
         height: 54px;
       }
@@ -1553,28 +1651,64 @@
         <img src="logo.png" alt="Growing Solutions" style="height:64px;width:auto;object-fit:contain;" />
         <div style="line-height:1.25;">
           <div style="font-size:1.2rem;font-weight:800;color:#08335D;letter-spacing:-0.01em;">GROWING SOLUTIONS</div>
-          <div style="font-size:0.68rem;font-weight:600;color:#00A896;letter-spacing:0.04em;">Servicios Contables, Financieros y Desarrollos con IA</div>
+          <div style="font-size:0.68rem;font-weight:600;color:#00A896;letter-spacing:0.04em;" data-i18n="brand.tagline">Servicios Contables, Financieros y Desarrollos con IA</div>
         </div>
       </a>
       <ul class="nav-links">
-        <li><a href="#servicios">Servicios</a></li>
-        <li><a href="#nosotros">Nosotros</a></li>
-        <li><a href="#metodologia">Metodología</a></li>
-        <li><a href="#contacto">Contacto</a></li>
+        <li><a href="#servicios" data-i18n="nav.servicios">Servicios</a></li>
+        <li><a href="#nosotros" data-i18n="nav.nosotros">Nosotros</a></li>
+        <li><a href="#metodologia" data-i18n="nav.metodologia">Metodología</a></li>
+        <li><a href="#contacto" data-i18n="nav.contacto">Contacto</a></li>
       </ul>
       <div class="nav-cta">
-        <a href="https://wa.me/573242754406?text=Hola%2C%20quiero%20información%20sobre%20los%20servicios%20de%20Growing%20Solutions"
-          class="btn btn-primary" target="_blank" rel="noopener">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-            <path
-              d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
-            <path
-              d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.71-1.248A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.386 0-4.594-.83-6.326-2.216l-.144-.116-3.491.924.94-3.437-.12-.149A9.957 9.957 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z" />
-          </svg>
-          Escríbenos
-        </a>
+        <div class="lang-toggle" role="group" aria-label="Idioma / Language">
+          <button type="button" class="lang-btn" data-lang="es" aria-pressed="false" title="Español">
+            <svg class="lang-flag" width="18" height="13" viewBox="0 0 18 13" aria-hidden="true">
+              <rect width="18" height="13" fill="#AA151B" />
+              <rect y="3.25" width="18" height="6.5" fill="#F1BF00" />
+            </svg>
+            <span data-i18n="lang.esLabel">Español</span>
+          </button>
+          <button type="button" class="lang-btn" data-lang="en" aria-pressed="false" title="English">
+            <svg class="lang-flag" width="18" height="13" viewBox="0 0 18 13" aria-hidden="true">
+              <rect width="18" height="13" fill="#B22234" />
+              <rect y="1" width="18" height="1" fill="#fff" />
+              <rect y="3" width="18" height="1" fill="#fff" />
+              <rect y="5" width="18" height="1" fill="#fff" />
+              <rect y="7" width="18" height="1" fill="#fff" />
+              <rect y="9" width="18" height="1" fill="#fff" />
+              <rect y="11" width="18" height="1" fill="#fff" />
+              <rect width="7.5" height="7" fill="#3C3B6E" />
+            </svg>
+            <span data-i18n="lang.enLabel">English</span>
+          </button>
+        </div>
+        <div class="wa-toggle" role="group" aria-label="WhatsApp">
+          <a href="https://wa.me/573242754406?text=Hola%2C%20quiero%20información%20sobre%20los%20servicios%20de%20Growing%20Solutions"
+            class="btn btn-whatsapp wa-btn" target="_blank" rel="noopener" title="WhatsApp Colombia +57 324 275 4406"
+            data-i18n-aria="wa.coAria">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+              <path
+                d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.71-1.248A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.386 0-4.594-.83-6.326-2.216l-.144-.116-3.491.924.94-3.437-.12-.149A9.957 9.957 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z" />
+            </svg>
+            <span data-i18n="wa.coShort">Colombia</span>
+          </a>
+          <a href="https://wa.me/19172272181?text=Hi%2C%20I%27d%20like%20information%20about%20Growing%20Solutions%20services"
+            class="btn btn-whatsapp wa-btn" target="_blank" rel="noopener" title="WhatsApp USA +1 917 227 2181"
+            data-i18n-aria="wa.usAria">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+              <path
+                d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.71-1.248A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.386 0-4.594-.83-6.326-2.216l-.144-.116-3.491.924.94-3.437-.12-.149A9.957 9.957 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z" />
+            </svg>
+            <span data-i18n="wa.usShort">USA</span>
+          </a>
+        </div>
       </div>
-      <button class="hamburger" id="hamburger" aria-label="Menú">
+      <button class="hamburger" id="hamburger" aria-label="Menú" data-i18n-aria="nav.hamburgerAria">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -1582,13 +1716,39 @@
 
   <!-- ── MOBILE MENU ── -->
   <div class="mobile-menu" id="mobileMenu">
-    <a href="#servicios" onclick="closeMobile()">Servicios</a>
-    <a href="#nosotros" onclick="closeMobile()">Nosotros</a>
-    <a href="#metodologia" onclick="closeMobile()">Metodología</a>
-    <a href="#contacto" onclick="closeMobile()">Contacto</a>
+    <div class="lang-toggle" role="group" aria-label="Idioma / Language">
+      <button type="button" class="lang-btn" data-lang="es" aria-pressed="false" title="Español">
+        <svg class="lang-flag" width="18" height="13" viewBox="0 0 18 13" aria-hidden="true">
+          <rect width="18" height="13" fill="#AA151B" />
+          <rect y="3.25" width="18" height="6.5" fill="#F1BF00" />
+        </svg>
+        <span data-i18n="lang.esLabel">Español</span>
+      </button>
+      <button type="button" class="lang-btn" data-lang="en" aria-pressed="false" title="English">
+        <svg class="lang-flag" width="18" height="13" viewBox="0 0 18 13" aria-hidden="true">
+          <rect width="18" height="13" fill="#B22234" />
+          <rect y="1" width="18" height="1" fill="#fff" />
+          <rect y="3" width="18" height="1" fill="#fff" />
+          <rect y="5" width="18" height="1" fill="#fff" />
+          <rect y="7" width="18" height="1" fill="#fff" />
+          <rect y="9" width="18" height="1" fill="#fff" />
+          <rect y="11" width="18" height="1" fill="#fff" />
+          <rect width="7.5" height="7" fill="#3C3B6E" />
+        </svg>
+        <span data-i18n="lang.enLabel">English</span>
+      </button>
+    </div>
+    <a href="#servicios" onclick="closeMobile()" data-i18n="nav.servicios">Servicios</a>
+    <a href="#nosotros" onclick="closeMobile()" data-i18n="nav.nosotros">Nosotros</a>
+    <a href="#metodologia" onclick="closeMobile()" data-i18n="nav.metodologia">Metodología</a>
+    <a href="#contacto" onclick="closeMobile()" data-i18n="nav.contacto">Contacto</a>
     <a href="https://wa.me/573242754406?text=Hola%2C%20quiero%20información%20sobre%20los%20servicios%20de%20Growing%20Solutions"
       class="btn btn-whatsapp" target="_blank" rel="noopener" onclick="closeMobile()">
-      Escríbenos por WhatsApp
+      <span data-i18n="wa.ctaMobileCo">WhatsApp Colombia +57 324 275 4406</span>
+    </a>
+    <a href="https://wa.me/19172272181?text=Hi%2C%20I%27d%20like%20information%20about%20Growing%20Solutions%20services"
+      class="btn btn-whatsapp" target="_blank" rel="noopener" onclick="closeMobile()">
+      <span data-i18n="wa.ctaMobileUs">WhatsApp USA +1 917 227 2181</span>
     </a>
   </div>
 
@@ -1602,16 +1762,16 @@
 
     <div class="container">
       <div class="hero-content">
-        <div class="hero-badge">Aliado estratégico para MIPYMES en Colombia</div>
+        <div class="hero-badge" data-i18n="hero.badge">Aliado estratégico para pequeñas y medianas Empresas en Colombia y Estados Unidos</div>
         <h1>
-          Impulsa tu empresa<br />
-          con soluciones<br />
-          <span class="grad-text" style="display:inline-block; position:relative;">integrales
+          <span data-i18n="hero.titleL1">Impulsa tu empresa</span><br />
+          <span data-i18n="hero.titleL2">con soluciones</span><br />
+          <span class="grad-text" style="display:inline-block; position:relative;"><span data-i18n="hero.titleHighlight">integrales</span>
             <span
               style="position:absolute;bottom:-6px;left:0;right:0;height:4px;border-radius:2px;background:linear-gradient(90deg,var(--primary-dim),var(--primary-light));opacity:0.5;"></span>
           </span>
         </h1>
-        <p>
+        <p data-i18n="hero.subtitle">
           Ayudamos a micro, pequeñas y medianas empresas a organizar su operación,
           mejorar su control financiero y automatizar procesos — sin necesidad de un equipo
           interno especializado.
@@ -1624,15 +1784,15 @@
               <path
                 d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.71-1.248A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.386 0-4.594-.83-6.326-2.216l-.144-.116-3.491.924.94-3.437-.12-.149A9.957 9.957 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z" />
             </svg>
-            Solicitar Asesoría Gratis
+            <span data-i18n="hero.ctaPrimary">Solicitar Asesoría Gratis</span>
           </a>
-          <a href="#servicios" class="btn btn-ghost">Conoce Nuestros Servicios</a>
+          <a href="#servicios" class="btn btn-ghost" data-i18n="hero.ctaSecondary">Conoce Nuestros Servicios</a>
         </div>
       </div>
     </div>
 
     <div class="hero-scroll">
-      Descubre más
+      <span data-i18n="hero.scroll">Descubre más</span>
       <div class="scroll-line"></div>
     </div>
   </section>
@@ -1642,20 +1802,20 @@
     <div class="container">
       <div class="stats-grid fade-in">
         <div class="stat-item">
-          <div class="stat-number grad-text">+50</div>
-          <div class="stat-label">Empresas asesoradas en Colombia</div>
+          <div class="stat-number grad-text">+25</div>
+          <div class="stat-label" data-i18n="stats.item1">Empresas asesoradas en Colombia y Estados Unidos</div>
         </div>
         <div class="stat-item">
           <div class="stat-number grad-text">80%</div>
-          <div class="stat-label">Reducción en tareas manuales</div>
+          <div class="stat-label" data-i18n="stats.item2">Reducción en tareas manuales</div>
         </div>
         <div class="stat-item">
           <div class="stat-number grad-text">3×</div>
-          <div class="stat-label">Más rápido en reportes financieros</div>
+          <div class="stat-label" data-i18n="stats.item3">Más rápido en reportes financieros</div>
         </div>
         <div class="stat-item">
           <div class="stat-number grad-text">100%</div>
-          <div class="stat-label">Enfocados en pymes y microempresas</div>
+          <div class="stat-label" data-i18n="stats.item4">Enfocados en pymes y microempresas</div>
         </div>
       </div>
     </div>
@@ -1665,63 +1825,63 @@
   <section class="section" id="servicios">
     <div class="container">
       <div class="section-header fade-in">
-        <div class="section-tag">Nuestros Servicios</div>
-        <h2>Soluciones integrales para<br />hacer crecer tu negocio</h2>
-        <p>Cuatro líneas de servicio diseñadas para que tu empresa opere de forma profesional, eficiente y escalable.
+        <div class="section-tag" data-i18n="servicios.tag">Nuestros Servicios</div>
+        <h2><span data-i18n="servicios.titleL1">Soluciones integrales para</span><br /><span data-i18n="servicios.titleL2">hacer crecer tu negocio</span></h2>
+        <p data-i18n="servicios.subtitle">Cuatro líneas de servicio diseñadas para que tu empresa opere de forma profesional, eficiente y escalable.
         </p>
       </div>
       <div class="services-grid">
 
         <div class="service-card fade-in">
           <div class="service-icon icon-blue">📋</div>
-          <h3>Contabilidad</h3>
-          <p>Mantén tus números en orden con un servicio contable confiable. Nos encargamos de la gestión contable
+          <h3 data-i18n="servicios.card1.title">Contabilidad</h3>
+          <p data-i18n="servicios.card1.desc">Mantén tus números en orden con un servicio contable confiable. Nos encargamos de la gestión contable
             integral para que tomes decisiones basadas en información real y actualizada.</p>
           <ul class="service-list">
-            <li>Registros contables diarios</li>
-            <li>Conciliaciones Bancarias</li>
-            <li>Impuestos</li>
-            <li>Cierres contables</li>
-            <li>Estados financieros</li>
+            <li data-i18n="servicios.card1.li1">Registros contables diarios</li>
+            <li data-i18n="servicios.card1.li2">Conciliaciones Bancarias</li>
+            <li data-i18n="servicios.card1.li3">Impuestos</li>
+            <li data-i18n="servicios.card1.li4">Cierres contables</li>
+            <li data-i18n="servicios.card1.li5">Estados financieros</li>
           </ul>
         </div>
 
         <div class="service-card fade-in">
           <div class="service-icon icon-orange">📊</div>
-          <h3>Servicios Financieros</h3>
-          <p>Obtén claridad sobre la salud de tu negocio. Te ayudamos con análisis financiero, planeación de flujo de
+          <h3 data-i18n="servicios.card2.title">Servicios Financieros</h3>
+          <p data-i18n="servicios.card2.desc">Obtén claridad sobre la salud de tu negocio. Te ayudamos con análisis financiero, planeación de flujo de
             caja, presupuestos e indicadores clave para un control total de tus finanzas.</p>
           <ul class="service-list">
-            <li>Flujo de caja</li>
-            <li>Presupuestos y proyecciones</li>
-            <li>Indicadores KPI</li>
-            <li>Análisis financiero</li>
+            <li data-i18n="servicios.card2.li1">Flujo de caja</li>
+            <li data-i18n="servicios.card2.li2">Presupuestos y proyecciones</li>
+            <li data-i18n="servicios.card2.li3">Indicadores KPI</li>
+            <li data-i18n="servicios.card2.li4">Análisis financiero</li>
           </ul>
         </div>
 
         <div class="service-card fade-in">
           <div class="service-icon icon-lightblue">⚡</div>
-          <h3>Automatización de Procesos</h3>
-          <p>Elimina tareas repetitivas y ahorra tiempo. Diseñamos flujos de trabajo automatizados que conectan tus
+          <h3 data-i18n="servicios.card3.title">Automatización de Procesos</h3>
+          <p data-i18n="servicios.card3.desc">Elimina tareas repetitivas y ahorra tiempo. Diseñamos flujos de trabajo automatizados que conectan tus
             herramientas, optimizan tu operación y liberan a tu equipo para lo importante.</p>
           <ul class="service-list">
-            <li>Workflows</li>
-            <li>Integraciones</li>
-            <li>Procesos digitales</li>
-            <li>Eficiencia</li>
+            <li data-i18n="servicios.card3.li1">Workflows</li>
+            <li data-i18n="servicios.card3.li2">Integraciones</li>
+            <li data-i18n="servicios.card3.li3">Procesos digitales</li>
+            <li data-i18n="servicios.card3.li4">Eficiencia</li>
           </ul>
         </div>
 
         <div class="service-card fade-in">
           <div class="service-icon icon-navy">💻</div>
-          <h3>Desarrollos a la Medida</h3>
-          <p>Soluciones de software personalizadas para tu negocio. Desde aplicaciones web hasta sistemas internos,
+          <h3 data-i18n="servicios.card4.title">Desarrollos a la Medida</h3>
+          <p data-i18n="servicios.card4.desc">Soluciones de software personalizadas para tu negocio. Desde aplicaciones web hasta sistemas internos,
             construimos la tecnología que necesitas sin que tengas un equipo de desarrollo propio.</p>
           <ul class="service-list">
-            <li>Aplicaciones web</li>
-            <li>Sistemas a medida</li>
-            <li>Dashboards</li>
-            <li>APIs</li>
+            <li data-i18n="servicios.card4.li1">Aplicaciones web</li>
+            <li data-i18n="servicios.card4.li2">Sistemas a medida</li>
+            <li data-i18n="servicios.card4.li3">Dashboards</li>
+            <li data-i18n="servicios.card4.li4">APIs</li>
           </ul>
         </div>
 
@@ -1734,37 +1894,37 @@
     <div class="container">
       <div class="value-grid">
         <div class="value-content fade-in">
-          <div class="section-tag">¿Por Qué Elegirnos?</div>
-          <h2>Tu aliado estratégico<br /><span style="color: var(--primary);">para crecer</span></h2>
-          <p>No somos solo proveedores — somos un equipo que combina experiencia financiera, contable y tecnológica para
+          <div class="section-tag" data-i18n="nosotros.tag">¿Por Qué Elegirnos?</div>
+          <h2><span data-i18n="nosotros.titleL1">Tu aliado estratégico</span><br /><span style="color: var(--primary);" data-i18n="nosotros.titleL2">para crecer</span></h2>
+          <p data-i18n="nosotros.subtitle">No somos solo proveedores — somos un equipo que combina experiencia financiera, contable y tecnológica para
             ofrecerte soluciones prácticas y resultados medibles.</p>
           <div class="value-features">
             <div class="feature-item">
               <div class="feature-check check-blue">✓</div>
               <div>
-                <h4>Sin necesidad de equipo interno</h4>
-                <p>Accede a contadores, analistas financieros y desarrolladores sin contratar internamente.</p>
+                <h4 data-i18n="nosotros.feature1.title">Sin necesidad de equipo interno</h4>
+                <p data-i18n="nosotros.feature1.desc">Accede a contadores, analistas financieros y desarrolladores sin contratar internamente.</p>
               </div>
             </div>
             <div class="feature-item">
               <div class="feature-check check-orange">✓</div>
               <div>
-                <h4>Pensado para pymes en Colombia</h4>
-                <p>Servicios adaptados a la realidad y presupuesto del mercado empresarial local.</p>
+                <h4 data-i18n="nosotros.feature2.title">Pensado para pymes en Colombia</h4>
+                <p data-i18n="nosotros.feature2.desc">Servicios adaptados a la realidad y presupuesto del mercado empresarial local.</p>
               </div>
             </div>
             <div class="feature-item">
               <div class="feature-check check-lightblue">✓</div>
               <div>
-                <h4>Resultados rápidos y medibles</h4>
-                <p>Implementaciones ágiles con impacto visible desde las primeras semanas.</p>
+                <h4 data-i18n="nosotros.feature3.title">Resultados rápidos y medibles</h4>
+                <p data-i18n="nosotros.feature3.desc">Implementaciones ágiles con impacto visible desde las primeras semanas.</p>
               </div>
             </div>
             <div class="feature-item">
               <div class="feature-check check-navy">✓</div>
               <div>
-                <h4>Acompañamiento continuo</h4>
-                <p>No te dejamos solo — te acompañamos, optimizamos y escalamos contigo.</p>
+                <h4 data-i18n="nosotros.feature4.title">Acompañamiento continuo</h4>
+                <p data-i18n="nosotros.feature4.desc">No te dejamos solo — te acompañamos, optimizamos y escalamos contigo.</p>
               </div>
             </div>
           </div>
@@ -1772,20 +1932,20 @@
 
         <div class="value-visual fade-in">
           <div class="visual-card vc-main">
-            <div class="vc-label">Eficiencia Operativa</div>
+            <div class="vc-label" data-i18n="nosotros.visual.label1">Eficiencia Operativa</div>
             <div class="vc-metric grad-text">+85%</div>
-            <div class="vc-sub">mejora promedio después de la implementación</div>
+            <div class="vc-sub" data-i18n="nosotros.visual.sub1">mejora promedio después de la implementación</div>
             <div class="vc-bar">
               <div class="vc-bar-fill" id="barFill"></div>
             </div>
           </div>
           <div class="visual-card vc-float">
-            <div class="vc-float-label">Horas ahorradas / mes</div>
+            <div class="vc-float-label" data-i18n="nosotros.visual.label2">Horas ahorradas / mes</div>
             <div class="vc-float-value grad-text">120h</div>
           </div>
           <div class="visual-card vc-float2">
-            <div class="vc-float-label dot-green">● Soporte activo</div>
-            <div class="vc-float-value">En línea</div>
+            <div class="vc-float-label dot-green" data-i18n="nosotros.visual.support">● Soporte activo</div>
+            <div class="vc-float-value" data-i18n="nosotros.visual.status">En línea</div>
           </div>
         </div>
       </div>
@@ -1796,31 +1956,31 @@
   <section class="section" id="metodologia">
     <div class="container">
       <div class="section-header fade-in">
-        <div class="section-tag section-tag-accent">Nuestra Metodología</div>
-        <h2>Del diagnóstico a los resultados<br /><span style="color: var(--primary);">en cuatro pasos</span></h2>
-        <p>Un proceso claro, transparente y centrado en tu negocio — sin complicaciones técnicas.</p>
+        <div class="section-tag section-tag-accent" data-i18n="metodologia.tag">Nuestra Metodología</div>
+        <h2><span data-i18n="metodologia.titleL1">Del diagnóstico a los resultados</span><br /><span style="color: var(--primary);" data-i18n="metodologia.titleL2">en cuatro pasos</span></h2>
+        <p data-i18n="metodologia.subtitle">Un proceso claro, transparente y centrado en tu negocio — sin complicaciones técnicas.</p>
       </div>
       <div class="steps-grid fade-in">
         <div class="step">
           <div class="step-num">01</div>
-          <h3>Diagnóstico</h3>
-          <p>Analizamos tu operación actual, identificamos oportunidades de mejora y entendemos tus objetivos de
+          <h3 data-i18n="metodologia.step1.title">Diagnóstico</h3>
+          <p data-i18n="metodologia.step1.desc">Analizamos tu operación actual, identificamos oportunidades de mejora y entendemos tus objetivos de
             negocio.</p>
         </div>
         <div class="step">
           <div class="step-num">02</div>
-          <h3>Propuesta a Medida</h3>
-          <p>Diseñamos una solución personalizada con un plan claro de implementación, tiempos y costos definidos.</p>
+          <h3 data-i18n="metodologia.step2.title">Propuesta a Medida</h3>
+          <p data-i18n="metodologia.step2.desc">Diseñamos una solución personalizada con un plan claro de implementación, tiempos y costos definidos.</p>
         </div>
         <div class="step">
           <div class="step-num">03</div>
-          <h3>Implementación</h3>
-          <p>Ejecutamos la solución de forma ágil. Tú sigues operando mientras nosotros nos encargamos de todo.</p>
+          <h3 data-i18n="metodologia.step3.title">Implementación</h3>
+          <p data-i18n="metodologia.step3.desc">Ejecutamos la solución de forma ágil. Tú sigues operando mientras nosotros nos encargamos de todo.</p>
         </div>
         <div class="step">
           <div class="step-num">04</div>
-          <h3>Soporte y Evolución</h3>
-          <p>Te acompañamos con soporte continuo, optimización y escalamiento conforme tu negocio crece.</p>
+          <h3 data-i18n="metodologia.step4.title">Soporte y Evolución</h3>
+          <p data-i18n="metodologia.step4.desc">Te acompañamos con soporte continuo, optimización y escalamiento conforme tu negocio crece.</p>
         </div>
       </div>
     </div>
@@ -1830,9 +1990,9 @@
   <section class="cta-section" id="contacto">
     <div class="container">
       <div class="cta-inner fade-in">
-        <div class="section-tag">Agenda tu Asesoría</div>
-        <h2>¿Listo para <span class="grad-text-accent">profesionalizar</span><br />tu empresa?</h2>
-        <p>Cuéntanos sobre tu negocio y en menos de 24 horas uno de nuestros asesores se pondrá en contacto contigo. Sin
+        <div class="section-tag" data-i18n="contacto.tag">Agenda tu Asesoría</div>
+        <h2><span data-i18n="contacto.titleL1">¿Listo para</span> <span class="grad-text-accent" data-i18n="contacto.titleHighlight">profesionalizar</span><br /><span data-i18n="contacto.titleL2">tu empresa?</span></h2>
+        <p data-i18n="contacto.subtitle">Cuéntanos sobre tu negocio y en menos de 24 horas uno de nuestros asesores se pondrá en contacto contigo. Sin
           compromiso.</p>
 
         <div class="form-divider"></div>
@@ -1841,68 +2001,74 @@
           <div class="form-grid">
 
             <div class="form-group">
-              <label for="f-name">Nombre<span class="required">*</span></label>
-              <input type="text" id="f-name" name="name" placeholder="Tu nombre completo" autocomplete="name" />
+              <label for="f-name"><span data-i18n="form.labelName">Nombre</span><span class="required">*</span></label>
+              <input type="text" id="f-name" name="name" placeholder="Tu nombre completo" autocomplete="name" maxlength="80" data-i18n-placeholder="form.phName" />
             </div>
 
             <div class="form-group">
-              <label for="f-phone">Teléfono de contacto <span
-                  style="font-weight:400;color:var(--muted-2)">(opcional)</span></label>
-              <input type="tel" id="f-phone" name="phone" placeholder="Ej: 300 123 4567" autocomplete="tel" />
+              <label for="f-phone"><span data-i18n="form.labelPhone">Teléfono de contacto</span> <span
+                  style="font-weight:400;color:var(--muted-2)" data-i18n="common.optional">(opcional)</span></label>
+              <input type="tel" id="f-phone" name="phone" placeholder="Ej: 300 123 4567" autocomplete="tel" maxlength="25" data-i18n-placeholder="form.phPhone" />
             </div>
 
             <div class="form-group">
-              <label for="f-email">Correo electrónico<span class="required">*</span></label>
-              <input type="email" id="f-email" name="email" placeholder="correo@tuempresa.com" autocomplete="email" />
+              <label for="f-email"><span data-i18n="form.labelEmail">Correo electrónico</span><span class="required">*</span></label>
+              <input type="email" id="f-email" name="email" placeholder="correo@tuempresa.com" autocomplete="email" maxlength="120" data-i18n-placeholder="form.phEmail" />
             </div>
 
             <div class="form-group">
-              <label for="f-company">Nombre de la empresa <span
-                  style="font-weight:400;color:var(--muted-2)">(opcional)</span></label>
+              <label for="f-company"><span data-i18n="form.labelCompany">Nombre de la empresa</span> <span
+                  style="font-weight:400;color:var(--muted-2)" data-i18n="common.optional">(opcional)</span></label>
               <input type="text" id="f-company" name="company" placeholder="Nombre de tu empresa"
-                autocomplete="organization" />
+                autocomplete="organization" maxlength="120" data-i18n-placeholder="form.phCompany" />
             </div>
 
             <div class="form-group">
-              <label for="f-url">Página web <span style="font-weight:400;color:var(--muted-2)">(opcional)</span></label>
-              <input type="url" id="f-url" name="website" placeholder="https://tuempresa.com" autocomplete="url" />
+              <label for="f-url"><span data-i18n="form.labelWebsite">Página web</span> <span style="font-weight:400;color:var(--muted-2)" data-i18n="common.optional">(opcional)</span></label>
+              <input type="url" id="f-url" name="website" placeholder="https://tuempresa.com" autocomplete="url" maxlength="200" />
             </div>
 
             <div class="form-group">
-              <label for="f-budget">Presupuesto<span class="required">*</span></label>
+              <label for="f-budget"><span data-i18n="form.labelBudget">Presupuesto</span><span class="required">*</span></label>
               <select id="f-budget" name="budget">
-                <option value="" disabled selected>Selecciona un rango</option>
-                <option value="Entre 0 y 500.000">Entre $0 y $500.000</option>
-                <option value="Entre 500.001 y 1.000.000">Entre $500.001 y $1.000.000</option>
-                <option value="Entre 1.000.001 y 2.500.000">Entre $1.000.001 y $2.500.000</option>
-                <option value="Más de 2.500.000">Más de $2.500.000</option>
+                <option value="" disabled selected data-i18n="budget.placeholder">Selecciona un rango</option>
+                <option value="Entre 0 y 500.000" data-i18n="budget.opt1">Entre $0 y $500.000</option>
+                <option value="Entre 500.001 y 1.000.000" data-i18n="budget.opt2">Entre $500.001 y $1.000.000</option>
+                <option value="Entre 1.000.001 y 2.500.000" data-i18n="budget.opt3">Entre $1.000.001 y $2.500.000</option>
+                <option value="Más de 2.500.000" data-i18n="budget.opt4">Más de $2.500.000</option>
               </select>
             </div>
 
 
             <div class="form-group full-width">
-              <label for="f-service">Seleccione el Servicio<span class="required">*</span></label>
+              <label for="f-service"><span data-i18n="form.labelService">Seleccione el Servicio</span><span class="required">*</span></label>
               <select id="f-service" name="service">
-                <option value="" disabled selected>¿En qué podemos ayudarte?</option>
-                <option value="Servicios contables">Servicios Contables</option>
-                <option value="Servicios financieros">Servicios Financieros</option>
-                <option value="Automatización de procesos">Automatización de Procesos</option>
-                <option value="Desarrollos a la medida">Desarrollos a la Medida</option>
+                <option value="" disabled selected data-i18n="service.placeholder">¿En qué podemos ayudarte?</option>
+                <option value="Servicios contables" data-i18n="service.opt1">Servicios Contables</option>
+                <option value="Servicios financieros" data-i18n="service.opt2">Servicios Financieros</option>
+                <option value="Automatización de procesos" data-i18n="service.opt3">Automatización de Procesos</option>
+                <option value="Desarrollos a la medida" data-i18n="service.opt4">Desarrollos a la Medida</option>
               </select>
             </div>
 
             <div class="form-group full-width">
-              <label for="f-info">Información adicional <span
-                  style="font-weight:400;color:var(--muted-2)">(opcional)</span></label>
-              <textarea id="f-info" name="additionalInfo"
-                placeholder="Cuéntanos sobre tu negocio, tus principales retos o qué tipo de ayuda buscas..."></textarea>
+              <label for="f-info"><span data-i18n="form.labelInfo">Información adicional</span> <span
+                  style="font-weight:400;color:var(--muted-2)" data-i18n="common.optional">(opcional)</span></label>
+              <textarea id="f-info" name="additionalInfo" maxlength="2000"
+                placeholder="Cuéntanos sobre tu negocio, tus principales retos o qué tipo de ayuda buscas..." data-i18n-placeholder="form.phInfo"></textarea>
+            </div>
+
+            <!-- Anti-spam honeypot: invisible para usuarios reales, los bots suelen rellenarlo -->
+            <div class="hp-field" aria-hidden="true">
+              <label for="f-hp">No rellenar</label>
+              <input type="text" id="f-hp" name="companyFax" tabindex="-1" autocomplete="off" />
             </div>
 
           </div>
 
           <div class="form-submit-row">
-            <button type="submit" class="btn-submit" id="submitBtn">Enviar solicitud →</button>
-            <span class="form-note">Sin compromiso. Te respondemos en menos de 24h.</span>
+            <button type="submit" class="btn-submit" id="submitBtn" data-i18n="form.submit">Enviar solicitud →</button>
+            <span class="form-note" data-i18n="form.note">Sin compromiso. Te respondemos en menos de 24h.</span>
           </div>
           <div class="form-status" id="formStatus"></div>
         </form>
@@ -1916,76 +2082,338 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <a href="#" class="logo">
-            <svg width="40" height="40" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="3" y="26" width="8" height="16" rx="1.5" fill="rgba(255,255,255,0.85)"/>
-              <rect x="13" y="19" width="8" height="23" rx="1.5" fill="rgba(255,255,255,0.85)"/>
-              <rect x="23" y="12" width="8" height="30" rx="1.5" fill="rgba(255,255,255,0.85)"/>
-              <path d="M6 30 L17 20 L27 13 L37 5" stroke="#2ee8c7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M31 5 L37 5 L37 11" stroke="#2ee8c7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-              <circle cx="6" cy="30" r="2.2" fill="#2ee8c7"/>
-              <circle cx="17" cy="20" r="2.2" fill="#2ee8c7"/>
-              <circle cx="27" cy="13" r="2.2" fill="#2ee8c7"/>
-            </svg>
-            <div style="line-height:1.15;">
-              <div style="font-size:1.15rem;font-weight:800;color:#ffffff;letter-spacing:-0.01em;">GROWING</div>
-              <div style="font-size:0.72rem;font-weight:600;color:#2ee8c7;letter-spacing:0.18em;text-transform:uppercase;">SOLUTIONS</div>
-            </div>
+          <a href="#" class="footer-logo">
+            <img src="logo-footer.png" alt="Growing Solutions" />
           </a>
-          <p>Soluciones integrales en contabilidad, finanzas, automatización y tecnología para microempresas y pymes en
+          <p data-i18n="footer.tagline">Soluciones integrales en contabilidad, finanzas, automatización y tecnología para microempresas y pymes en
             Colombia.</p>
           <div class="footer-social">
             <a href="#" aria-label="LinkedIn" title="LinkedIn">in</a>
-            <a href="#" aria-label="Instagram" title="Instagram">ig</a>
+            <a href="https://www.instagram.com/growingsolutions1/" aria-label="Instagram" title="Instagram" target="_blank" rel="noopener">ig</a>
             <a href="#" aria-label="Facebook" title="Facebook">fb</a>
           </div>
         </div>
         <div class="footer-col">
-          <h4>Servicios</h4>
+          <h4 data-i18n="footer.servicesHeading">Servicios</h4>
           <ul>
-            <li><a href="#servicios">Contabilidad</a></li>
-            <li><a href="#servicios">Servicios Financieros</a></li>
-            <li><a href="#servicios">Automatización</a></li>
-            <li><a href="#servicios">Desarrollos a la Medida</a></li>
+            <li><a href="#servicios" data-i18n="servicios.card1.title">Contabilidad</a></li>
+            <li><a href="#servicios" data-i18n="servicios.card2.title">Servicios Financieros</a></li>
+            <li><a href="#servicios" data-i18n="footer.linkAutomatizacion">Automatización</a></li>
+            <li><a href="#servicios" data-i18n="servicios.card4.title">Desarrollos a la Medida</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h4>Empresa</h4>
+          <h4 data-i18n="footer.companyHeading">Empresa</h4>
           <ul>
-            <li><a href="#nosotros">Nosotros</a></li>
-            <li><a href="#metodologia">Metodología</a></li>
-            <li><a href="#contacto">Contacto</a></li>
+            <li><a href="#nosotros" data-i18n="nav.nosotros">Nosotros</a></li>
+            <li><a href="#metodologia" data-i18n="nav.metodologia">Metodología</a></li>
+            <li><a href="#contacto" data-i18n="nav.contacto">Contacto</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h4>Contáctanos</h4>
+          <h4 data-i18n="footer.contactHeading">Contáctanos</h4>
           <ul>
-            <li><a href="https://wa.me/573242754406" target="_blank" rel="noopener">WhatsApp</a></li>
-            <li><a href="mailto:growingsolutions.email@gmail.com">growingsolutions.email@gmail.com</a></li>
-            <li><a href="#">Colombia</a></li>
+            <li><a href="https://wa.me/573242754406?text=Hola%2C%20quiero%20información%20sobre%20los%20servicios%20de%20Growing%20Solutions" target="_blank" rel="noopener" data-i18n="wa.footerCo">WhatsApp Colombia +57 324 275 4406</a></li>
+            <li><a href="https://wa.me/19172272181?text=Hi%2C%20I%27d%20like%20information%20about%20Growing%20Solutions%20services" target="_blank" rel="noopener" data-i18n="wa.footerUs">WhatsApp USA +1 917 227 2181</a></li>
+            <li><a href="mailto:wilyer.arias@growingsolutions.online">wilyer.arias@growingsolutions.online</a></li>
+            <li><a href="#" data-i18n="footer.country">Colombia</a></li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>© 2025 Growing Solutions. Todos los derechos reservados.</p>
-        <p>Hecho con dedicación para el crecimiento de tu empresa.</p>
+        <p data-i18n="footer.copyright">© 2026 Growing Solutions. Todos los derechos reservados.</p>
+        <p data-i18n="footer.bottomTagline">Hecho con dedicación para el crecimiento de tu empresa.</p>
       </div>
     </div>
   </footer>
 
-  <!-- ── WHATSAPP FLOATING BUTTON ── -->
-  <a href="https://wa.me/573242754406?text=Hola%2C%20quiero%20información%20sobre%20los%20servicios%20de%20Growing%20Solutions"
-    class="whatsapp-float" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
-    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
-      <path
-        d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.71-1.248A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.386 0-4.594-.83-6.326-2.216l-.144-.116-3.491.924.94-3.437-.12-.149A9.957 9.957 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z" />
-    </svg>
-    <span class="wa-tooltip">¿Necesitas ayuda? Escríbenos</span>
-  </a>
+  <!-- ── WHATSAPP FLOATING BUTTONS ── -->
+  <div class="whatsapp-float-group">
+    <a href="https://wa.me/573242754406?text=Hola%2C%20quiero%20información%20sobre%20los%20servicios%20de%20Growing%20Solutions"
+      class="whatsapp-float" target="_blank" rel="noopener" aria-label="WhatsApp Colombia +57 324 275 4406" data-i18n-aria="wa.coAria">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+        <path
+          d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.71-1.248A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.386 0-4.594-.83-6.326-2.216l-.144-.116-3.491.924.94-3.437-.12-.149A9.957 9.957 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z" />
+      </svg>
+      <span class="wa-tooltip" data-i18n="wa.tooltipCo">WhatsApp Colombia</span>
+    </a>
+    <a href="https://wa.me/19172272181?text=Hi%2C%20I%27d%20like%20information%20about%20Growing%20Solutions%20services"
+      class="whatsapp-float" target="_blank" rel="noopener" aria-label="WhatsApp USA +1 917 227 2181" data-i18n-aria="wa.usAria">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+        <path
+          d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.71-1.248A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.386 0-4.594-.83-6.326-2.216l-.144-.116-3.491.924.94-3.437-.12-.149A9.957 9.957 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z" />
+      </svg>
+      <span class="wa-tooltip" data-i18n="wa.tooltipUs">WhatsApp USA</span>
+    </a>
+  </div>
 
   <script>
+    // ── I18N ──
+    const translations = {
+      es: {
+        lang: { esLabel: 'Español', enLabel: 'English' },
+        nav: {
+          servicios: 'Servicios', nosotros: 'Nosotros', metodologia: 'Metodología', contacto: 'Contacto',
+          hamburgerAria: 'Menú'
+        },
+        brand: { tagline: 'Servicios Contables, Financieros y Desarrollos con IA' },
+        hero: {
+          badge: 'Aliado estratégico para pequeñas y medianas Empresas en Colombia y Estados Unidos',
+          titleL1: 'Impulsa tu empresa', titleL2: 'con soluciones', titleHighlight: 'integrales',
+          subtitle: 'Ayudamos a micro, pequeñas y medianas empresas a organizar su operación, mejorar su control financiero y automatizar procesos — sin necesidad de un equipo interno especializado.',
+          ctaPrimary: 'Solicitar Asesoría Gratis', ctaSecondary: 'Conoce Nuestros Servicios', scroll: 'Descubre más'
+        },
+        stats: {
+          item1: 'Empresas asesoradas en Colombia y Estados Unidos', item2: 'Reducción en tareas manuales',
+          item3: 'Más rápido en reportes financieros', item4: 'Enfocados en pymes y microempresas'
+        },
+        servicios: {
+          tag: 'Nuestros Servicios', titleL1: 'Soluciones integrales para', titleL2: 'hacer crecer tu negocio',
+          subtitle: 'Cuatro líneas de servicio diseñadas para que tu empresa opere de forma profesional, eficiente y escalable.',
+          card1: {
+            title: 'Contabilidad',
+            desc: 'Mantén tus números en orden con un servicio contable confiable. Nos encargamos de la gestión contable integral para que tomes decisiones basadas en información real y actualizada.',
+            li1: 'Registros contables diarios', li2: 'Conciliaciones Bancarias', li3: 'Impuestos', li4: 'Cierres contables', li5: 'Estados financieros'
+          },
+          card2: {
+            title: 'Servicios Financieros',
+            desc: 'Obtén claridad sobre la salud de tu negocio. Te ayudamos con análisis financiero, planeación de flujo de caja, presupuestos e indicadores clave para un control total de tus finanzas.',
+            li1: 'Flujo de caja', li2: 'Presupuestos y proyecciones', li3: 'Indicadores KPI', li4: 'Análisis financiero'
+          },
+          card3: {
+            title: 'Automatización de Procesos',
+            desc: 'Elimina tareas repetitivas y ahorra tiempo. Diseñamos flujos de trabajo automatizados que conectan tus herramientas, optimizan tu operación y liberan a tu equipo para lo importante.',
+            li1: 'Workflows', li2: 'Integraciones', li3: 'Procesos digitales', li4: 'Eficiencia'
+          },
+          card4: {
+            title: 'Desarrollos a la Medida',
+            desc: 'Soluciones de software personalizadas para tu negocio. Desde aplicaciones web hasta sistemas internos, construimos la tecnología que necesitas sin que tengas un equipo de desarrollo propio.',
+            li1: 'Aplicaciones web', li2: 'Sistemas a medida', li3: 'Dashboards', li4: 'APIs'
+          }
+        },
+        nosotros: {
+          tag: '¿Por Qué Elegirnos?', titleL1: 'Tu aliado estratégico', titleL2: 'para crecer',
+          subtitle: 'No somos solo proveedores — somos un equipo que combina experiencia financiera, contable y tecnológica para ofrecerte soluciones prácticas y resultados medibles.',
+          feature1: { title: 'Sin necesidad de equipo interno', desc: 'Accede a contadores, analistas financieros y desarrolladores sin contratar internamente.' },
+          feature2: { title: 'Pensado para pymes en Colombia', desc: 'Servicios adaptados a la realidad y presupuesto del mercado empresarial local.' },
+          feature3: { title: 'Resultados rápidos y medibles', desc: 'Implementaciones ágiles con impacto visible desde las primeras semanas.' },
+          feature4: { title: 'Acompañamiento continuo', desc: 'No te dejamos solo — te acompañamos, optimizamos y escalamos contigo.' },
+          visual: {
+            label1: 'Eficiencia Operativa', sub1: 'mejora promedio después de la implementación',
+            label2: 'Horas ahorradas / mes', support: '● Soporte activo', status: 'En línea'
+          }
+        },
+        metodologia: {
+          tag: 'Nuestra Metodología', titleL1: 'Del diagnóstico a los resultados', titleL2: 'en cuatro pasos',
+          subtitle: 'Un proceso claro, transparente y centrado en tu negocio — sin complicaciones técnicas.',
+          step1: { title: 'Diagnóstico', desc: 'Analizamos tu operación actual, identificamos oportunidades de mejora y entendemos tus objetivos de negocio.' },
+          step2: { title: 'Propuesta a Medida', desc: 'Diseñamos una solución personalizada con un plan claro de implementación, tiempos y costos definidos.' },
+          step3: { title: 'Implementación', desc: 'Ejecutamos la solución de forma ágil. Tú sigues operando mientras nosotros nos encargamos de todo.' },
+          step4: { title: 'Soporte y Evolución', desc: 'Te acompañamos con soporte continuo, optimización y escalamiento conforme tu negocio crece.' }
+        },
+        contacto: {
+          tag: 'Agenda tu Asesoría', titleL1: '¿Listo para', titleHighlight: 'profesionalizar', titleL2: 'tu empresa?',
+          subtitle: 'Cuéntanos sobre tu negocio y en menos de 24 horas uno de nuestros asesores se pondrá en contacto contigo. Sin compromiso.'
+        },
+        form: {
+          labelName: 'Nombre', labelPhone: 'Teléfono de contacto', labelEmail: 'Correo electrónico',
+          labelCompany: 'Nombre de la empresa', labelWebsite: 'Página web', labelBudget: 'Presupuesto',
+          labelService: 'Seleccione el Servicio', labelInfo: 'Información adicional',
+          phName: 'Tu nombre completo', phPhone: 'Ej: 300 123 4567', phEmail: 'correo@tuempresa.com',
+          phCompany: 'Nombre de tu empresa', phInfo: 'Cuéntanos sobre tu negocio, tus principales retos o qué tipo de ayuda buscas...',
+          submit: 'Enviar solicitud →', note: 'Sin compromiso. Te respondemos en menos de 24h.',
+          errRequired: 'Por favor completa todos los campos requeridos (*).',
+          errEmail: 'Por favor ingresa un correo electrónico válido.',
+          errNotConfigured: 'El formulario aún no está configurado. Contacta al administrador.',
+          sending: 'Enviando...',
+          success: '¡Recibimos tu solicitud! Un asesor se pondrá en contacto contigo en menos de 24 horas.',
+          errNetwork: 'No se pudo enviar el formulario. Verifica tu conexión e intenta de nuevo.'
+        },
+        common: { optional: '(opcional)' },
+        budget: {
+          placeholder: 'Selecciona un rango', opt1: 'Entre $0 y $500.000', opt2: 'Entre $500.001 y $1.000.000',
+          opt3: 'Entre $1.000.001 y $2.500.000', opt4: 'Más de $2.500.000'
+        },
+        service: {
+          placeholder: '¿En qué podemos ayudarte?', opt1: 'Servicios Contables', opt2: 'Servicios Financieros',
+          opt3: 'Automatización de Procesos', opt4: 'Desarrollos a la Medida'
+        },
+        footer: {
+          tagline: 'Soluciones integrales en contabilidad, finanzas, automatización y tecnología para microempresas y pymes en Colombia.',
+          servicesHeading: 'Servicios', companyHeading: 'Empresa', contactHeading: 'Contáctanos',
+          linkAutomatizacion: 'Automatización', country: 'Colombia',
+          copyright: '© 2026 Growing Solutions. Todos los derechos reservados.',
+          bottomTagline: 'Hecho con dedicación para el crecimiento de tu empresa.'
+        },
+        wa: {
+          coShort: 'Colombia', usShort: 'USA',
+          coAria: 'WhatsApp Colombia +57 324 275 4406', usAria: 'WhatsApp USA +1 917 227 2181',
+          ctaMobileCo: 'WhatsApp Colombia +57 324 275 4406', ctaMobileUs: 'WhatsApp USA +1 917 227 2181',
+          footerCo: 'WhatsApp Colombia +57 324 275 4406', footerUs: 'WhatsApp USA +1 917 227 2181',
+          tooltipCo: '¿Necesitas ayuda? Escríbenos', tooltipUs: 'Need help? Message us (USA)'
+        },
+        meta: { title: 'Growing Solutions — Soluciones Integrales para tu Empresa' }
+      },
+      en: {
+        lang: { esLabel: 'Español', enLabel: 'English' },
+        nav: {
+          servicios: 'Services', nosotros: 'About Us', metodologia: 'Methodology', contacto: 'Contact',
+          hamburgerAria: 'Menu'
+        },
+        brand: { tagline: 'Accounting, Financial and AI-Driven Development Services' },
+        hero: {
+          badge: 'Strategic partner for small and medium-sized businesses in Colombia and the United States',
+          titleL1: 'Grow your business', titleL2: 'with complete', titleHighlight: 'solutions',
+          subtitle: 'We help micro, small and medium-sized businesses organize their operations, improve financial control and automate processes — without needing a specialized in-house team.',
+          ctaPrimary: 'Request a Free Consultation', ctaSecondary: 'Discover Our Services', scroll: 'Discover more'
+        },
+        stats: {
+          item1: 'Businesses advised in Colombia', item2: 'Reduction in manual tasks',
+          item3: 'Faster financial reporting', item4: 'Focused on SMEs and microbusinesses'
+        },
+        servicios: {
+          tag: 'Our Services', titleL1: 'Complete solutions to', titleL2: 'grow your business',
+          subtitle: 'Four service lines designed so your business operates professionally, efficiently and at scale.',
+          card1: {
+            title: 'Accounting',
+            desc: 'Keep your numbers in order with a reliable accounting service. We handle full accounting management so you make decisions based on real, up-to-date information.',
+            li1: 'Daily bookkeeping', li2: 'Bank reconciliations', li3: 'Taxes', li4: 'Financial closings', li5: 'Financial statements'
+          },
+          card2: {
+            title: 'Financial Services',
+            desc: 'Get clarity on the health of your business. We help you with financial analysis, cash flow planning, budgets and key indicators for full control of your finances.',
+            li1: 'Cash flow', li2: 'Budgets and projections', li3: 'KPI indicators', li4: 'Financial analysis'
+          },
+          card3: {
+            title: 'Process Automation',
+            desc: 'Eliminate repetitive tasks and save time. We design automated workflows that connect your tools, optimize your operations and free your team for what matters.',
+            li1: 'Workflows', li2: 'Integrations', li3: 'Digital processes', li4: 'Efficiency'
+          },
+          card4: {
+            title: 'Custom Development',
+            desc: 'Custom software solutions for your business. From web applications to internal systems, we build the technology you need without an in-house development team.',
+            li1: 'Web applications', li2: 'Custom systems', li3: 'Dashboards', li4: 'APIs'
+          }
+        },
+        nosotros: {
+          tag: 'Why Choose Us?', titleL1: 'Your strategic partner', titleL2: 'to grow',
+          subtitle: "We're not just providers — we're a team combining financial, accounting and technology expertise to offer you practical solutions and measurable results.",
+          feature1: { title: 'No need for an in-house team', desc: 'Access accountants, financial analysts and developers without hiring internally.' },
+          feature2: { title: 'Built for SMEs in Colombia', desc: 'Services adapted to the reality and budget of the local business market.' },
+          feature3: { title: 'Fast, measurable results', desc: 'Agile implementations with visible impact from the very first weeks.' },
+          feature4: { title: 'Ongoing support', desc: "We don't leave you on your own — we accompany, optimize and scale with you." },
+          visual: {
+            label1: 'Operational Efficiency', sub1: 'average improvement after implementation',
+            label2: 'Hours saved / month', support: '● Active support', status: 'Online'
+          }
+        },
+        metodologia: {
+          tag: 'Our Methodology', titleL1: 'From diagnosis to results', titleL2: 'in four steps',
+          subtitle: 'A clear, transparent process centered on your business — without technical complications.',
+          step1: { title: 'Diagnosis', desc: 'We analyze your current operations, identify improvement opportunities and understand your business goals.' },
+          step2: { title: 'Custom Proposal', desc: 'We design a personalized solution with a clear implementation plan, timeline and defined costs.' },
+          step3: { title: 'Implementation', desc: 'We execute the solution swiftly. You keep operating while we take care of everything.' },
+          step4: { title: 'Support & Evolution', desc: 'We provide ongoing support, optimization and scaling as your business grows.' }
+        },
+        contacto: {
+          tag: 'Schedule Your Consultation', titleL1: 'Ready to', titleHighlight: 'professionalize', titleL2: 'your business?',
+          subtitle: 'Tell us about your business and within 24 hours one of our advisors will get in touch with you. No obligation.'
+        },
+        form: {
+          labelName: 'Name', labelPhone: 'Contact phone', labelEmail: 'Email',
+          labelCompany: 'Company name', labelWebsite: 'Website', labelBudget: 'Budget',
+          labelService: 'Select the Service', labelInfo: 'Additional information',
+          phName: 'Your full name', phPhone: 'e.g. 300 123 4567', phEmail: 'email@yourcompany.com',
+          phCompany: 'Your company name', phInfo: 'Tell us about your business, your main challenges or what kind of help you need...',
+          submit: 'Send request →', note: 'No obligation. We reply within 24h.',
+          errRequired: 'Please complete all required fields (*).',
+          errEmail: 'Please enter a valid email address.',
+          errNotConfigured: 'The form is not configured yet. Please contact the administrator.',
+          sending: 'Sending...',
+          success: 'We received your request! An advisor will contact you within 24 hours.',
+          errNetwork: 'The form could not be sent. Check your connection and try again.'
+        },
+        common: { optional: '(optional)' },
+        budget: {
+          placeholder: 'Select a range', opt1: 'Between $0 and $500,000', opt2: 'Between $500,001 and $1,000,000',
+          opt3: 'Between $1,000,001 and $2,500,000', opt4: 'More than $2,500,000'
+        },
+        service: {
+          placeholder: 'How can we help you?', opt1: 'Accounting Services', opt2: 'Financial Services',
+          opt3: 'Process Automation', opt4: 'Custom Development'
+        },
+        footer: {
+          tagline: 'Comprehensive accounting, finance, automation and technology solutions for microbusinesses and SMEs in Colombia.',
+          servicesHeading: 'Services', companyHeading: 'Company', contactHeading: 'Contact Us',
+          linkAutomatizacion: 'Automation', country: 'Colombia',
+          copyright: '© 2026 Growing Solutions. All rights reserved.',
+          bottomTagline: "Made with dedication for your business's growth."
+        },
+        wa: {
+          coShort: 'Colombia', usShort: 'USA',
+          coAria: 'WhatsApp Colombia +57 324 275 4406', usAria: 'WhatsApp USA +1 917 227 2181',
+          ctaMobileCo: 'WhatsApp Colombia +57 324 275 4406', ctaMobileUs: 'WhatsApp USA +1 917 227 2181',
+          footerCo: 'WhatsApp Colombia +57 324 275 4406', footerUs: 'WhatsApp USA +1 917 227 2181',
+          tooltipCo: 'Need help? Message us (Colombia)', tooltipUs: 'Need help? Message us'
+        },
+        meta: { title: 'Growing Solutions — Complete Solutions for Your Business' }
+      }
+    };
+
+    const LANG_KEY = 'gs_lang';
+    let currentLang = getInitialLang();
+
+    function getInitialLang() {
+      const stored = localStorage.getItem(LANG_KEY);
+      if (stored === 'es' || stored === 'en') return stored;
+      return (navigator.language || '').toLowerCase().startsWith('en') ? 'en' : 'es';
+    }
+
+    function t(key, lang) {
+      lang = lang || currentLang;
+      return key.split('.').reduce((o, k) => (o ? o[k] : undefined), translations[lang]);
+    }
+
+    function setLanguage(lang) {
+      currentLang = (lang === 'en') ? 'en' : 'es';
+      document.documentElement.lang = currentLang;
+      localStorage.setItem(LANG_KEY, currentLang);
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const v = t(el.dataset.i18n);
+        if (v !== undefined) el.textContent = v;
+      });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const v = t(el.dataset.i18nPlaceholder);
+        if (v !== undefined) el.placeholder = v;
+      });
+      document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+        const v = t(el.dataset.i18nAria);
+        if (v !== undefined) {
+          el.setAttribute('aria-label', v);
+          if (el.hasAttribute('title')) el.title = v;
+        }
+      });
+
+      const title = t('meta.title');
+      if (title) document.title = title;
+
+      document.querySelectorAll('.lang-btn').forEach(b => {
+        const active = b.dataset.lang === currentLang;
+        b.classList.toggle('active', active);
+        b.setAttribute('aria-pressed', String(active));
+      });
+    }
+
+    document.querySelectorAll('.lang-btn').forEach(b => {
+      b.addEventListener('click', () => setLanguage(b.dataset.lang));
+    });
+    setLanguage(currentLang);
+
     // Intersection Observer - fade in sections
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((e, i) => {
@@ -2053,33 +2481,43 @@
     const submitBtn = document.getElementById('submitBtn');
     const formStatus = document.getElementById('formStatus');
 
+    // Limita la longitud enviada aunque el atributo maxlength sea manipulado en el navegador
+    const clamp = (value, max) => String(value == null ? '' : value).trim().slice(0, max);
+
     leadForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      const name           = document.getElementById('f-name').value.trim();
-      const phone          = document.getElementById('f-phone').value.trim();
-      const email          = document.getElementById('f-email').value.trim();
-      const company        = document.getElementById('f-company').value.trim();
-      const website        = document.getElementById('f-url').value.trim();
-      const budget         = document.getElementById('f-budget').value;
-      const service        = document.getElementById('f-service').value;
-      const additionalInfo = document.getElementById('f-info').value.trim();
+      // Honeypot: si está relleno es un bot -> no se envía nada, respuesta neutra
+      if (document.getElementById('f-hp').value.trim() !== '') {
+        showStatus('success', t('form.success'));
+        leadForm.reset();
+        return;
+      }
+
+      const name           = clamp(document.getElementById('f-name').value, 80);
+      const phone          = clamp(document.getElementById('f-phone').value, 25);
+      const email          = clamp(document.getElementById('f-email').value, 120);
+      const company        = clamp(document.getElementById('f-company').value, 120);
+      const website        = clamp(document.getElementById('f-url').value, 200);
+      const budget         = clamp(document.getElementById('f-budget').value, 60);
+      const service        = clamp(document.getElementById('f-service').value, 60);
+      const additionalInfo = clamp(document.getElementById('f-info').value, 2000);
 
       if (!name || !email || !budget || !service) {
-        showStatus('error', 'Por favor completa todos los campos requeridos (*).');
+        showStatus('error', t('form.errRequired'));
         return;
       }
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        showStatus('error', 'Por favor ingresa un correo electrónico válido.');
+        showStatus('error', t('form.errEmail'));
         return;
       }
       if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes('REEMPLAZA')) {
-        showStatus('error', 'El formulario aún no está configurado. Contacta al administrador.');
+        showStatus('error', t('form.errNotConfigured'));
         return;
       }
 
       submitBtn.disabled = true;
-      submitBtn.textContent = 'Enviando...';
+      submitBtn.textContent = t('form.sending');
       formStatus.className = 'form-status';
 
       try {
@@ -2093,13 +2531,13 @@
         url.searchParams.set('service',        service);
         url.searchParams.set('additionalInfo', additionalInfo);
         await fetch(url.toString(), { mode: 'no-cors' });
-        showStatus('success', '¡Recibimos tu solicitud! Un asesor se pondrá en contacto contigo en menos de 24 horas.');
+        showStatus('success', t('form.success'));
         leadForm.reset();
       } catch (err) {
-        showStatus('error', 'No se pudo enviar el formulario. Verifica tu conexión e intenta de nuevo.');
+        showStatus('error', t('form.errNetwork'));
       } finally {
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Enviar solicitud →';
+        submitBtn.textContent = t('form.submit');
       }
     });
 
