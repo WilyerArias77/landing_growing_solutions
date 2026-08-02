@@ -1686,7 +1686,7 @@
         <div class="wa-toggle" role="group" aria-label="WhatsApp">
           <a href="https://wa.me/573242754406?text=Hola%2C%20quiero%20información%20sobre%20los%20servicios%20de%20Growing%20Solutions"
             class="btn btn-whatsapp wa-btn" target="_blank" rel="noopener" title="WhatsApp Colombia +57 324 275 4406"
-            data-i18n-aria="wa.coAria">
+            data-i18n-aria="wa.coAria" data-wa="co">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
               <path
                 d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
@@ -1697,7 +1697,7 @@
           </a>
           <a href="https://wa.me/19172272181?text=Hi%2C%20I%27d%20like%20information%20about%20Growing%20Solutions%20services"
             class="btn btn-whatsapp wa-btn" target="_blank" rel="noopener" title="WhatsApp USA +1 917 227 2181"
-            data-i18n-aria="wa.usAria">
+            data-i18n-aria="wa.usAria" data-wa="us">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
               <path
                 d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
@@ -1743,11 +1743,11 @@
     <a href="#metodologia" onclick="closeMobile()" data-i18n="nav.metodologia">Metodología</a>
     <a href="#contacto" onclick="closeMobile()" data-i18n="nav.contacto">Contacto</a>
     <a href="https://wa.me/573242754406?text=Hola%2C%20quiero%20información%20sobre%20los%20servicios%20de%20Growing%20Solutions"
-      class="btn btn-whatsapp" target="_blank" rel="noopener" onclick="closeMobile()">
+      class="btn btn-whatsapp" target="_blank" rel="noopener" onclick="closeMobile()" data-wa="co">
       <span data-i18n="wa.ctaMobileCo">WhatsApp Colombia +57 324 275 4406</span>
     </a>
     <a href="https://wa.me/19172272181?text=Hi%2C%20I%27d%20like%20information%20about%20Growing%20Solutions%20services"
-      class="btn btn-whatsapp" target="_blank" rel="noopener" onclick="closeMobile()">
+      class="btn btn-whatsapp" target="_blank" rel="noopener" onclick="closeMobile()" data-wa="us">
       <span data-i18n="wa.ctaMobileUs">WhatsApp USA +1 917 227 2181</span>
     </a>
   </div>
@@ -2113,8 +2113,8 @@
         <div class="footer-col">
           <h4 data-i18n="footer.contactHeading">Contáctanos</h4>
           <ul>
-            <li><a href="https://wa.me/573242754406?text=Hola%2C%20quiero%20información%20sobre%20los%20servicios%20de%20Growing%20Solutions" target="_blank" rel="noopener" data-i18n="wa.footerCo">WhatsApp Colombia +57 324 275 4406</a></li>
-            <li><a href="https://wa.me/19172272181?text=Hi%2C%20I%27d%20like%20information%20about%20Growing%20Solutions%20services" target="_blank" rel="noopener" data-i18n="wa.footerUs">WhatsApp USA +1 917 227 2181</a></li>
+            <li data-wa="co"><a href="https://wa.me/573242754406?text=Hola%2C%20quiero%20información%20sobre%20los%20servicios%20de%20Growing%20Solutions" target="_blank" rel="noopener" data-i18n="wa.footerCo">WhatsApp Colombia +57 324 275 4406</a></li>
+            <li data-wa="us"><a href="https://wa.me/19172272181?text=Hi%2C%20I%27d%20like%20information%20about%20Growing%20Solutions%20services" target="_blank" rel="noopener" data-i18n="wa.footerUs">WhatsApp USA +1 917 227 2181</a></li>
             <li><a href="mailto:wilyer.arias@growingsolutions.online">wilyer.arias@growingsolutions.online</a></li>
             <li><a href="#" data-i18n="footer.country">Colombia</a></li>
           </ul>
@@ -2130,7 +2130,7 @@
   <!-- ── WHATSAPP FLOATING BUTTONS ── -->
   <div class="whatsapp-float-group">
     <a href="https://wa.me/573242754406?text=Hola%2C%20quiero%20información%20sobre%20los%20servicios%20de%20Growing%20Solutions"
-      class="whatsapp-float" target="_blank" rel="noopener" aria-label="WhatsApp Colombia +57 324 275 4406" data-i18n-aria="wa.coAria">
+      class="whatsapp-float" target="_blank" rel="noopener" aria-label="WhatsApp Colombia +57 324 275 4406" data-i18n-aria="wa.coAria" data-wa="co">
       <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path
           d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
@@ -2140,7 +2140,7 @@
       <span class="wa-tooltip" data-i18n="wa.tooltipCo">WhatsApp Colombia</span>
     </a>
     <a href="https://wa.me/19172272181?text=Hi%2C%20I%27d%20like%20information%20about%20Growing%20Solutions%20services"
-      class="whatsapp-float" target="_blank" rel="noopener" aria-label="WhatsApp USA +1 917 227 2181" data-i18n-aria="wa.usAria">
+      class="whatsapp-float" target="_blank" rel="noopener" aria-label="WhatsApp USA +1 917 227 2181" data-i18n-aria="wa.usAria" data-wa="us">
       <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path
           d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
@@ -2397,6 +2397,14 @@
           el.setAttribute('aria-label', v);
           if (el.hasAttribute('title')) el.title = v;
         }
+      });
+
+      // Un solo número de WhatsApp por idioma: ES → Colombia, EN → USA
+      const waCountry = (currentLang === 'en') ? 'us' : 'co';
+      document.querySelectorAll('[data-wa]').forEach(el => {
+        const show = el.dataset.wa === waCountry;
+        el.style.display = show ? '' : 'none';
+        el.setAttribute('aria-hidden', String(!show));
       });
 
       const title = t('meta.title');
