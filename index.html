@@ -2030,13 +2030,8 @@
 
             <div class="form-group">
               <label for="f-budget"><span data-i18n="form.labelBudget">Presupuesto</span><span class="required">*</span></label>
-              <select id="f-budget" name="budget">
-                <option value="" disabled selected data-i18n="budget.placeholder">Selecciona un rango</option>
-                <option value="Entre 0 y 500.000" data-i18n="budget.opt1">Entre $0 y $500.000</option>
-                <option value="Entre 500.001 y 1.000.000" data-i18n="budget.opt2">Entre $500.001 y $1.000.000</option>
-                <option value="Entre 1.000.001 y 2.500.000" data-i18n="budget.opt3">Entre $1.000.001 y $2.500.000</option>
-                <option value="Más de 2.500.000" data-i18n="budget.opt4">Más de $2.500.000</option>
-              </select>
+              <input type="text" id="f-budget" name="budget" placeholder="Escribe tu presupuesto"
+                maxlength="60" autocomplete="off" data-i18n-placeholder="form.phBudget" />
             </div>
 
 
@@ -2224,7 +2219,8 @@
           labelCompany: 'Nombre de la empresa', labelWebsite: 'Página web', labelBudget: 'Presupuesto',
           labelService: 'Seleccione el Servicio', labelInfo: 'Información adicional',
           phName: 'Tu nombre completo', phPhone: 'Ej: 300 123 4567', phEmail: 'correo@tuempresa.com',
-          phCompany: 'Nombre de tu empresa', phInfo: 'Cuéntanos sobre tu negocio, tus principales retos o qué tipo de ayuda buscas...',
+          phCompany: 'Nombre de tu empresa', phBudget: 'Escribe tu presupuesto',
+          phInfo: 'Cuéntanos sobre tu negocio, tus principales retos o qué tipo de ayuda buscas...',
           submit: 'Enviar solicitud →', note: 'Sin compromiso. Te respondemos en menos de 24h.',
           errRequired: 'Por favor completa todos los campos requeridos (*).',
           errEmail: 'Por favor ingresa un correo electrónico válido.',
@@ -2234,10 +2230,6 @@
           errNetwork: 'No se pudo enviar el formulario. Verifica tu conexión e intenta de nuevo.'
         },
         common: { optional: '(opcional)' },
-        budget: {
-          placeholder: 'Selecciona un rango', opt1: 'Entre $0 y $500.000', opt2: 'Entre $500.001 y $1.000.000',
-          opt3: 'Entre $1.000.001 y $2.500.000', opt4: 'Más de $2.500.000'
-        },
         service: {
           placeholder: '¿En qué podemos ayudarte?', opt1: 'Servicios Contables', opt2: 'Servicios Financieros',
           opt3: 'Automatización de Procesos', opt4: 'Desarrollos a la Medida'
@@ -2328,7 +2320,8 @@
           labelCompany: 'Company name', labelWebsite: 'Website', labelBudget: 'Budget',
           labelService: 'Select the Service', labelInfo: 'Additional information',
           phName: 'Your full name', phPhone: 'e.g. 300 123 4567', phEmail: 'email@yourcompany.com',
-          phCompany: 'Your company name', phInfo: 'Tell us about your business, your main challenges or what kind of help you need...',
+          phCompany: 'Your company name', phBudget: 'Enter your budget',
+          phInfo: 'Tell us about your business, your main challenges or what kind of help you need...',
           submit: 'Send request →', note: 'No obligation. We reply within 24h.',
           errRequired: 'Please complete all required fields (*).',
           errEmail: 'Please enter a valid email address.',
@@ -2338,10 +2331,6 @@
           errNetwork: 'The form could not be sent. Check your connection and try again.'
         },
         common: { optional: '(optional)' },
-        budget: {
-          placeholder: 'Select a range', opt1: 'Between $0 and $500,000', opt2: 'Between $500,001 and $1,000,000',
-          opt3: 'Between $1,000,001 and $2,500,000', opt4: 'More than $2,500,000'
-        },
         service: {
           placeholder: 'How can we help you?', opt1: 'Accounting Services', opt2: 'Financial Services',
           opt3: 'Process Automation', opt4: 'Custom Development'
