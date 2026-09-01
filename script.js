@@ -372,12 +372,19 @@ leadForm.addEventListener('submit', async (e) => {
   formStatus.className = 'form-status';
 
   try {
-    await fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ name, phone, email, company, website, budget, service, additionalInfo })
-    });
+    // GET con query params: el despliegue del Apps Script solo implementa doGet(e).
+    // Un POST devuelve 405 y, con mode:'no-cors', el fetch resuelve igual -> el lead se
+    // perderia en silencio mostrando "exito". Ver commit 61a36e0.
+    const url = new URL(APPS_SCRIPT_URL);
+    url.searchParams.set('name',           name);
+    url.searchParams.set('phone',          phone);
+    url.searchParams.set('email',          email);
+    url.searchParams.set('company',        company);
+    url.searchParams.set('website',        website);
+    url.searchParams.set('budget',         budget);
+    url.searchParams.set('service',        service);
+    url.searchParams.set('additionalInfo', additionalInfo);
+    await fetch(url.toString(), { mode: 'no-cors' });
     showStatus('success', t('form.success'));
     leadForm.reset();
   } catch (err) {
