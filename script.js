@@ -326,7 +326,7 @@ document.querySelectorAll('.mobile-nav-link').forEach(link => {
 });
 
 // ── LEAD FORM ──
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzBaVuQfB1RV5BTWi_wxx8whpoJIgWcg-EaI-yeGryjVsZRxaxe0BMt7KdbMjt5Hn8emA/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyLkceuF5j8RKz2LCPCHN55CE-4n569jEMXyBswVEYAjI1H4_BM1p5DlMQBwrsV0l55AQ/exec';
 
 const leadForm = document.getElementById('leadForm');
 const submitBtn = document.getElementById('submitBtn');
