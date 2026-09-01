@@ -3,6 +3,28 @@ node_modules/
 .netlify
 .env
 .env.*
+!.env.example
 *.log
 .DS_Store
 Thumbs.db
+
+# Credenciales / secretos (prevencion: este proyecto integra Google Apps Script + Sheets)
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+credentials.json
+client_secret*.json
+service-account*.json
+*serviceaccount*.json
+.clasprc.json
+secrets.*
+
+# Artefactos locales que no deben publicarse en el sitio estatico
+*.zip
+*.bak
+*.orig
+*~
+.vscode/
+.idea/
