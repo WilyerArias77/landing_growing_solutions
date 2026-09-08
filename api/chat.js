@@ -35,7 +35,14 @@ export default async function handler(req, res) {
       // Nombres parecidos, para cazar erratas y espacios sobrantes
       variablesVistas: Object.keys(process.env)
         .filter(k => /OPENAI|APPS_SCRIPT/i.test(k))
-        .map(k => JSON.stringify(k))
+        .map(k => JSON.stringify(k)),
+      // Que PROYECTO de Vercel sirve el dominio. Dos proyectos distintos pueden
+      // estar conectados al mismo repo y construir el mismo commit, asi que el
+      // commit por si solo no identifica el proyecto.
+      proyecto: process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL || 'desconocido',
+      // Cuantas variables propias hay (las del sistema empiezan por VERCEL_/AWS_)
+      variablesPropias: Object.keys(process.env)
+        .filter(k => !/^(VERCEL_|AWS_|LAMBDA_|_|NODE_|PATH$|HOME$|LANG$|TZ$)/.test(k)).length
     });
   }
 
