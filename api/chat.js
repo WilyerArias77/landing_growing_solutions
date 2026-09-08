@@ -39,7 +39,9 @@ export default async function handler(req, res) {
       // Que PROYECTO de Vercel sirve el dominio. Dos proyectos distintos pueden
       // estar conectados al mismo repo y construir el mismo commit, asi que el
       // commit por si solo no identifica el proyecto.
-      proyecto: process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL || 'desconocido',
+      proyecto: process.env.VERCEL_PROJECT_PRODUCTION_URL || 'desconocido',
+      // VERCEL_URL lleva el nombre del proyecto en el host del despliegue
+      despliegue: process.env.VERCEL_URL || 'desconocido',
       // Cuantas variables propias hay (las del sistema empiezan por VERCEL_/AWS_)
       variablesPropias: Object.keys(process.env)
         .filter(k => !/^(VERCEL_|AWS_|LAMBDA_|_|NODE_|PATH$|HOME$|LANG$|TZ$)/.test(k)).length
