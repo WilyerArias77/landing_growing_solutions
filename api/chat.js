@@ -20,12 +20,22 @@ const MAX_TOOL_ROUNDS = 2;
 
 export default async function handler(req, res) {
   // Diagnostico: dice si falta configuracion, sin exponer ningun secreto.
+  // Solo se publican NOMBRES de variables y booleanos, nunca valores.
   if (req.method === 'GET') {
+    const clave = process.env.OPENAI_API_KEY;
     return res.status(200).json({
       ok: true,
       model: MODEL,
-      apiKeyConfigurada: Boolean(process.env.OPENAI_API_KEY),
-      promptsCargados: promptsLoaded()
+      apiKeyConfigurada: Boolean(clave),
+      apiKeyLongitud: clave ? clave.length : 0,
+      promptsCargados: promptsLoaded(),
+      // Que commit y que entorno estan sirviendo de verdad
+      commit: (process.env.VERCEL_GIT_COMMIT_SHA || 'desconocido').slice(0, 7),
+      entorno: process.env.VERCEL_ENV || 'desconocido',
+      // Nombres parecidos, para cazar erratas y espacios sobrantes
+      variablesVistas: Object.keys(process.env)
+        .filter(k => /OPENAI|APPS_SCRIPT/i.test(k))
+        .map(k => JSON.stringify(k))
     });
   }
 
