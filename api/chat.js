@@ -19,32 +19,14 @@ const TEMPERATURE = Number(process.env.OPENAI_TEMPERATURE || 0.4);
 const MAX_TOOL_ROUNDS = 2;
 
 export default async function handler(req, res) {
-  // Diagnostico: dice si falta configuracion, sin exponer ningun secreto.
-  // Solo se publican NOMBRES de variables y booleanos, nunca valores.
+  // Diagnostico minimo: solo dice si falta configuracion. Nunca expone valores,
+  // ni nombres de variables, ni en que despliegue corre.
   if (req.method === 'GET') {
-    const clave = process.env.OPENAI_API_KEY;
     return res.status(200).json({
       ok: true,
       model: MODEL,
-      apiKeyConfigurada: Boolean(clave),
-      apiKeyLongitud: clave ? clave.length : 0,
-      promptsCargados: promptsLoaded(),
-      // Que commit y que entorno estan sirviendo de verdad
-      commit: (process.env.VERCEL_GIT_COMMIT_SHA || 'desconocido').slice(0, 7),
-      entorno: process.env.VERCEL_ENV || 'desconocido',
-      // Nombres parecidos, para cazar erratas y espacios sobrantes
-      variablesVistas: Object.keys(process.env)
-        .filter(k => /OPENAI|APPS_SCRIPT/i.test(k))
-        .map(k => JSON.stringify(k)),
-      // Que PROYECTO de Vercel sirve el dominio. Dos proyectos distintos pueden
-      // estar conectados al mismo repo y construir el mismo commit, asi que el
-      // commit por si solo no identifica el proyecto.
-      proyecto: process.env.VERCEL_PROJECT_PRODUCTION_URL || 'desconocido',
-      // VERCEL_URL lleva el nombre del proyecto en el host del despliegue
-      despliegue: process.env.VERCEL_URL || 'desconocido',
-      // Cuantas variables propias hay (las del sistema empiezan por VERCEL_/AWS_)
-      variablesPropias: Object.keys(process.env)
-        .filter(k => !/^(VERCEL_|AWS_|LAMBDA_|_|NODE_|PATH$|HOME$|LANG$|TZ$)/.test(k)).length
+      apiKeyConfigurada: Boolean(process.env.OPENAI_API_KEY),
+      promptsCargados: promptsLoaded()
     });
   }
 
