@@ -69,9 +69,13 @@
     return n;
   }
 
-  var INLINE = /\*\*([^*]+)\*\*|(https?:\/\/[^\s<>()]+)|([\w.+-]+@[\w-]+\.[\w.-]+)/g;
+  // Orden de la alternancia: negrita, URL, correo, telefono internacional.
+  // La URL va antes que el telefono para que los digitos de un enlace no se
+  // confundan con un numero.
+  var INLINE = /\*\*([^*]+)\*\*|(https?:\/\/[^\s<>()]+)|([\w.+-]+@[\w-]+\.[\w.-]+)|(\+\d[\d\s.-]{7,}\d)/g;
 
-  // Render seguro: negritas, enlaces y correos. Todo lo demas es texto plano.
+  // Render seguro: negritas, enlaces, correos y telefonos. Todo lo demas es
+  // texto plano.
   function renderInline(parent, line) {
     var last = 0, m;
     INLINE.lastIndex = 0;
@@ -85,10 +89,18 @@
         a.target = '_blank';
         a.rel = 'noopener noreferrer';
         parent.appendChild(a);
-      } else {
+      } else if (m[3]) {
         var mail = make('a', null, m[3]);
         mail.href = 'mailto:' + m[3];
         parent.appendChild(mail);
+      } else {
+        // Telefono: se muestra legible pero abre WhatsApp, que es el canal real
+        // que ofrecemos. Solo digitos en el href.
+        var tel = make('a', null, m[4]);
+        tel.href = 'https://wa.me/' + m[4].replace(/\D/g, '');
+        tel.target = '_blank';
+        tel.rel = 'noopener noreferrer';
+        parent.appendChild(tel);
       }
       last = m.index + m[0].length;
     }
