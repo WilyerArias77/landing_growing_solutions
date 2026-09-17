@@ -1,8 +1,8 @@
 # GS Bot — manual del chatbot
 
 Asistente de soporte de la landing de Growing Solutions. Responde sobre los
-servicios, deriva a WhatsApp y captura leads en la misma Google Sheet del
-formulario.
+servicios, deriva a WhatsApp y captura leads en la misma tabla de Supabase
+que el formulario.
 
 ---
 
@@ -90,9 +90,12 @@ src/
 │   └── scripts.md
 ├── api/
 │   ├── chat.js           ← función serverless: la única que ve la API key
+│   ├── lead.js           ← endpoint del formulario (POST /api/lead)
+│   ├── keepalive.js      ← cron que evita que Supabase pause el proyecto
 │   └── _lib/
 │       ├── prompt.js     ← arma el system prompt desde los .md
-│       ├── lead.js       ← manda el lead a la Google Sheet + define la herramienta
+│       ├── lead.js       ← lead del chat + define la herramienta
+│       ├── leads-store.js← validación y guardado en Supabase (form y chat)
 │       └── guard.js      ← rate limit, origen permitido, límites de tamaño
 ├── chat.js               ← widget del navegador
 ├── chat.css              ← estilos del widget
@@ -137,7 +140,9 @@ directamente, el widget aparece pero `/api/chat` no existe y el chat responde
 | `OPENAI_MODEL` | `gpt-4.1-mini` | Cambiar de modelo sin tocar código |
 | `OPENAI_MAX_TOKENS` | `600` | Techo de longitud de cada respuesta |
 | `OPENAI_TEMPERATURE` | `0.4` | 0 = literal, 1 = más suelto |
-| `APPS_SCRIPT_URL` | la del formulario | Solo si cambia el despliegue del Apps Script |
+| `SUPABASE_URL` | — | **Obligatoria** para guardar leads |
+| `SUPABASE_SECRET_KEY` | — | **Obligatoria, secreta.** Clave `sb_secret_...` |
+| `CRON_SECRET` | — | Protege `/api/keepalive` |
 
 Cambiar cualquiera exige **redeploy** en Vercel.
 
@@ -146,20 +151,21 @@ Cambiar cualquiera exige **redeploy** en Vercel.
 ## 6. Los leads del chat
 
 Cuando el visitante acepta que lo contacten, el bot llama a la herramienta
-`registrar_lead` y el servidor manda los datos al **mismo Apps Script del
-formulario**, así que caen en la **misma Google Sheet**.
+`registrar_lead` y el servidor guarda los datos en la tabla **`public.leads`** de
+Supabase (proyecto `growing-solutions-leads`), la misma del formulario.
 
-Se distinguen porque la columna de información adicional empieza con `[Chatbot]`.
+Se distinguen por la columna `source`: `form` o `chatbot`. La columna `status`
+(`nuevo`, `contactado`, `en_propuesta`, `ganado`, `perdido`, `spam`) sirve para
+llevar el pipeline comercial desde el Table Editor de Supabase.
 
-Tres cosas que conviene recordar (ya nos costaron una sesión entera):
+Seguridad:
 
-1. El Apps Script solo implementa `doGet`. El envío **debe** ser GET con query
-   params. Un POST devuelve 200 con una página HTML de error de Google.
-2. Cada nuevo despliegue del Apps Script genera una **URL `/exec` distinta**. Si
-   la cambias, actualiza `APPS_SCRIPT_URL` (o la constante en `api/_lib/lead.js`)
-   **y** la de `script.js`.
-3. Diagnostica siempre con `curl` antes de tocar el front:
-   `{"status":"ok"}` = el script corre; una página HTML = el método está mal.
+1. La tabla tiene RLS activo y **ninguna política**: la clave pública no puede
+   leer ni escribir. Solo el servidor escribe, con `SUPABASE_SECRET_KEY`.
+2. Se validan longitudes en el servidor **y** con `CHECK` en la base.
+3. No se guarda la IP, solo un HMAC para limitar a 5 leads por hora por conexión.
+4. Los valores que empiezan con `=`, `+`, `-`, `@` se prefijan con `'` para que un
+   CSV exportado no ejecute fórmulas.
 
 ---
 
@@ -190,7 +196,7 @@ Tres cosas que conviene recordar (ya nos costaron una sesión entera):
 | "Hay muchas consultas" | Rate limit: 25 mensajes / 10 min por IP |
 | "No pude conectarme" | Error de red, o saldo agotado en OpenAI (revisa los logs) |
 | El bot inventa datos | Falta el dato en `knowledge.md`, o el `system.md` perdió la regla |
-| El lead no llega a la Sheet | Cambió la URL `/exec` del Apps Script (ver §6) |
+| El lead no llega a Supabase | Falta `SUPABASE_SECRET_KEY`, o el proyecto se pausó (revisa logs de `/api/lead`) |
 
 Los logs con el detalle real están en Vercel → proyecto → **Logs**, filtrando por
 `/api/chat`. El visitante nunca ve el motivo del error, solo el mensaje amable

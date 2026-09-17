@@ -28,9 +28,11 @@ export function originAllowed(req) {
   try {
     const { hostname } = new URL(raw);
     if (ALLOWED_HOSTS.includes(hostname)) return true;
-    // Previews de Vercel: solo las de ESTE proyecto. Permitir cualquier
-    // *.vercel.app dejaria que un sitio ajeno gastara nuestra cuota de OpenAI.
-    return hostname.endsWith('.vercel.app') && hostname.startsWith('growingsolutions');
+    // Previews de Vercel: solo las de ESTE proyecto y ESTE equipo (la cuenta que
+    // sirve el dominio). Cualquiera puede crear un proyecto "growingsolutions" en
+    // su cuenta, asi que el prefijo solo no basta.
+    return hostname.startsWith('growingsolutions') &&
+      hostname.endsWith('-growingsolutionsemail-2897s-projects.vercel.app');
   } catch {
     return false;
   }
@@ -56,6 +58,9 @@ export function rateLimited(ip) {
 }
 
 export function clientIp(req) {
+  // Vercel fija x-real-ip; x-forwarded-for queda como respaldo (dev local).
+  const real = req.headers['x-real-ip'];
+  if (real) return String(real).trim();
   const fwd = req.headers['x-forwarded-for'];
   return (Array.isArray(fwd) ? fwd[0] : String(fwd || '')).split(',')[0].trim() || 'unknown';
 }

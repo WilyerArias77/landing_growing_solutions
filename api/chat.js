@@ -131,7 +131,7 @@ export default async function handler(req, res) {
         let resultado;
         if (call.function.name === 'registrar_lead' && !leadRegistrado) {
           const args = safeParse(call.function.arguments) || {};
-          const r = await submitLead(args);
+          const r = await submitLead(args, { ip: clientIp(req), lang });
           if (r.ok) {
             leadRegistrado = true;
             send({ type: 'lead', ok: true });

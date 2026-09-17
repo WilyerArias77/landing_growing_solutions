@@ -78,7 +78,8 @@ const translations = {
       errNotConfigured: 'El formulario aún no está configurado. Contacta al administrador.',
       sending: 'Enviando...',
       success: '¡Recibimos tu solicitud! Un asesor se pondrá en contacto contigo en menos de 24 horas.',
-      errNetwork: 'No se pudo enviar el formulario. Verifica tu conexión e intenta de nuevo.'
+      errNetwork: 'No se pudo enviar el formulario. Verifica tu conexión e intenta de nuevo.',
+      errRateLimit: 'Recibimos varias solicitudes desde tu conexión. Intenta más tarde o escríbenos por WhatsApp.'
     },
     common: { optional: '(opcional)' },
     service: {
@@ -179,7 +180,8 @@ const translations = {
       errNotConfigured: 'The form is not configured yet. Please contact the administrator.',
       sending: 'Sending...',
       success: 'We received your request! An advisor will contact you within 24 hours.',
-      errNetwork: 'The form could not be sent. Check your connection and try again.'
+      errNetwork: 'The form could not be sent. Check your connection and try again.',
+      errRateLimit: 'We received several requests from your connection. Please try later or message us on WhatsApp.'
     },
     common: { optional: '(optional)' },
     service: {
@@ -326,7 +328,9 @@ document.querySelectorAll('.mobile-nav-link').forEach(link => {
 });
 
 // ── LEAD FORM ──
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyLkceuF5j8RKz2LCPCHN55CE-4n569jEMXyBswVEYAjI1H4_BM1p5DlMQBwrsV0l55AQ/exec';
+// El servidor valida y guarda en Supabase (api/lead.js). Mismo origen: la clave
+// de la base nunca pasa por el navegador.
+const LEAD_ENDPOINT = '/api/lead';
 
 const leadForm = document.getElementById('leadForm');
 const submitBtn = document.getElementById('submitBtn');
@@ -362,31 +366,34 @@ leadForm.addEventListener('submit', async (e) => {
     showStatus('error', t('form.errEmail'));
     return;
   }
-  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes('REEMPLAZA')) {
-    showStatus('error', t('form.errNotConfigured'));
-    return;
-  }
 
   submitBtn.disabled = true;
   submitBtn.textContent = t('form.sending');
   formStatus.className = 'form-status';
 
   try {
-    // GET con query params: el despliegue del Apps Script solo implementa doGet(e).
-    // Un POST devuelve 405 y, con mode:'no-cors', el fetch resuelve igual -> el lead se
-    // perderia en silencio mostrando "exito". Ver commit 61a36e0.
-    const url = new URL(APPS_SCRIPT_URL);
-    url.searchParams.set('name',           name);
-    url.searchParams.set('phone',          phone);
-    url.searchParams.set('email',          email);
-    url.searchParams.set('company',        company);
-    url.searchParams.set('website',        website);
-    url.searchParams.set('budget',         budget);
-    url.searchParams.set('service',        service);
-    url.searchParams.set('additionalInfo', additionalInfo);
-    await fetch(url.toString(), { mode: 'no-cors' });
-    showStatus('success', t('form.success'));
-    leadForm.reset();
+    const res = await fetch(LEAD_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name, phone, email, company, website, budget, service, additionalInfo,
+        lang: currentLang,
+        companyFax: document.getElementById('f-hp').value
+      })
+    });
+    // Respuesta real del servidor: solo es exito si el lead quedo guardado.
+    if (res.status === 201) {
+      showStatus('success', t('form.success'));
+      leadForm.reset();
+    } else if (res.status === 400) {
+      showStatus('error', t('form.errRequired'));
+    } else if (res.status === 429) {
+      showStatus('error', t('form.errRateLimit'));
+    } else if (res.status === 503) {
+      showStatus('error', t('form.errNotConfigured'));
+    } else {
+      showStatus('error', t('form.errNetwork'));
+    }
   } catch (err) {
     showStatus('error', t('form.errNetwork'));
   } finally {

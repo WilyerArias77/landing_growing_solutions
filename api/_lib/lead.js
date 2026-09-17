@@ -1,70 +1,30 @@
-// Envia al sistema de leads los datos que el visitante entrega dentro del chat.
-// Reutiliza el MISMO Apps Script del formulario de la landing, asi que los leads
-// del chatbot caen en la misma Google Sheet sin tocar el script de Google.
-//
-// IMPORTANTE: el despliegue del Apps Script solo implementa doGet(e). Un POST
-// devuelve 200 con una pagina HTML de error de Google, no un 405. Por eso aqui
-// se usa GET con query params y se verifica el cuerpo de la respuesta.
+// Guarda en Supabase los datos que el visitante entrega dentro del chat.
+// Usa la misma tabla y la misma validacion que el formulario (leads-store.js),
+// marcando source='chatbot' para distinguir el origen.
 
-const DEFAULT_URL = 'https://script.google.com/macros/s/AKfycbyLkceuF5j8RKz2LCPCHN55CE-4n569jEMXyBswVEYAjI1H4_BM1p5DlMQBwrsV0l55AQ/exec';
-
-const MAX = {
-  name: 80, phone: 25, email: 120, company: 120,
-  website: 200, budget: 60, service: 60, additionalInfo: 2000
-};
-
-const clamp = (v, max) => String(v ?? '').trim().slice(0, max);
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+import { buildLead, configured, hashIp, insertLead, ipOverLimit } from './leads-store.js';
 
 /**
+ * @param {object} data argumentos de la herramienta registrar_lead
+ * @param {{ip?: string, lang?: string}} ctx
  * @returns {Promise<{ok: boolean, reason?: string}>}
  */
-export async function submitLead(data) {
-  const url = process.env.APPS_SCRIPT_URL || DEFAULT_URL;
+export async function submitLead(data, ctx = {}) {
+  if (!configured()) return { ok: false, reason: 'no_configurado' };
+  const ipHash = hashIp(ctx.ip);
+  const lead = buildLead({
+    name: data.nombre,
+    email: data.email,
+    phone: data.telefono,
+    company: data.empresa,
+    budget: data.presupuesto || 'Por definir',
+    service: data.servicio || 'Sin especificar',
+    additionalInfo: data.necesidad
+  }, { source: 'chatbot', lang: ctx.lang, ipHash });
 
-  const name = clamp(data.nombre, MAX.name);
-  const email = clamp(data.email, MAX.email);
-
-  if (!name) return { ok: false, reason: 'falta_nombre' };
-  if (!EMAIL_RE.test(email)) return { ok: false, reason: 'email_invalido' };
-
-  // Deja rastro del origen en la hoja para distinguirlo del formulario.
-  const notes = clamp(data.necesidad, MAX.additionalInfo - 12);
-  const target = new URL(url);
-  target.searchParams.set('name', name);
-  target.searchParams.set('email', email);
-  target.searchParams.set('phone', clamp(data.telefono, MAX.phone));
-  target.searchParams.set('company', clamp(data.empresa, MAX.company));
-  target.searchParams.set('website', '');
-  target.searchParams.set('budget', clamp(data.presupuesto, MAX.budget) || 'Por definir');
-  target.searchParams.set('service', clamp(data.servicio, MAX.service) || 'Sin especificar');
-  target.searchParams.set('additionalInfo', `[Chatbot] ${notes}`.trim());
-
-  const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), 10_000);
-
-  try {
-    const res = await fetch(target.toString(), {
-      method: 'GET',
-      redirect: 'follow',
-      signal: ctrl.signal
-    });
-    const body = (await res.text()).slice(0, 500);
-
-    // El script responde {"status":"ok"}. Una pagina HTML significa que el
-    // despliegue cambio de URL o que el metodo no es el correcto.
-    if (!res.ok || /<html/i.test(body)) {
-      console.error('[lead] Respuesta inesperada de Apps Script:', res.status, body.slice(0, 200));
-      return { ok: false, reason: 'apps_script_error' };
-    }
-    return { ok: true };
-  } catch (err) {
-    console.error('[lead] Fallo al enviar el lead:', err?.name || err);
-    return { ok: false, reason: 'network' };
-  } finally {
-    clearTimeout(timer);
-  }
+  if (!lead.ok) return lead;
+  if (await ipOverLimit(ipHash)) return { ok: false, reason: 'rate_limit' };
+  return insertLead(lead.row);
 }
 
 /** Definicion de la herramienta que se expone al modelo. */
