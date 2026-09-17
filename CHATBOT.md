@@ -96,6 +96,7 @@ src/
 │       ├── prompt.js     ← arma el system prompt desde los .md
 │       ├── lead.js       ← lead del chat + define la herramienta
 │       ├── leads-store.js← validación y guardado en Supabase (form y chat)
+│       ├── notify.js     ← avisa por correo (Resend) cada lead nuevo
 │       └── guard.js      ← rate limit, origen permitido, límites de tamaño
 ├── chat.js               ← widget del navegador
 ├── chat.css              ← estilos del widget
@@ -143,6 +144,9 @@ directamente, el widget aparece pero `/api/chat` no existe y el chat responde
 | `SUPABASE_URL` | — | **Obligatoria** para guardar leads |
 | `SUPABASE_SECRET_KEY` | — | **Obligatoria, secreta.** Clave `sb_secret_...` |
 | `CRON_SECRET` | — | Protege `/api/keepalive` |
+| `RESEND_API_KEY` | — | **Secreta.** Aviso por correo de cada lead nuevo |
+| `LEAD_NOTIFY_TO` | — | Destinatario(s) del aviso, separados por coma |
+| `LEAD_NOTIFY_FROM` | `no-reply@growingsolutions.online` | Remitente; el dominio debe estar verificado en Resend |
 
 Cambiar cualquiera exige **redeploy** en Vercel.
 
@@ -166,6 +170,9 @@ Seguridad:
 3. No se guarda la IP, solo un HMAC para limitar a 5 leads por hora por conexión.
 4. Los valores que empiezan con `=`, `+`, `-`, `@` se prefijan con `'` para que un
    CSV exportado no ejecute fórmulas.
+5. Tras guardar, `notify.js` manda un correo con el lead. Es best-effort: si
+   Resend falla, el lead ya está en la base y el visitante igual ve éxito. El
+   contenido va escapado, así que un nombre con HTML no se ejecuta en el correo.
 
 ---
 

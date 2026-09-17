@@ -8,6 +8,7 @@
 // Se habla con la API REST (PostgREST) con fetch para no sumar dependencias.
 
 import { createHmac } from 'node:crypto';
+import { notifyLead } from './notify.js';
 
 const MAX = {
   name: 80, phone: 25, email: 120, company: 120,
@@ -142,6 +143,8 @@ export async function insertLead(row) {
       console.error('[leads] Supabase respondio', res.status, code || '');
       return { ok: false, reason: 'db_error' };
     }
+    // El lead ya esta a salvo en la base; el aviso es best-effort y nunca lanza.
+    await notifyLead(row);
     return { ok: true };
   } catch (err) {
     console.error('[leads] Fallo al guardar el lead:', err?.name || 'error');
