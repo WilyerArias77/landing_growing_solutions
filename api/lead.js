@@ -47,8 +47,16 @@ export default async function handler(req, res) {
     return res.status(201).json({ ok: true });
   }
 
+  // Ley 1581 de 2012: sin autorizacion expresa no se guarda el lead. La casilla
+  // del formulario ya lo impide, pero el servidor no confia en el navegador.
+  if (body.consent !== true) {
+    return res.status(422).json({ error: 'falta_consentimiento' });
+  }
+
   const ipHash = hashIp(ip);
-  const lead = buildLead(body, { source: 'form', lang: body.lang, ipHash });
+  const lead = buildLead(body, {
+    source: 'form', lang: body.lang, ipHash, consentVersion: 'form-v1'
+  });
   if (!lead.ok) {
     return res.status(400).json({ error: lead.reason });
   }

@@ -62,8 +62,12 @@ export function hashIp(ip) {
 /**
  * Normaliza y valida un lead. Devuelve { ok, row } o { ok:false, reason }.
  * `input` usa los nombres del formulario (name, email, phone, ...).
+ *
+ * `consentVersion` deja constancia de la autorizacion de tratamiento de datos
+ * (Ley 1581 de 2012). La marca de tiempo la pone el servidor: el navegador solo
+ * dice que la persona acepto, nunca cuando.
  */
-export function buildLead(input, { source, lang, ipHash }) {
+export function buildLead(input, { source, lang, ipHash, consentVersion }) {
   const name = safeText(input.name, MAX.name);
   const email = clamp(input.email, MAX.email).toLowerCase();
   const phone = clamp(input.phone, MAX.phone);
@@ -89,7 +93,9 @@ export function buildLead(input, { source, lang, ipHash }) {
       budget: safeText(input.budget, MAX.budget) || null,
       service: service || null,
       additional_info: safeText(input.additionalInfo, MAX.additionalInfo) || null,
-      ip_hash: ipHash
+      ip_hash: ipHash,
+      consent_at: consentVersion ? new Date().toISOString() : null,
+      consent_version: consentVersion || null
     }
   };
 }

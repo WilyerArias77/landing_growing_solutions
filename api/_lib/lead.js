@@ -20,7 +20,7 @@ export async function submitLead(data, ctx = {}) {
     budget: data.presupuesto || 'Por definir',
     service: data.servicio || 'Sin especificar',
     additionalInfo: data.necesidad
-  }, { source: 'chatbot', lang: ctx.lang, ipHash });
+  }, { source: 'chatbot', lang: ctx.lang, ipHash, consentVersion: 'chat-v1' });
 
   if (!lead.ok) return lead;
   if (await ipOverLimit(ipHash)) return { ok: false, reason: 'rate_limit' };

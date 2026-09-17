@@ -79,7 +79,10 @@ const translations = {
       sending: 'Enviando...',
       success: '¡Recibimos tu solicitud! Un asesor se pondrá en contacto contigo en menos de 24 horas.',
       errNetwork: 'No se pudo enviar el formulario. Verifica tu conexión e intenta de nuevo.',
-      errRateLimit: 'Recibimos varias solicitudes desde tu conexión. Intenta más tarde o escríbenos por WhatsApp.'
+      errRateLimit: 'Recibimos varias solicitudes desde tu conexión. Intenta más tarde o escríbenos por WhatsApp.',
+      consent: 'Autorizo el tratamiento de mis datos personales para que Growing Solutions me contacte y me envíe información sobre sus servicios, conforme a la',
+      consentLink: 'Política de Tratamiento de Datos',
+      errConsent: 'Para enviar tu solicitud debes autorizar el tratamiento de tus datos personales.'
     },
     common: { optional: '(opcional)' },
     service: {
@@ -91,7 +94,8 @@ const translations = {
       servicesHeading: 'Servicios', companyHeading: 'Empresa', contactHeading: 'Contáctanos',
       linkAutomatizacion: 'Automatización', country: 'Colombia',
       copyright: '© 2026 Growing Solutions. Todos los derechos reservados.',
-      bottomTagline: 'Hecho con dedicación para el crecimiento de tu empresa.'
+      bottomTagline: 'Hecho con dedicación para el crecimiento de tu empresa.',
+      privacy: 'Política de Tratamiento de Datos'
     },
     wa: {
       coShort: 'Colombia', usShort: 'USA',
@@ -181,7 +185,10 @@ const translations = {
       sending: 'Sending...',
       success: 'We received your request! An advisor will contact you within 24 hours.',
       errNetwork: 'The form could not be sent. Check your connection and try again.',
-      errRateLimit: 'We received several requests from your connection. Please try later or message us on WhatsApp.'
+      errRateLimit: 'We received several requests from your connection. Please try later or message us on WhatsApp.',
+      consent: 'I authorise Growing Solutions to process my personal data in order to contact me and send me information about its services, in accordance with the',
+      consentLink: 'Personal Data Processing Policy',
+      errConsent: 'To send your request you must authorise the processing of your personal data.'
     },
     common: { optional: '(optional)' },
     service: {
@@ -193,7 +200,8 @@ const translations = {
       servicesHeading: 'Services', companyHeading: 'Company', contactHeading: 'Contact Us',
       linkAutomatizacion: 'Automation', country: 'Colombia',
       copyright: '© 2026 Growing Solutions. All rights reserved.',
-      bottomTagline: "Made with dedication for your business's growth."
+      bottomTagline: "Made with dedication for your business's growth.",
+      privacy: 'Personal Data Processing Policy'
     },
     wa: {
       coShort: 'Colombia', usShort: 'USA',
@@ -366,6 +374,11 @@ leadForm.addEventListener('submit', async (e) => {
     showStatus('error', t('form.errEmail'));
     return;
   }
+  // Ley 1581 de 2012: sin autorización expresa no se envía nada.
+  if (!document.getElementById('f-consent').checked) {
+    showStatus('error', t('form.errConsent'));
+    return;
+  }
 
   submitBtn.disabled = true;
   submitBtn.textContent = t('form.sending');
@@ -378,6 +391,7 @@ leadForm.addEventListener('submit', async (e) => {
       body: JSON.stringify({
         name, phone, email, company, website, budget, service, additionalInfo,
         lang: currentLang,
+        consent: true,
         companyFax: document.getElementById('f-hp').value
       })
     });
@@ -387,6 +401,8 @@ leadForm.addEventListener('submit', async (e) => {
       leadForm.reset();
     } else if (res.status === 400) {
       showStatus('error', t('form.errRequired'));
+    } else if (res.status === 422) {
+      showStatus('error', t('form.errConsent'));
     } else if (res.status === 429) {
       showStatus('error', t('form.errRateLimit'));
     } else if (res.status === 503) {

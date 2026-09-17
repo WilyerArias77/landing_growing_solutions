@@ -1317,6 +1317,35 @@
       transform: none;
     }
 
+    .consent-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .consent-row input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      flex-shrink: 0;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .consent-row label {
+      font-size: 0.85rem;
+      line-height: 1.55;
+      /* Aviso legal: contraste suficiente (WCAG AA), no el gris tenue de las notas */
+      color: #475569;
+      cursor: pointer;
+    }
+
+    .consent-row a {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
     .hp-field {
       position: absolute;
       left: -9999px;
@@ -2069,6 +2098,15 @@
 
           </div>
 
+          <!-- Autorización de tratamiento de datos (Ley 1581 de 2012) -->
+          <div class="consent-row">
+            <input type="checkbox" id="f-consent" name="consent" />
+            <label for="f-consent">
+              <span data-i18n="form.consent">Autorizo el tratamiento de mis datos personales para que Growing Solutions me contacte y me envíe información sobre sus servicios, conforme a la</span>
+              <a href="/politica-datos" target="_blank" rel="noopener" data-i18n="form.consentLink">Política de Tratamiento de Datos</a>.<span class="required">*</span>
+            </label>
+          </div>
+
           <div class="form-submit-row">
             <button type="submit" class="btn-submit" id="submitBtn" data-i18n="form.submit">Enviar solicitud →</button>
             <span class="form-note" data-i18n="form.note">Sin compromiso. Te respondemos en menos de 24h.</span>
@@ -2120,6 +2158,7 @@
             <li data-wa="us"><a href="https://wa.me/19172272181?text=Hi%2C%20I%27d%20like%20information%20about%20Growing%20Solutions%20services" target="_blank" rel="noopener" data-i18n="wa.footerUs">WhatsApp USA +1 917 227 2181</a></li>
             <li><a href="mailto:wilyer.arias@growingsolutions.online">wilyer.arias@growingsolutions.online</a></li>
             <li><a href="#" data-i18n="footer.country">Colombia</a></li>
+            <li><a href="/politica-datos" data-i18n="footer.privacy">Política de Tratamiento de Datos</a></li>
           </ul>
         </div>
       </div>
