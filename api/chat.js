@@ -26,7 +26,11 @@ export default async function handler(req, res) {
       ok: true,
       model: MODEL,
       apiKeyConfigurada: Boolean(process.env.OPENAI_API_KEY),
-      promptsCargados: promptsLoaded()
+      promptsCargados: promptsLoaded(),
+      // Solo booleanos: nunca valores ni nombres de cuentas.
+      leadsConfigurados: Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SECRET_KEY),
+      avisoCorreoConfigurado: Boolean(process.env.RESEND_API_KEY && process.env.LEAD_NOTIFY_TO),
+      avisoRemitentePropio: String(process.env.LEAD_NOTIFY_FROM || '').includes('growingsolutions.online')
     });
   }
 

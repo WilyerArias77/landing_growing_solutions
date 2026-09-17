@@ -6,7 +6,7 @@
   "description": "Landing de Growing Solutions + chatbot de soporte (OpenAI) sobre funciones serverless de Vercel",
   "scripts": {
     "dev": "vercel dev",
-    "check": "node --check api/chat.js && node --check api/_lib/prompt.js && node --check api/_lib/lead.js && node --check api/_lib/leads-store.js && node --check api/_lib/notify.js && node --check api/lead.js && node --check api/keepalive.js && node --check chat.js && node --check script.js"
+    "check": "node --check api/chat.js && node --check api/_lib/prompt.js && node --check api/_lib/lead.js && node --check api/_lib/leads-store.js && node --check api/_lib/notify.js && node --check api/lead.js && node --check api/keepalive.js && node --check api/notify-test.js && node --check chat.js && node --check script.js"
   },
   "dependencies": {
     "openai": "^4.104.0"
