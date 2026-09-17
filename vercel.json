@@ -49,10 +49,6 @@
     "api/keepalive.js": {
       "maxDuration": 10,
       "memory": 128
-    },
-    "api/notify-test.js": {
-      "maxDuration": 10,
-      "memory": 128
     }
   },
   "redirects": [

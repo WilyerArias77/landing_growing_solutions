@@ -146,7 +146,7 @@ directamente, el widget aparece pero `/api/chat` no existe y el chat responde
 | `CRON_SECRET` | — | Protege `/api/keepalive` |
 | `RESEND_API_KEY` | — | **Secreta.** Aviso por correo de cada lead nuevo |
 | `LEAD_NOTIFY_TO` | — | Destinatario(s) del aviso, separados por coma |
-| `LEAD_NOTIFY_FROM` | `no-reply@growingsolutions.online` | Remitente; el dominio debe estar verificado en Resend |
+| `LEAD_NOTIFY_FROM` | `no-reply@notify.growingsolutions.online` | Remitente; el subdominio debe estar verificado en Resend |
 
 Cambiar cualquiera exige **redeploy** en Vercel.
 
@@ -170,6 +170,23 @@ Seguridad:
 3. No se guarda la IP, solo un HMAC para limitar a 5 leads por hora por conexión.
 4. Los valores que empiezan con `=`, `+`, `-`, `@` se prefijan con `'` para que un
    CSV exportado no ejecute fórmulas.
+### El subdominio de envío
+
+Los avisos salen de **`notify.growingsolutions.online`**, no del dominio raíz. El
+DNS lo administra **Hostinger**, que tenía un `CNAME` propio en `send` apuntando a
+`send.forge.rmta.net`, y un CNAME impide cualquier otro registro en ese nombre: el
+MX y el SPF de Resend se guardaban en el panel pero no existían hacia afuera. Por
+eso se usa un subdominio aparte y hubo que borrar el `CNAME` de `send.notify`.
+
+Si algún día deja de verificar, comprobar los tres registros contra el servidor
+autoritativo, no contra Google DNS, que cachea la respuesta vieja:
+
+```bash
+nslookup -type=TXT resend._domainkey.notify.growingsolutions.online cosmos.dns-parking.com
+nslookup -type=MX  send.notify.growingsolutions.online cosmos.dns-parking.com
+nslookup -type=TXT send.notify.growingsolutions.online cosmos.dns-parking.com
+```
+
 5. Tras guardar, `notify.js` manda un correo con el lead. Es best-effort: si
    Resend falla, el lead ya está en la base y el visitante igual ve éxito. El
    contenido va escapado, así que un nombre con HTML no se ejecuta en el correo.
