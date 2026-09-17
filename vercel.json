@@ -39,16 +39,13 @@
   "functions": {
     "api/chat.js": {
       "includeFiles": "prompts/**",
-      "maxDuration": 30,
-      "memory": 512
+      "maxDuration": 30
     },
     "api/lead.js": {
-      "maxDuration": 10,
-      "memory": 256
+      "maxDuration": 10
     },
     "api/keepalive.js": {
-      "maxDuration": 10,
-      "memory": 128
+      "maxDuration": 10
     }
   },
   "redirects": [
