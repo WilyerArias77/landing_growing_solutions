@@ -367,7 +367,7 @@ if (barFill) barObserver.observe(barFill);
 
 // Generate upward particles
 const particlesContainer = document.getElementById('particles');
-for (let i = 0; i < 16; i++) {
+for (let i = 0; particlesContainer && i < 16; i++) {
   const p = document.createElement('div');
   p.className = 'particle';
   const h = 40 + Math.random() * 80;
@@ -385,18 +385,19 @@ for (let i = 0; i < 16; i++) {
 // Nav scroll effect
 const navbar = document.getElementById('navbar');
 window.addEventListener('scroll', () => {
-  navbar.classList.toggle('scrolled', window.scrollY > 40);
+  if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 40);
 });
 
 // Mobile hamburger menu
 const hamburger = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobileMenu');
-hamburger.addEventListener('click', () => {
+if (hamburger) hamburger.addEventListener('click', () => {
   hamburger.classList.toggle('active');
   mobileMenu.classList.toggle('active');
   document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
 });
 function closeMobile() {
+  if (!hamburger) return;
   hamburger.classList.remove('active');
   mobileMenu.classList.remove('active');
   document.body.style.overflow = '';
@@ -451,7 +452,7 @@ const formStatus = document.getElementById('formStatus');
 // Limita la longitud enviada aunque el atributo maxlength sea manipulado en el navegador
 const clamp = (value, max) => String(value == null ? '' : value).trim().slice(0, max);
 
-leadForm.addEventListener('submit', async (e) => {
+if (leadForm) leadForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   // Honeypot: si está relleno es un bot -> no se envía nada, respuesta neutra
