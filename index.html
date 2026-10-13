@@ -660,6 +660,29 @@
       margin-bottom: 8px;
     }
 
+    .benefit-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .benefit-icon {
+      width: 40px;
+      height: 40px;
+      padding: 9px;
+      border-radius: 50%;
+      background: rgba(13, 60, 255, 0.10);
+      color: var(--primary);
+    }
+
+    .benefit-label {
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.4;
+    }
+
     .stat-label {
       font-size: 0.85rem;
       color: var(--muted);
@@ -865,6 +888,21 @@
       align-items: center;
     }
 
+    .value-grid.no-visual {
+      grid-template-columns: 1fr;
+    }
+
+    .value-grid.no-visual .value-features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px 48px;
+    }
+
+    .value-visual[hidden],
+    .visual-card[hidden] {
+      display: none;
+    }
+
     .value-content h2 {
       font-size: clamp(1.8rem, 3vw, 2.6rem);
       font-weight: 800;
@@ -961,14 +999,6 @@
       background: linear-gradient(135deg, var(--surface) 0%, var(--surface-2) 100%);
     }
 
-    .vc-label {
-      font-size: 0.72rem;
-      color: var(--muted);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
-
     .vc-metric {
       font-size: 3rem;
       font-weight: 800;
@@ -1016,12 +1046,6 @@
       min-width: 160px;
     }
 
-    .vc-float2 {
-      bottom: 40px;
-      right: -10px;
-      min-width: 155px;
-    }
-
     .vc-float-value {
       font-size: 1.4rem;
       font-weight: 700;
@@ -1032,10 +1056,6 @@
     .vc-float-label {
       font-size: 0.72rem;
       color: var(--muted);
-    }
-
-    .dot-green {
-      color: var(--primary-light);
     }
 
     /* ── METHODOLOGY ── */
@@ -1619,6 +1639,10 @@
     }
 
     @media (max-width: 600px) {
+      .value-grid.no-visual .value-features {
+        grid-template-columns: 1fr;
+      }
+
       .steps-grid {
         grid-template-columns: 1fr;
       }
@@ -1836,22 +1860,23 @@
   <!-- ── STATS ── -->
   <section class="stats-bar">
     <div class="container">
-      <div class="stats-grid fade-in">
-        <div class="stat-item">
-          <div class="stat-number grad-text">+25</div>
-          <div class="stat-label" data-i18n="stats.item1">Empresas asesoradas en Colombia y Estados Unidos</div>
+      <!-- Beneficios sin número. Si content/stats.js tiene cifras verificadas, script.js las pone aquí. -->
+      <div class="stats-grid fade-in" id="statsGrid">
+        <div class="stat-item benefit-item">
+          <svg class="benefit-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+          <div class="benefit-label" data-i18n="stats.benefit1">Atención directa con un contador senior</div>
         </div>
-        <div class="stat-item">
-          <div class="stat-number grad-text">80%</div>
-          <div class="stat-label" data-i18n="stats.item2">Reducción en tareas manuales</div>
+        <div class="stat-item benefit-item">
+          <svg class="benefit-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+          <div class="benefit-label" data-i18n="stats.benefit2">Respuesta en menos de 24 horas</div>
         </div>
-        <div class="stat-item">
-          <div class="stat-number grad-text">3×</div>
-          <div class="stat-label" data-i18n="stats.item3">Más rápido en reportes financieros</div>
+        <div class="stat-item benefit-item">
+          <svg class="benefit-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+          <div class="benefit-label" data-i18n="stats.benefit3">Servicio en español e inglés</div>
         </div>
-        <div class="stat-item">
-          <div class="stat-number grad-text">100%</div>
-          <div class="stat-label" data-i18n="stats.item4">Enfocados en pymes y microempresas</div>
+        <div class="stat-item benefit-item">
+          <svg class="benefit-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+          <div class="benefit-label" data-i18n="stats.benefit4">Colombia y Estados Unidos</div>
         </div>
       </div>
     </div>
@@ -1928,7 +1953,7 @@
   <!-- ── PROPUESTA DE VALOR ── -->
   <section class="section value-section" id="nosotros">
     <div class="container">
-      <div class="value-grid">
+      <div class="value-grid no-visual" id="valueGrid">
         <div class="value-content fade-in">
           <div class="section-tag" data-i18n="nosotros.tag">¿Por Qué Elegirnos?</div>
           <h2><span data-i18n="nosotros.titleL1">Tu aliado estratégico</span><br /><span style="color: var(--primary);" data-i18n="nosotros.titleL2">para crecer</span></h2>
@@ -1966,22 +1991,18 @@
           </div>
         </div>
 
-        <div class="value-visual fade-in">
+        <!-- Solo aparece si content/stats.js tiene cifras verificadas para 'visual' -->
+        <div class="value-visual fade-in" id="valueVisual" hidden>
           <div class="visual-card vc-main">
-            <div class="vc-label" data-i18n="nosotros.visual.label1">Eficiencia Operativa</div>
-            <div class="vc-metric grad-text">+85%</div>
-            <div class="vc-sub" data-i18n="nosotros.visual.sub1">mejora promedio después de la implementación</div>
+            <div class="vc-metric grad-text" id="vcMainValue"></div>
+            <div class="vc-sub" id="vcMainLabel"></div>
             <div class="vc-bar">
               <div class="vc-bar-fill" id="barFill"></div>
             </div>
           </div>
-          <div class="visual-card vc-float">
-            <div class="vc-float-label" data-i18n="nosotros.visual.label2">Horas ahorradas / mes</div>
-            <div class="vc-float-value grad-text">120h</div>
-          </div>
-          <div class="visual-card vc-float2">
-            <div class="vc-float-label dot-green" data-i18n="nosotros.visual.support">● Soporte activo</div>
-            <div class="vc-float-value" data-i18n="nosotros.visual.status">En línea</div>
+          <div class="visual-card vc-float" id="vcFloat" hidden>
+            <div class="vc-float-label" id="vcFloatLabel"></div>
+            <div class="vc-float-value grad-text" id="vcFloatValue"></div>
           </div>
         </div>
       </div>
@@ -2194,6 +2215,7 @@
     </a>
   </div>
 
+  <script src="content/stats.js"></script>
   <script src="script.js"></script>
   <!-- GS Bot: el widget se construye por JS y habla solo con /api/chat -->
   <script src="chat.js"></script>

@@ -14,8 +14,8 @@ const translations = {
       ctaPrimary: 'Agenda una llamada gratis de 20 minutos', ctaSecondary: 'Conoce Nuestros Servicios', scroll: 'Descubre más'
     },
     stats: {
-      item1: 'Empresas asesoradas en Colombia y Estados Unidos', item2: 'Reducción en tareas manuales',
-      item3: 'Más rápido en reportes financieros', item4: 'Enfocados en pymes y microempresas'
+      benefit1: 'Atención directa con un contador senior', benefit2: 'Respuesta en menos de 24 horas',
+      benefit3: 'Servicio en español e inglés', benefit4: 'Colombia y Estados Unidos'
     },
     servicios: {
       tag: 'Nuestros Servicios', titleL1: 'Soluciones integrales para', titleL2: 'hacer crecer tu negocio',
@@ -47,11 +47,7 @@ const translations = {
       feature1: { title: 'Sin necesidad de equipo interno', desc: 'Accede a contadores, analistas financieros y desarrolladores sin contratar internamente.' },
       feature2: { title: 'Pensado para pymes en Colombia', desc: 'Servicios adaptados a la realidad y presupuesto del mercado empresarial local.' },
       feature3: { title: 'Resultados rápidos y medibles', desc: 'Implementaciones ágiles con impacto visible desde las primeras semanas.' },
-      feature4: { title: 'Acompañamiento continuo', desc: 'No te dejamos solo — te acompañamos, optimizamos y escalamos contigo.' },
-      visual: {
-        label1: 'Eficiencia Operativa', sub1: 'mejora promedio después de la implementación',
-        label2: 'Horas ahorradas / mes', support: '● Soporte activo', status: 'En línea'
-      }
+      feature4: { title: 'Acompañamiento continuo', desc: 'No te dejamos solo — te acompañamos, optimizamos y escalamos contigo.' }
     },
     metodologia: {
       tag: 'Nuestra Metodología', titleL1: 'Del diagnóstico a los resultados', titleL2: 'en cuatro pasos',
@@ -120,8 +116,8 @@ const translations = {
       ctaPrimary: 'Book a free 20‑minute call', ctaSecondary: 'Discover Our Services', scroll: 'Discover more'
     },
     stats: {
-      item1: 'Businesses advised in Colombia', item2: 'Reduction in manual tasks',
-      item3: 'Faster financial reporting', item4: 'Focused on SMEs and microbusinesses'
+      benefit1: 'Direct access to a senior accountant', benefit2: 'Response in under 24 hours',
+      benefit3: 'Service in Spanish and English', benefit4: 'Colombia and the United States'
     },
     servicios: {
       tag: 'Our Services', titleL1: 'Complete solutions to', titleL2: 'grow your business',
@@ -153,11 +149,7 @@ const translations = {
       feature1: { title: 'No need for an in-house team', desc: 'Access accountants, financial analysts and developers without hiring internally.' },
       feature2: { title: 'Built for SMEs in Colombia', desc: 'Services adapted to the reality and budget of the local business market.' },
       feature3: { title: 'Fast, measurable results', desc: 'Agile implementations with visible impact from the very first weeks.' },
-      feature4: { title: 'Ongoing support', desc: "We don't leave you on your own — we accompany, optimize and scale with you." },
-      visual: {
-        label1: 'Operational Efficiency', sub1: 'average improvement after implementation',
-        label2: 'Hours saved / month', support: '● Active support', status: 'Online'
-      }
+      feature4: { title: 'Ongoing support', desc: "We don't leave you on your own — we accompany, optimize and scale with you." }
     },
     metodologia: {
       tag: 'Our Methodology', titleL1: 'From diagnosis to results', titleL2: 'in four steps',
@@ -270,7 +262,53 @@ function setLanguage(lang) {
 document.querySelectorAll('.lang-btn').forEach(b => {
   b.addEventListener('click', () => setLanguage(b.dataset.lang));
 });
+renderStats();
 setLanguage(currentLang);
+
+// ── CIFRAS ──
+// Vienen de content/stats.js. Solo se publican las verificadas; sin ninguna,
+// la barra conserva los beneficios del HTML y el bloque visual sigue oculto.
+// Las etiquetas se registran en `translations` para que cambien con el idioma.
+function renderStats() {
+  const verified = (window.GS_STATS || []).filter(s => s && s.verificada === true && s.valor);
+  verified.forEach(s => {
+    translations.es.statsData = translations.es.statsData || {};
+    translations.en.statsData = translations.en.statsData || {};
+    translations.es.statsData[s.id] = s.etiqueta.es;
+    translations.en.statsData[s.id] = s.etiqueta.en;
+  });
+
+  const bar = verified.filter(s => s.ubicacion === 'barra').slice(0, 4);
+  const grid = document.getElementById('statsGrid');
+  if (grid && bar.length) {
+    grid.replaceChildren(...bar.map(s => {
+      const item = document.createElement('div');
+      item.className = 'stat-item';
+      const num = document.createElement('div');
+      num.className = 'stat-number grad-text';
+      num.textContent = s.valor;
+      const label = document.createElement('div');
+      label.className = 'stat-label';
+      label.dataset.i18n = 'statsData.' + s.id;
+      item.append(num, label);
+      return item;
+    }));
+  }
+
+  const main = verified.find(s => s.ubicacion === 'visual');
+  const float = verified.find(s => s.ubicacion === 'visual-flotante');
+  if (main) {
+    document.getElementById('vcMainValue').textContent = main.valor;
+    document.getElementById('vcMainLabel').dataset.i18n = 'statsData.' + main.id;
+    if (float) {
+      document.getElementById('vcFloatValue').textContent = float.valor;
+      document.getElementById('vcFloatLabel').dataset.i18n = 'statsData.' + float.id;
+      document.getElementById('vcFloat').hidden = false;
+    }
+    document.getElementById('valueVisual').hidden = false;
+    document.getElementById('valueGrid').classList.remove('no-visual');
+  }
+}
 
 // Intersection Observer - fade in sections
 const observer = new IntersectionObserver((entries) => {
