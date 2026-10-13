@@ -189,6 +189,11 @@ const translations = {
         diagDesc: '8 preguntas para saber qué procesos conviene automatizar primero.'
       }
     },
+    blog: {
+      tag: 'Blog', title: 'Ideas para ordenar las finanzas de tu pyme',
+      intro: 'Contabilidad, impuestos, flujo de caja y automatización explicados en lenguaje claro.',
+      soon: 'Muy pronto publicaremos aquí nuestros primeros artículos.', back: 'Todos los artículos'
+    },
     recursos: {
       tag: 'Recursos gratis', title: 'Herramientas gratis para ordenar las finanzas de tu pyme',
       intro: 'Déjanos tu nombre y correo y descarga la plantilla al instante. También te la enviamos por correo.',
@@ -398,6 +403,11 @@ const translations = {
         diag: 'Take the assessment',
         diagDesc: '8 questions to find out which processes to automate first.'
       }
+    },
+    blog: {
+      tag: 'Blog', title: 'Ideas to get your small business finances in order',
+      intro: 'Accounting, taxes, cash flow and automation explained in plain language.',
+      soon: 'Our first articles are coming here soon.', back: 'All articles'
     },
     recursos: {
       tag: 'Free resources', title: 'Free tools to get your small business finances in order',

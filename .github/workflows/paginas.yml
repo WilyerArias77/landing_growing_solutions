@@ -1,0 +1,43 @@
+# Regenera las páginas estáticas cuando cambia el contenido.
+#
+# Pensado para el agente de n8n: basta con que haga commit de un .md en
+# content/blog/ (o que alguien edite content/*.js desde GitHub). Esta acción
+# corre el generador y hace commit de los HTML; ese commit despliega en Vercel.
+name: Generar páginas
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'content/**'
+      - 'tools/generar-paginas.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: generar-paginas
+  cancel-in-progress: false
+
+jobs:
+  generar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Generar
+        run: node tools/generar-paginas.mjs
+      - name: Commit si hay cambios
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A -- '*.html' sitemap.xml
+          if git diff --cached --quiet; then
+            echo "Sin cambios en las páginas."
+          else
+            git commit -m "Regenerar páginas desde el contenido"
+            git push
+          fi

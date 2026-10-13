@@ -83,6 +83,16 @@
       "permanent": false
     },
     {
+      "source": "/.github/:path*",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/content/blog/:path*",
+      "destination": "/",
+      "permanent": false
+    },
+    {
       "source": "/CHATBOT.md",
       "destination": "/",
       "permanent": false

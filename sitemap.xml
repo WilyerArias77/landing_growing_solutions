@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generado por tools/generar-paginas.mjs. No editar a mano. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.growingsolutions.online/</loc>
@@ -34,6 +35,6 @@
   </url>
   <url>
     <loc>https://www.growingsolutions.online/politica-datos</loc>
-    <lastmod>2026-09-17</lastmod>
+    <lastmod>2026-10-13</lastmod>
   </url>
 </urlset>

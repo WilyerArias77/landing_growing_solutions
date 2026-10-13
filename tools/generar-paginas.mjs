@@ -7,7 +7,7 @@
 // WhatsApp y el aviso de cookies se copian de index.html, así que cualquier
 // cambio ahí llega a todas las páginas al volver a generarlas.
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, unlinkSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
@@ -489,3 +489,255 @@ ${cookies}
 }
 renderTool('calculadora', 'calc');
 renderTool('diagnostico', 'diag');
+
+// ── /blog ──
+// Artículos en content/blog/*.md con un encabezado entre líneas '---':
+//   titulo, descripcion, fecha (AAAA-MM-DD), idioma (es|en), autor, borrador (true|false)
+// El nombre del archivo es la URL: content/blog/cierre-mensual.md → /blog/cierre-mensual
+// Los archivos que empiezan por '_' (plantillas) y los borradores no se publican.
+const BLOG_DIR = join(ROOT, 'content', 'blog');
+
+function parseFrontmatter(src) {
+  const m = src.replace(/^﻿/, '').match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
+  if (!m) return null;
+  const meta = {};
+  for (const line of m[1].split(/\r?\n/)) {
+    const kv = line.match(/^([a-zA-Z_]+)\s*:\s*(.*)$/);
+    if (kv) meta[kv[1].toLowerCase()] = kv[2].trim().replace(/^["']|["']$/g, '');
+  }
+  return { meta, body: m[2] };
+}
+
+/** Enlaces: solo https://, http:// o rutas del propio sitio. */
+function safeHref(url) {
+  const u = String(url).trim();
+  return /^(https?:\/\/|\/)/i.test(u) && !/^\/\//.test(u) ? u : null;
+}
+
+/** Negrita, cursiva, código y enlaces sobre texto YA escapado. */
+function inline(text) {
+  return esc(text)
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/(^|[^*])\*([^*\s][^*]*)\*/g, '$1<em>$2</em>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (all, label, url) => {
+      const href = safeHref(url.replace(/&amp;/g, '&'));
+      if (!href) return label;
+      const ext = /^https?:/i.test(href);
+      return `<a href="${esc(href)}"${ext ? ' target="_blank" rel="noopener noreferrer"' : ''}>${label}</a>`;
+    });
+}
+
+/**
+ * Markdown mínimo y seguro: ## y ### títulos, párrafos, listas (- y 1.),
+ * citas (>), negrita, cursiva, código en línea y enlaces. Sin HTML crudo:
+ * todo se escapa antes de dar formato.
+ */
+function markdown(md) {
+  const out = [];
+  let list = null;
+  let para = [];
+  const flushPara = () => { if (para.length) { out.push(`<p>${inline(para.join(' '))}</p>`); para = []; } };
+  const flushList = () => { if (list) { out.push(`<${list.tag}>${list.items.map((i) => `<li>${inline(i)}</li>`).join('')}</${list.tag}>`); list = null; } };
+  for (const raw of md.split(/\r?\n/)) {
+    const line = raw.trim();
+    let m;
+    if (!line) { flushPara(); flushList(); continue; }
+    if ((m = line.match(/^(#{2,3})\s+(.+)$/))) {
+      flushPara(); flushList();
+      out.push(`<h${m[1].length}>${inline(m[2])}</h${m[1].length}>`);
+    } else if ((m = line.match(/^[-*]\s+(.+)$/)) || (m = line.match(/^\d+[.)]\s+(.+)$/))) {
+      flushPara();
+      const tag = /^\d/.test(line) ? 'ol' : 'ul';
+      if (!list || list.tag !== tag) { flushList(); list = { tag, items: [] }; }
+      list.items.push(m[1]);
+    } else if ((m = line.match(/^>\s?(.*)$/))) {
+      flushPara(); flushList();
+      out.push(`<blockquote>${inline(m[1])}</blockquote>`);
+    } else {
+      flushList();
+      para.push(line);
+    }
+  }
+  flushPara(); flushList();
+  return out.join('\n          ');
+}
+
+function loadPosts() {
+  if (!existsSync(BLOG_DIR)) return [];
+  return readdirSync(BLOG_DIR)
+    .filter((f) => f.endsWith('.md') && !f.startsWith('_'))
+    .map((f) => {
+      const parsed = parseFrontmatter(readFileSync(join(BLOG_DIR, f), 'utf8'));
+      if (!parsed) { console.warn('  (sin encabezado, se omite)', f); return null; }
+      const { meta, body } = parsed;
+      const slug = f.replace(/\.md$/, '');
+      if (!/^[a-z0-9-]+$/.test(slug)) { console.warn('  (nombre no válido: solo a-z, 0-9 y guiones)', f); return null; }
+      if (!meta.titulo || !/^\d{4}-\d{2}-\d{2}$/.test(meta.fecha || '')) { console.warn('  (falta titulo o fecha AAAA-MM-DD)', f); return null; }
+      return { slug, body, titulo: meta.titulo, descripcion: meta.descripcion || '', fecha: meta.fecha,
+        idioma: meta.idioma === 'en' ? 'en' : 'es', autor: meta.autor || 'Wilyer Arias', borrador: meta.borrador === 'true' };
+    })
+    .filter((p) => p && !p.borrador)
+    .sort((a, b) => b.fecha.localeCompare(a.fecha));
+}
+
+function fechaLarga(iso, lang) {
+  const [y, m, d] = iso.split('-').map(Number);
+  return new Date(Date.UTC(y, m - 1, d)).toLocaleDateString(lang === 'en' ? 'en-US' : 'es-CO', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+}
+
+function pageShell({ lang, title, desc, url, indexable, extraHead = '', page, main, scripts = '' }) {
+  const other = lang === 'es' ? 'en' : 'es';
+  const ogImage = existsSync(join(ROOT, 'og-image.png'))
+    ? `\n  <meta property="og:image" content="${SITE}/og-image.png" />\n  <meta name="twitter:image" content="${SITE}/og-image.png" />` : '';
+  return `<!DOCTYPE html>
+<!-- Generado por tools/generar-paginas.mjs desde content/blog. No editar a mano. -->
+<html lang="${lang}">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>${esc(title)}</title>
+  <meta name="description" content="${esc(desc)}" />${indexable ? `
+  <link rel="canonical" href="${url}" />` : `
+  <meta name="robots" content="noindex" />`}
+  <meta property="og:type" content="${page === 'blog-post' ? 'article' : 'website'}" />
+  <meta property="og:site_name" content="Growing Solutions" />
+  <meta property="og:title" content="${esc(title)}" />
+  <meta property="og:description" content="${esc(desc)}" />
+  <meta property="og:url" content="${url}" />
+  <meta name="twitter:card" content="summary_large_image" />${ogImage}${extraHead}
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/chat.css" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+
+<body data-page="${page}" data-default-lang="${lang}">
+
+${nav}
+
+${main}
+
+${footer}
+
+${floating}
+
+${cookies}
+
+  <script src="/script.js"></script>
+  <script src="/analytics.js"></script>${scripts}
+  <script src="/chat.js"></script>
+</body>
+
+</html>
+`;
+}
+
+function renderBlog() {
+  const posts = loadPosts();
+  mkdirSync(join(ROOT, 'blog'), { recursive: true });
+  // Artículos que ya no existen o pasaron a borrador: se borra su HTML
+  for (const f of readdirSync(join(ROOT, 'blog'))) {
+    if (f.endsWith('.html') && !posts.some((p) => `${p.slug}.html` === f)) unlinkSync(join(ROOT, 'blog', f));
+  }
+
+  for (const p of posts) {
+    const url = `${SITE}/blog/${p.slug}`;
+    const ld = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: p.titulo,
+      description: p.descripcion,
+      datePublished: p.fecha,
+      inLanguage: p.idioma,
+      url,
+      author: { '@type': 'Person', name: p.autor, url: `${SITE}/#nosotros` },
+      publisher: { '@type': 'Organization', name: 'Growing Solutions', logo: { '@type': 'ImageObject', url: `${SITE}/logo.png` } }
+    }, null, 2).replace(/</g, '\\u003c');
+    const main = `  <main class="service-page">
+    <article class="sp-hero blog-post">
+      <div class="container sp-narrow">
+        <a href="/blog" class="sp-back">← <span data-i18n="blog.back">Todos los artículos</span></a>
+        <p class="blog-meta"><time datetime="${p.fecha}">${esc(fechaLarga(p.fecha, p.idioma))}</time> · ${esc(p.autor)}</p>
+        <h1>${esc(p.titulo)}</h1>
+        ${p.descripcion ? `<p class="sp-intro">${esc(p.descripcion)}</p>` : ''}
+        <div class="blog-body">
+          ${markdown(p.body)}
+        </div>
+        <aside class="blog-cta">
+          <h2 data-i18n="pagina.ctaTitle">¿Hablamos de tu caso?</h2>
+          <p data-i18n="pagina.ctaText">En una llamada gratis de 20 minutos revisamos tu situación y te decimos por dónde empezar. Sin compromiso.</p>
+          ${actions({})}
+        </aside>
+      </div>
+    </article>
+  </main>`;
+    const html = pageShell({
+      lang: p.idioma, title: `${p.titulo} | Growing Solutions`, desc: p.descripcion || p.titulo, url, indexable: true, page: 'blog-post', main,
+      extraHead: `\n  <meta property="article:published_time" content="${p.fecha}" />\n  <script type="application/ld+json">\n${ld}\n  </script>`
+    });
+    writeFileSync(join(ROOT, 'blog', `${p.slug}.html`), localize(html, p.idioma, {}).replace(/\r?\n/g, '\n'));
+    console.log('generada', `blog/${p.slug}.html`);
+  }
+
+  const items = posts.map((p) => `
+          <a class="blog-card" href="/blog/${p.slug}">
+            <span class="blog-meta"><time datetime="${p.fecha}">${esc(fechaLarga(p.fecha, p.idioma))}</time></span>
+            <strong>${esc(p.titulo)}</strong>
+            ${p.descripcion ? `<span>${esc(p.descripcion)}</span>` : ''}
+          </a>`).join('');
+  const main = `  <main class="service-page">
+    <section class="sp-hero">
+      <div class="container">
+        <div class="section-tag" data-i18n="blog.tag">Blog</div>
+        <h1 data-i18n="blog.title">Ideas para ordenar las finanzas de tu pyme</h1>
+        <p class="sp-intro" data-i18n="blog.intro">Contabilidad, impuestos, flujo de caja y automatización explicados en lenguaje claro.</p>
+        ${posts.length ? `<div class="blog-list">${items}
+        </div>` : `<p class="resource-soon" data-i18n="blog.soon">Muy pronto publicaremos aquí nuestros primeros artículos.</p>
+        ${actions({})}`}
+      </div>
+    </section>
+  </main>`;
+  const html = pageShell({
+    lang: 'es', title: 'Blog de contabilidad y finanzas para pymes | Growing Solutions',
+    desc: 'Artículos sobre contabilidad, impuestos, flujo de caja y automatización para pymes en Colombia y Estados Unidos.',
+    url: `${SITE}/blog`, indexable: posts.length > 0, page: 'blog', main
+  });
+  writeFileSync(join(ROOT, 'blog.html'), localize(html, 'es', {}).replace(/\r?\n/g, '\n'));
+  console.log('generada', 'blog.html', posts.length ? `(${posts.length} artículo/s)` : '(sin artículos: "Muy pronto", noindex)');
+  return posts;
+}
+
+// ── sitemap.xml ──
+// Se arma con todas las páginas indexables; /recursos y /blog solo cuando
+// tienen contenido publicado.
+function renderSitemap(posts) {
+  const today = new Date().toISOString().slice(0, 10);
+  const urls = [
+    ['/', today],
+    ...Object.entries(PAGES).map(([slug, page]) => [pagePath(slug, page), today]),
+    ['/calculadora', today],
+    ['/diagnostico', today],
+    ...(RESOURCES.length ? [['/recursos', today]] : []),
+    ...(posts.length ? [['/blog', posts[0].fecha], ...posts.map((p) => [`/blog/${p.slug}`, p.fecha])] : []),
+    ['/politica-datos', '2026-10-13']
+  ];
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generado por tools/generar-paginas.mjs. No editar a mano. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.map(([path, mod]) => `  <url>
+    <loc>${SITE}${path}</loc>
+    <lastmod>${mod}</lastmod>
+  </url>`).join('\n')}
+</urlset>
+`;
+  writeFileSync(join(ROOT, 'sitemap.xml'), xml);
+  console.log('generado', 'sitemap.xml', `(${urls.length} URL)`);
+}
+
+renderSitemap(renderBlog());
