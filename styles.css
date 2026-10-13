@@ -2491,50 +2491,25 @@ section[id] {
   height: auto;
 }
 
-.hero-chip {
-  position: absolute;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 10px 30px rgba(11, 22, 64, 0.14);
-  font-size: 0.82rem;
-  font-weight: 600;
+.hero-credentials {
+  margin-top: 24px;
+  padding-left: 16px;
+  border-left: 3px solid var(--primary);
+}
+
+.hero-cred-main {
+  margin-bottom: 4px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
   color: var(--text);
-  white-space: nowrap;
 }
 
-.hero-chip-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--teal);
-  box-shadow: 0 0 0 4px rgba(0, 168, 150, 0.18);
-}
-
-.hero-chip-1 {
-  top: 28px;
-  left: -40px;
-}
-
-.hero-chip-2 {
-  top: 46%;
-  right: -36px;
-}
-
-.hero-chip-2 .hero-chip-dot {
-  background: var(--primary);
-  box-shadow: 0 0 0 4px rgba(13, 60, 255, 0.15);
-}
-
-.hero-chip-3 {
-  bottom: 32px;
-  left: -28px;
+.hero-cred-sub {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--muted);
 }
 
 /* ── Tarjetas: borde degradado sutil al pasar el cursor ── */
@@ -2618,28 +2593,11 @@ section[id] {
   .hero-visual {
     max-width: 320px;
   }
-
-  .hero-chip-1 {
-    left: -16px;
-  }
-
-  .hero-chip-2 {
-    right: -16px;
-  }
-
-  .hero-chip-3 {
-    left: -10px;
-  }
 }
 
 @media (max-width: 600px) {
   .hero-visual {
     max-width: 260px;
-  }
-
-  .hero-chip {
-    font-size: 0.74rem;
-    padding: 8px 12px;
   }
 }
 
