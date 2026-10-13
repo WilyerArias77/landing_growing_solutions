@@ -13,9 +13,19 @@
 - **Propuesta central:** que una empresa pequeña acceda a contadores, analistas
   financieros y desarrolladores **sin tener que contratar un equipo interno**.
 - **Lema:** "Finanzas que evolucionan, tecnología que impulsa".
-- **Quién está detrás:** Wilyer Arias, Senior Accountant. Experiencia en impuestos,
-  IVA y sales & use tax, cierres y causaciones, conciliaciones y coordinación con
-  asesores tributarios. Herramientas: SAP, QuickBooks, Power BI, SQL y Avalara.
+- **Quién está detrás:** Wilyer Arias, Contador Público (Universidad de San
+  Buenaventura Medellín) con Especialización en Finanzas (ITM) y más de 12 años de
+  experiencia en contabilidad corporativa, análisis y gestión financiera.
+  - Trayectoria: Director Financiero en Servintegral Multiservicios (2025), Contador
+    Financiero freelance para Believe and Belong Pty Ltd en Australia (2023–2026),
+    Analista Administrativo en Bancolombia (2014–2021) y cargos contables desde 2008.
+  - Certificaciones: QuickBooks Online ProAdvisor y Advanced ProAdvisor (Intuit),
+    Diplomado en Bases de Datos e Inteligencia de Negocios (SQL Server).
+  - Herramientas: QuickBooks, Power BI, SQL Server, Excel, SAP, SIIGO, Avalara, Python.
+  - Experiencia en impuestos, IVA y sales & use tax, NIIF/IFRS, cierres, conciliaciones
+    y coordinación con asesores tributarios.
+  - No es CPA de Estados Unidos: en EE. UU. coordinamos con el CPA del cliente las
+    declaraciones que lo requieren.
 - **Idiomas:** español e inglés.
 
 ## Las cuatro líneas de servicio
