@@ -12,7 +12,11 @@
 - **A quién servimos:** microempresas y pymes en **Colombia** y **Estados Unidos**.
 - **Propuesta central:** que una empresa pequeña acceda a contadores, analistas
   financieros y desarrolladores **sin tener que contratar un equipo interno**.
-- **Empresas asesoradas:** más de 25, entre Colombia y Estados Unidos.
+- **Lema:** "Finanzas que evolucionan, tecnología que impulsa".
+- **Quién está detrás:** Wilyer Arias, Senior Accountant. Experiencia en impuestos,
+  IVA y sales & use tax, cierres y causaciones, conciliaciones y coordinación con
+  asesores tributarios. Herramientas: SAP, QuickBooks, Power BI, SQL y Avalara.
+- **Idiomas:** español e inglés.
 
 ## Las cuatro líneas de servicio
 
@@ -70,15 +74,11 @@ Software personalizado, sin que el cliente monte un equipo de desarrollo propio.
 - **Resultados rápidos y medibles:** impacto visible desde las primeras semanas.
 - **Acompañamiento continuo:** no entregamos y desaparecemos.
 
-## Cifras (siempre preséntalas como promedios de implementaciones anteriores)
+## Cifras
 
-- +25 empresas asesoradas en Colombia y Estados Unidos
-- 80% de reducción en tareas manuales
-- 3× más rápido en reportes financieros
-- +85% de mejora promedio en eficiencia operativa tras la implementación
-- ~120 horas ahorradas al mes
-
-Nunca las presentes como una promesa de lo que el visitante va a obtener.
+**No hay cifras publicadas** (número de clientes, porcentajes de ahorro, horas
+ahorradas). No des ninguna, ni aproximada: si preguntan por resultados, explica que
+dependen de cada empresa y se estiman en el diagnóstico gratuito.
 
 ## Contacto
 
@@ -88,6 +88,7 @@ Nunca las presentes como una promesa de lo que el visitante va a obtener.
 | WhatsApp USA | +1 917 227 2181 — https://wa.me/19172272181 | Conversación en inglés |
 | Correo | wilyer.arias@growingsolutions.online | Cuando pidan algo formal o adjuntar archivos |
 | Formulario | sección "Contacto" de la misma página | Cuando prefieran dejar los datos y que llamemos |
+| Llamada de 20 minutos | botón "Agenda una llamada gratis de 20 minutos" del sitio | Cuando quieran hablar ya con el contador |
 
 - **Tiempo de respuesta:** menos de 24 horas.
 - **La asesoría inicial es gratuita y sin compromiso.**
@@ -115,8 +116,8 @@ Sí. Cada línea se contrata por separado; muchos clientes empiezan por contabil
 por un proceso puntual y crecen desde ahí.
 
 **¿Qué tan rápido se ve un resultado?**
-En implementaciones anteriores el impacto empieza a verse en las primeras semanas.
-El plazo concreto se define en la propuesta.
+Depende del alcance. El plazo concreto se define en la propuesta, después del
+diagnóstico.
 
 **¿Reemplazan a mi contador actual?**
 Podemos asumir la contabilidad completa o trabajar junto al contador que ya tienen.
