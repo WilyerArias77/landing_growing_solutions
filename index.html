@@ -1458,6 +1458,30 @@
       grid-column: 1 / -1;
     }
 
+    .form-success {
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .form-success:focus {
+      outline: none;
+    }
+
+    .form-success[hidden] {
+      display: none;
+    }
+
+    .form-success h3 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .form-success p {
+      margin-bottom: 28px;
+    }
+
     .form-status.success {
       display: block;
       background: rgba(13, 60, 255, 0.12);
@@ -2168,42 +2192,22 @@
 
             <div class="form-group">
               <label for="f-name"><span data-i18n="form.labelName">Nombre</span><span class="required">*</span></label>
-              <input type="text" id="f-name" name="name" placeholder="Tu nombre completo" autocomplete="name" maxlength="80" data-i18n-placeholder="form.phName" />
-            </div>
-
-            <div class="form-group">
-              <label for="f-phone"><span data-i18n="form.labelPhone">Teléfono de contacto</span> <span
-                  style="font-weight:400;color:var(--muted-2)" data-i18n="common.optional">(opcional)</span></label>
-              <input type="tel" id="f-phone" name="phone" placeholder="Ej: 300 123 4567" autocomplete="tel" maxlength="25" data-i18n-placeholder="form.phPhone" />
+              <input type="text" id="f-name" name="name" placeholder="Tu nombre completo" autocomplete="name" maxlength="80" required data-i18n-placeholder="form.phName" />
             </div>
 
             <div class="form-group">
               <label for="f-email"><span data-i18n="form.labelEmail">Correo electrónico</span><span class="required">*</span></label>
-              <input type="email" id="f-email" name="email" placeholder="correo@tuempresa.com" autocomplete="email" maxlength="120" data-i18n-placeholder="form.phEmail" />
+              <input type="email" id="f-email" name="email" placeholder="correo@tuempresa.com" autocomplete="email" maxlength="120" required data-i18n-placeholder="form.phEmail" />
             </div>
 
             <div class="form-group">
-              <label for="f-company"><span data-i18n="form.labelCompany">Nombre de la empresa</span> <span
-                  style="font-weight:400;color:var(--muted-2)" data-i18n="common.optional">(opcional)</span></label>
-              <input type="text" id="f-company" name="company" placeholder="Nombre de tu empresa"
-                autocomplete="organization" maxlength="120" data-i18n-placeholder="form.phCompany" />
+              <label for="f-phone"><span data-i18n="form.labelPhone">WhatsApp o teléfono</span><span class="required">*</span></label>
+              <input type="tel" id="f-phone" name="phone" placeholder="Ej: +57 300 123 4567" autocomplete="tel" maxlength="25" required data-i18n-placeholder="form.phPhone" />
             </div>
 
             <div class="form-group">
-              <label for="f-url"><span data-i18n="form.labelWebsite">Página web</span> <span style="font-weight:400;color:var(--muted-2)" data-i18n="common.optional">(opcional)</span></label>
-              <input type="url" id="f-url" name="website" placeholder="https://tuempresa.com" autocomplete="url" maxlength="200" />
-            </div>
-
-            <div class="form-group">
-              <label for="f-budget"><span data-i18n="form.labelBudget">Presupuesto</span><span class="required">*</span></label>
-              <input type="text" id="f-budget" name="budget" placeholder="Escribe tu presupuesto"
-                maxlength="60" autocomplete="off" data-i18n-placeholder="form.phBudget" />
-            </div>
-
-
-            <div class="form-group full-width">
-              <label for="f-service"><span data-i18n="form.labelService">Seleccione el Servicio</span><span class="required">*</span></label>
-              <select id="f-service" name="service">
+              <label for="f-service"><span data-i18n="form.labelService">Servicio de interés</span><span class="required">*</span></label>
+              <select id="f-service" name="service" required>
                 <option value="" disabled selected data-i18n="service.placeholder">¿En qué podemos ayudarte?</option>
                 <option value="Servicios contables" data-i18n="service.opt1">Servicios Contables</option>
                 <option value="Servicios financieros" data-i18n="service.opt2">Servicios Financieros</option>
@@ -2212,9 +2216,24 @@
               </select>
             </div>
 
+            <div class="form-group">
+              <label for="f-company"><span data-i18n="form.labelCompany">Nombre de la empresa</span> <span style="font-weight:400;color:var(--muted-2)" data-i18n="common.optional">(opcional)</span></label>
+              <input type="text" id="f-company" name="company" placeholder="Nombre de tu empresa"
+                autocomplete="organization" maxlength="120" data-i18n-placeholder="form.phCompany" />
+            </div>
+
+            <div class="form-group">
+              <label for="f-country"><span data-i18n="form.labelCountry">País</span> <span style="font-weight:400;color:var(--muted-2)" data-i18n="common.optional">(opcional)</span></label>
+              <select id="f-country" name="country">
+                <option value="" selected data-i18n="country.placeholder">Selecciona tu país</option>
+                <option value="CO" data-i18n="country.co">Colombia</option>
+                <option value="US" data-i18n="country.us">Estados Unidos</option>
+                <option value="OTRO" data-i18n="country.other">Otro</option>
+              </select>
+            </div>
+
             <div class="form-group full-width">
-              <label for="f-info"><span data-i18n="form.labelInfo">Información adicional</span> <span
-                  style="font-weight:400;color:var(--muted-2)" data-i18n="common.optional">(opcional)</span></label>
+              <label for="f-info"><span data-i18n="form.labelInfo">Mensaje</span> <span style="font-weight:400;color:var(--muted-2)" data-i18n="common.optional">(opcional)</span></label>
               <textarea id="f-info" name="additionalInfo" maxlength="2000"
                 placeholder="Cuéntanos sobre tu negocio, tus principales retos o qué tipo de ayuda buscas..." data-i18n-placeholder="form.phInfo"></textarea>
             </div>
@@ -2240,8 +2259,17 @@
             <button type="submit" class="btn-submit" id="submitBtn" data-i18n="form.submit">Enviar solicitud →</button>
             <span class="form-note" data-i18n="form.note">Sin compromiso. Te respondemos en menos de 24h.</span>
           </div>
-          <div class="form-status" id="formStatus"></div>
+          <div class="form-status" id="formStatus" role="alert"></div>
         </form>
+
+        <!-- Se muestra en lugar del formulario cuando el lead quedó guardado -->
+        <div class="form-success" id="formSuccess" tabindex="-1" hidden>
+          <h3 data-i18n="form.successTitle">¡Recibimos tu solicitud!</h3>
+          <p data-i18n="form.successNext">Te escribiremos en menos de 24 horas por correo o WhatsApp. Si prefieres no esperar, agenda ya una llamada gratis de 20 minutos.</p>
+          <div class="cta-actions">
+            <a href="#contacto" class="btn btn-green" data-booking data-i18n="form.successCta">Agenda una llamada gratis de 20 minutos</a>
+          </div>
+        </div>
 
       </div>
     </div>

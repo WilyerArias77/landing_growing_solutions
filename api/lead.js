@@ -55,13 +55,18 @@ export default async function handler(req, res) {
 
   const ipHash = hashIp(ip);
   const lead = buildLead(body, {
-    source: 'form', lang: body.lang, ipHash, consentVersion: 'form-v1'
+    source: 'form', lang: body.lang, ipHash, consentVersion: 'form-v2'
   });
   if (!lead.ok) {
     return res.status(400).json({ error: lead.reason });
   }
-  if (!String(body.budget || '').trim() || !String(body.service || '').trim()) {
+  // El formulario exige servicio y un telefono/WhatsApp con al menos 7 digitos.
+  // (El presupuesto dejo de pedirse en form-v2; el chatbot no pasa por aqui.)
+  if (!String(body.service || '').trim()) {
     return res.status(400).json({ error: 'faltan_campos' });
+  }
+  if (String(lead.row.phone || '').replace(/\D/g, '').length < 7) {
+    return res.status(400).json({ error: 'telefono_invalido' });
   }
 
   if (await ipOverLimit(ipHash)) {

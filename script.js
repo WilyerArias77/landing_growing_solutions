@@ -69,18 +69,22 @@ const translations = {
       subtitle: 'Cuéntanos sobre tu negocio y en menos de 24 horas uno de nuestros asesores se pondrá en contacto contigo. Sin compromiso.'
     },
     form: {
-      labelName: 'Nombre', labelPhone: 'Teléfono de contacto', labelEmail: 'Correo electrónico',
-      labelCompany: 'Nombre de la empresa', labelWebsite: 'Página web', labelBudget: 'Presupuesto',
-      labelService: 'Seleccione el Servicio', labelInfo: 'Información adicional',
-      phName: 'Tu nombre completo', phPhone: 'Ej: 300 123 4567', phEmail: 'correo@tuempresa.com',
-      phCompany: 'Nombre de tu empresa', phBudget: 'Escribe tu presupuesto',
+      labelName: 'Nombre', labelPhone: 'WhatsApp o teléfono', labelEmail: 'Correo electrónico',
+      labelCompany: 'Nombre de la empresa', labelCountry: 'País',
+      labelService: 'Servicio de interés', labelInfo: 'Mensaje',
+      phName: 'Tu nombre completo', phPhone: 'Ej: +57 300 123 4567', phEmail: 'correo@tuempresa.com',
+      phCompany: 'Nombre de tu empresa',
       phInfo: 'Cuéntanos sobre tu negocio, tus principales retos o qué tipo de ayuda buscas...',
       submit: 'Enviar solicitud →', note: 'Sin compromiso. Te respondemos en menos de 24h.',
       errRequired: 'Por favor completa todos los campos requeridos (*).',
       errEmail: 'Por favor ingresa un correo electrónico válido.',
+      errPhone: 'Por favor ingresa un número de WhatsApp o teléfono válido (mínimo 7 dígitos).',
       errNotConfigured: 'El formulario aún no está configurado. Contacta al administrador.',
       sending: 'Enviando...',
       success: '¡Recibimos tu solicitud! Un asesor se pondrá en contacto contigo en menos de 24 horas.',
+      successTitle: '¡Recibimos tu solicitud!',
+      successNext: 'Te escribiremos en menos de 24 horas por correo o WhatsApp. Si prefieres no esperar, agenda ya una llamada gratis de 20 minutos.',
+      successCta: 'Agenda una llamada gratis de 20 minutos',
       errNetwork: 'No se pudo enviar el formulario. Verifica tu conexión e intenta de nuevo.',
       errRateLimit: 'Recibimos varias solicitudes desde tu conexión. Intenta más tarde o escríbenos por WhatsApp.',
       consent: 'Autorizo el tratamiento de mis datos personales para que Growing Solutions me contacte y me envíe información sobre sus servicios, conforme a la',
@@ -92,6 +96,7 @@ const translations = {
       placeholder: '¿En qué podemos ayudarte?', opt1: 'Servicios Contables', opt2: 'Servicios Financieros',
       opt3: 'Automatización de Procesos', opt4: 'Desarrollos a la Medida'
     },
+    country: { placeholder: 'Selecciona tu país', co: 'Colombia', us: 'Estados Unidos', other: 'Otro' },
     footer: {
       tagline: 'Soluciones integrales en contabilidad, finanzas, automatización y tecnología para microempresas y pymes en Colombia.',
       servicesHeading: 'Servicios', companyHeading: 'Empresa', contactHeading: 'Contáctanos',
@@ -178,18 +183,22 @@ const translations = {
       subtitle: 'Tell us about your business and within 24 hours one of our advisors will get in touch with you. No obligation.'
     },
     form: {
-      labelName: 'Name', labelPhone: 'Contact phone', labelEmail: 'Email',
-      labelCompany: 'Company name', labelWebsite: 'Website', labelBudget: 'Budget',
-      labelService: 'Select the Service', labelInfo: 'Additional information',
-      phName: 'Your full name', phPhone: 'e.g. 300 123 4567', phEmail: 'email@yourcompany.com',
-      phCompany: 'Your company name', phBudget: 'Enter your budget',
+      labelName: 'Name', labelPhone: 'WhatsApp or phone', labelEmail: 'Email',
+      labelCompany: 'Company name', labelCountry: 'Country',
+      labelService: 'Service of interest', labelInfo: 'Message',
+      phName: 'Your full name', phPhone: 'e.g. +1 917 555 0123', phEmail: 'email@yourcompany.com',
+      phCompany: 'Your company name',
       phInfo: 'Tell us about your business, your main challenges or what kind of help you need...',
       submit: 'Send request →', note: 'No obligation. We reply within 24h.',
       errRequired: 'Please complete all required fields (*).',
       errEmail: 'Please enter a valid email address.',
+      errPhone: 'Please enter a valid WhatsApp or phone number (at least 7 digits).',
       errNotConfigured: 'The form is not configured yet. Please contact the administrator.',
       sending: 'Sending...',
       success: 'We received your request! An advisor will contact you within 24 hours.',
+      successTitle: 'We received your request!',
+      successNext: "We'll reach out within 24 hours by email or WhatsApp. If you'd rather not wait, book a free 20-minute call now.",
+      successCta: 'Book a free 20‑minute call',
       errNetwork: 'The form could not be sent. Check your connection and try again.',
       errRateLimit: 'We received several requests from your connection. Please try later or message us on WhatsApp.',
       consent: 'I authorise Growing Solutions to process my personal data in order to contact me and send me information about its services, in accordance with the',
@@ -201,6 +210,7 @@ const translations = {
       placeholder: 'How can we help you?', opt1: 'Accounting Services', opt2: 'Financial Services',
       opt3: 'Process Automation', opt4: 'Custom Development'
     },
+    country: { placeholder: 'Select your country', co: 'Colombia', us: 'United States', other: 'Other' },
     footer: {
       tagline: 'Comprehensive accounting, finance, automation and technology solutions for microbusinesses and SMEs in Colombia.',
       servicesHeading: 'Services', companyHeading: 'Company', contactHeading: 'Contact Us',
@@ -404,8 +414,7 @@ leadForm.addEventListener('submit', async (e) => {
 
   // Honeypot: si está relleno es un bot -> no se envía nada, respuesta neutra
   if (document.getElementById('f-hp').value.trim() !== '') {
-    showStatus('success', t('form.success'));
-    leadForm.reset();
+    showSuccess();
     return;
   }
 
@@ -413,17 +422,21 @@ leadForm.addEventListener('submit', async (e) => {
   const phone          = clamp(document.getElementById('f-phone').value, 25);
   const email          = clamp(document.getElementById('f-email').value, 120);
   const company        = clamp(document.getElementById('f-company').value, 120);
-  const website        = clamp(document.getElementById('f-url').value, 200);
-  const budget         = clamp(document.getElementById('f-budget').value, 60);
+  const country        = clamp(document.getElementById('f-country').value, 10);
   const service        = clamp(document.getElementById('f-service').value, 60);
   const additionalInfo = clamp(document.getElementById('f-info').value, 2000);
 
-  if (!name || !email || !budget || !service) {
+  if (!name || !email || !phone || !service) {
     showStatus('error', t('form.errRequired'));
     return;
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     showStatus('error', t('form.errEmail'));
+    return;
+  }
+  // Mismo criterio que el servidor (api/lead.js): solo dígitos y signos, 7+ dígitos
+  if (!/^[0-9+()\-.\s]*$/.test(phone) || phone.replace(/\D/g, '').length < 7) {
+    showStatus('error', t('form.errPhone'));
     return;
   }
   // Ley 1581 de 2012: sin autorización expresa no se envía nada.
@@ -441,7 +454,7 @@ leadForm.addEventListener('submit', async (e) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        name, phone, email, company, website, budget, service, additionalInfo,
+        name, phone, email, company, country, service, additionalInfo,
         lang: currentLang,
         consent: true,
         companyFax: document.getElementById('f-hp').value
@@ -449,10 +462,10 @@ leadForm.addEventListener('submit', async (e) => {
     });
     // Respuesta real del servidor: solo es exito si el lead quedo guardado.
     if (res.status === 201) {
-      showStatus('success', t('form.success'));
-      leadForm.reset();
+      showSuccess();
     } else if (res.status === 400) {
-      showStatus('error', t('form.errRequired'));
+      const { error } = await res.json().catch(() => ({}));
+      showStatus('error', t(/telefono/.test(error || '') ? 'form.errPhone' : 'form.errRequired'));
     } else if (res.status === 422) {
       showStatus('error', t('form.errConsent'));
     } else if (res.status === 429) {
@@ -469,6 +482,16 @@ leadForm.addEventListener('submit', async (e) => {
     submitBtn.textContent = t('form.submit');
   }
 });
+
+// Reemplaza el formulario por el siguiente paso: esperar el contacto o agendar ya
+function showSuccess() {
+  leadForm.reset();
+  leadForm.hidden = true;
+  formStatus.className = 'form-status';
+  const panel = document.getElementById('formSuccess');
+  panel.hidden = false;
+  panel.focus();
+}
 
 function showStatus(type, message) {
   formStatus.className = 'form-status ' + type;

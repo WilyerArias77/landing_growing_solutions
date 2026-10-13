@@ -15,6 +15,9 @@ const MAX = {
   website: 200, budget: 60, service: 60, additionalInfo: 2000
 };
 
+// Pais del formulario (opcional). La columna tiene el mismo CHECK en la base.
+const COUNTRIES = new Set(['CO', 'US', 'OTRO']);
+
 // Tope de leads por IP en la ventana. Se cuenta en la base, asi que vale para
 // todas las instancias serverless (el rate limit en memoria no).
 const IP_MAX_LEADS = 5;
@@ -72,12 +75,14 @@ export function buildLead(input, { source, lang, ipHash, consentVersion }) {
   const email = clamp(input.email, MAX.email).toLowerCase();
   const phone = clamp(input.phone, MAX.phone);
   const service = clamp(input.service, MAX.service);
+  const country = clamp(input.country, 4).toUpperCase();
   let website = clamp(input.website, MAX.website);
 
   if (!name) return { ok: false, reason: 'falta_nombre' };
   if (!EMAIL_RE.test(email) || FORMULA_RE.test(email)) return { ok: false, reason: 'email_invalido' };
   if (!PHONE_RE.test(phone)) return { ok: false, reason: 'telefono_invalido' };
   if (service && !SERVICES.has(norm(service))) return { ok: false, reason: 'servicio_invalido' };
+  if (country && !COUNTRIES.has(country)) return { ok: false, reason: 'pais_invalido' };
   if (website && !/^https?:\/\//i.test(website)) website = `https://${website}`.slice(0, MAX.website);
 
   return {
@@ -92,6 +97,8 @@ export function buildLead(input, { source, lang, ipHash, consentVersion }) {
       website: website || null,
       budget: safeText(input.budget, MAX.budget) || null,
       service: service || null,
+      // Solo se envia la columna cuando hay valor: el chatbot no la usa.
+      ...(country ? { country } : {}),
       additional_info: safeText(input.additionalInfo, MAX.additionalInfo) || null,
       ip_hash: ipHash,
       consent_at: consentVersion ? new Date().toISOString() : null,

@@ -60,6 +60,11 @@
       "permanent": false
     },
     {
+      "source": "/db/:path*",
+      "destination": "/",
+      "permanent": false
+    },
+    {
       "source": "/CHATBOT.md",
       "destination": "/",
       "permanent": false

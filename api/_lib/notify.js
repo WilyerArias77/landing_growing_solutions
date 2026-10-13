@@ -29,6 +29,7 @@ function cuerpo(row) {
     ['Sitio web', row.website],
     ['Presupuesto', row.budget],
     ['Servicio', row.service],
+    ['Pais', { CO: 'Colombia', US: 'Estados Unidos', OTRO: 'Otro' }[row.country]],
     ['Origen', ORIGEN[row.source] || row.source],
     ['Idioma', row.lang === 'en' ? 'Ingles' : 'Espanol'],
     ['Recibido', fecha()]
