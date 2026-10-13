@@ -137,6 +137,21 @@ const translations = {
       footerCo: 'WhatsApp Colombia +57 324 275 4406', footerUs: 'WhatsApp USA +1 917 227 2181',
       tooltipCo: '¿Necesitas ayuda? Escríbenos', tooltipUs: 'Need help? Message us (USA)'
     },
+    faq: {
+      tag: 'Preguntas frecuentes', title: 'Lo que suelen preguntarnos',
+      q1: '¿Atienden empresas en Colombia y en Estados Unidos?',
+      a1: 'Sí. Atendemos pymes en los dos países, de forma principalmente remota, en español y en inglés. Para negocios en EE. UU. trabajamos con QuickBooks y llevamos el sales & use tax.',
+      q2: '¿Cómo empiezo?',
+      a2: 'Agenda una llamada gratis de 20 minutos o déjanos tus datos en el formulario. Te respondemos en menos de 24 horas.',
+      q3: '¿Cuánto cuestan los servicios?',
+      a3: 'Depende del tamaño de tu empresa, del volumen de transacciones y del alcance. Lo cotizamos a la medida después de la llamada inicial, sin compromiso.',
+      q4: '¿Puedo contratar un solo servicio?',
+      a4: 'Sí. Cada servicio se contrata por separado; muchas empresas empiezan por la contabilidad o por automatizar un proceso puntual.',
+      q5: '¿Pueden trabajar con mi contador o CPA actual?',
+      a5: 'Sí. Podemos encargarnos de toda la contabilidad o apoyar a tu contador o CPA en lo que hoy no alcanza a cubrir.',
+      q6: '¿Quién atiende mi empresa?',
+      a6: 'Wilyer Arias, Contador Público con Especialización en Finanzas y más de 12 años de experiencia, certificado como QuickBooks Online Advanced ProAdvisor.'
+    },
     planes: {
       tag: 'Planes', title: 'Precios de referencia',
       subtitle: 'Valores de partida: el precio final depende del volumen y del alcance, y lo confirmamos después de la llamada inicial.',
@@ -303,6 +318,21 @@ const translations = {
       ctaMobileCo: 'WhatsApp Colombia +57 324 275 4406', ctaMobileUs: 'WhatsApp USA +1 917 227 2181',
       footerCo: 'WhatsApp Colombia +57 324 275 4406', footerUs: 'WhatsApp USA +1 917 227 2181',
       tooltipCo: 'Need help? Message us (Colombia)', tooltipUs: 'Need help? Message us'
+    },
+    faq: {
+      tag: 'Frequently asked questions', title: 'What people usually ask us',
+      q1: 'Do you serve businesses in Colombia and the United States?',
+      a1: 'Yes. We serve small businesses in both countries, mostly remotely, in Spanish and English. For U.S. businesses we work in QuickBooks and handle sales & use tax.',
+      q2: 'How do I get started?',
+      a2: 'Book a free 20-minute call or leave your details in the form. We reply within 24 hours.',
+      q3: 'How much do your services cost?',
+      a3: 'It depends on your company size, transaction volume and scope. We quote it after the first call, with no obligation.',
+      q4: 'Can I hire just one service?',
+      a4: 'Yes. Each service is hired separately; many businesses start with accounting or by automating one specific process.',
+      q5: 'Can you work with my current accountant or CPA?',
+      a5: 'Yes. We can take over all of your accounting or support your accountant or CPA with what they cannot cover today.',
+      q6: 'Who will work on my business?',
+      a6: 'Wilyer Arias, a Public Accountant with a graduate specialization in Finance and more than 12 years of experience, certified as a QuickBooks Online Advanced ProAdvisor.'
     },
     planes: {
       tag: 'Plans', title: 'Reference pricing',

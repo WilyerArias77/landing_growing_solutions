@@ -2396,3 +2396,8 @@ section[hidden],
     position: static;
   }
 }
+
+/* ── PREGUNTAS FRECUENTES (portada) ── */
+.faq-home {
+  margin: 0 auto;
+}
