@@ -139,6 +139,27 @@ export async function ipOverLimit(ipHash) {
 }
 
 /**
+ * Cuantos leads tiene ese correo en las ultimas 24 h (incluido el recien
+ * guardado). Sirve para no mandar mas de una respuesta automatica al dia a la
+ * misma direccion: el formulario no debe poder usarse para inundar a terceros.
+ * Si la consulta falla devuelve Infinity (ante la duda, no se envia).
+ */
+export async function recentLeadsByEmail(email) {
+  const since = new Date(Date.now() - 24 * 60 * 60_000).toISOString();
+  try {
+    const res = await request(
+      endpoint(`?select=id&email=eq.${encodeURIComponent(email)}&created_at=gte.${encodeURIComponent(since)}&limit=5`),
+      { headers: headers() }
+    );
+    if (!res.ok) return Infinity;
+    const rows = await res.json();
+    return Array.isArray(rows) ? rows.length : Infinity;
+  } catch {
+    return Infinity;
+  }
+}
+
+/**
  * Inserta la fila. @returns {Promise<{ok: boolean, reason?: string}>}
  * Nunca registra datos personales en los logs: solo el codigo de estado.
  */

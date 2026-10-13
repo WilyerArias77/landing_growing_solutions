@@ -7,7 +7,8 @@
 // respuesta es real: 201 si quedo guardado, 4xx/5xx si no.
 
 import { originAllowed, rateLimited, clientIp } from './_lib/guard.js';
-import { buildLead, configured, hashIp, insertLead, ipOverLimit } from './_lib/leads-store.js';
+import { buildLead, configured, hashIp, insertLead, ipOverLimit, recentLeadsByEmail } from './_lib/leads-store.js';
+import { sendAutoReply } from './_lib/autoreply.js';
 
 const MAX_BODY_CHARS = 6_000;
 
@@ -76,6 +77,11 @@ export default async function handler(req, res) {
   const result = await insertLead(lead.row);
   if (!result.ok) {
     return res.status(502).json({ error: 'no_guardado' });
+  }
+  // Respuesta automatica al prospecto: best-effort y como mucho una al dia por
+  // correo (el lead recien guardado cuenta como 1).
+  if ((await recentLeadsByEmail(lead.row.email)) <= 1) {
+    await sendAutoReply(lead.row);
   }
   return res.status(201).json({ ok: true });
 }

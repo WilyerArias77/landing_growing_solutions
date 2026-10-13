@@ -12,7 +12,7 @@ const esc = (v) => String(v ?? '')
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
   .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 
-const ORIGEN = { form: 'Formulario de la web', chatbot: 'GS Bot (chat)' };
+const ORIGEN = { form: 'Formulario de la web', chatbot: 'GS Bot (chat)', recurso: 'Descarga de recurso (/recursos)' };
 
 function fecha() {
   return new Date().toLocaleString('es-CO', {
@@ -67,18 +67,16 @@ function cuerpo(row) {
 }
 
 /**
- * Manda el aviso. Nunca lanza: un fallo de correo no debe tumbar el lead.
- * Sin RESEND_API_KEY o LEAD_NOTIFY_TO no hace nada (el lead se guarda igual).
+ * Envia un correo por Resend. Nunca lanza: devuelve true/false.
+ * Los fallos se registran solo con el codigo de estado (el cuerpo de la
+ * respuesta puede repetir datos personales).
  */
-export async function notifyLead(row) {
+export async function sendEmail({ to, subject, html, text, replyTo }) {
   const key = process.env.RESEND_API_KEY;
-  const to = String(process.env.LEAD_NOTIFY_TO || '').split(',').map(s => s.trim()).filter(Boolean);
-  if (!key || to.length === 0) return;
+  if (!key || !to || (Array.isArray(to) && to.length === 0)) return false;
 
-  const { html, text } = cuerpo(row);
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), 8_000);
-
   try {
     const res = await fetch(ENDPOINT, {
       method: 'POST',
@@ -86,17 +84,36 @@ export async function notifyLead(row) {
       body: JSON.stringify({
         from: process.env.LEAD_NOTIFY_FROM || DEFAULT_FROM,
         to,
-        reply_to: row.email,
-        subject: `Nuevo lead: ${row.name}${row.service ? ` — ${row.service}` : ''}`,
+        ...(replyTo ? { reply_to: replyTo } : {}),
+        subject,
         html,
         text
       }),
       signal: ctrl.signal
     });
-    if (!res.ok) console.error('[notify] Resend respondio', res.status);
+    if (!res.ok) console.error('[email] Resend respondio', res.status);
+    return res.ok;
   } catch (err) {
-    console.error('[notify] Fallo al enviar el aviso:', err?.name || 'error');
+    console.error('[email] Fallo al enviar:', err?.name || 'error');
+    return false;
   } finally {
     clearTimeout(timer);
   }
+}
+
+/**
+ * Manda el aviso interno. Nunca lanza: un fallo de correo no debe tumbar el lead.
+ * Sin RESEND_API_KEY o LEAD_NOTIFY_TO no hace nada (el lead se guarda igual).
+ */
+export async function notifyLead(row) {
+  const to = String(process.env.LEAD_NOTIFY_TO || '').split(',').map(s => s.trim()).filter(Boolean);
+  if (to.length === 0) return;
+  const { html, text } = cuerpo(row);
+  await sendEmail({
+    to,
+    replyTo: row.email,
+    subject: `Nuevo lead: ${row.name}${row.service ? ` — ${row.service}` : ''}`,
+    html,
+    text
+  });
 }
