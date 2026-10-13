@@ -57,7 +57,7 @@ const translations = {
       tag: '¿Por Qué Elegirnos?', titleL1: 'Tu aliado estratégico', titleL2: 'para crecer',
       subtitle: 'No somos solo proveedores — somos un equipo que combina experiencia financiera, contable y tecnológica para ofrecerte soluciones prácticas y resultados medibles.',
       feature1: { title: 'Sin necesidad de equipo interno', desc: 'Accede a contadores, analistas financieros y desarrolladores sin contratar internamente.' },
-      feature2: { title: 'Pensado para pymes en Colombia', desc: 'Servicios adaptados a la realidad y presupuesto del mercado empresarial local.' },
+      feature2: { title: 'Pensado para pymes en Colombia y Estados Unidos', desc: 'Servicios adaptados a la realidad y al presupuesto de las pymes en ambos mercados.' },
       feature3: { title: 'Resultados rápidos y medibles', desc: 'Implementaciones ágiles con impacto visible desde las primeras semanas.' },
       feature4: { title: 'Acompañamiento continuo', desc: 'No te dejamos solo — te acompañamos, optimizamos y escalamos contigo.' }
     },
@@ -103,9 +103,9 @@ const translations = {
     },
     country: { placeholder: 'Selecciona tu país', co: 'Colombia', us: 'Estados Unidos', other: 'Otro' },
     footer: {
-      tagline: 'Soluciones integrales en contabilidad, finanzas, automatización y tecnología para microempresas y pymes en Colombia.',
+      tagline: 'Soluciones integrales en contabilidad, finanzas, automatización y tecnología para microempresas y pymes en Colombia y Estados Unidos.',
       servicesHeading: 'Servicios', companyHeading: 'Empresa', contactHeading: 'Contáctanos',
-      linkAutomatizacion: 'Automatización', country: 'Colombia',
+      linkAutomatizacion: 'Automatización', linkUs: 'Negocios en EE. UU.', country: 'Colombia y Estados Unidos',
       copyright: '© 2026 Growing Solutions. Todos los derechos reservados.',
       bottomTagline: 'Hecho con dedicación para el crecimiento de tu empresa.',
       privacy: 'Política de Tratamiento de Datos'
@@ -188,7 +188,7 @@ const translations = {
       tag: 'Why Choose Us?', titleL1: 'Your strategic partner', titleL2: 'to grow',
       subtitle: "We're not just providers — we're a team combining financial, accounting and technology expertise to offer you practical solutions and measurable results.",
       feature1: { title: 'No need for an in-house team', desc: 'Access accountants, financial analysts and developers without hiring internally.' },
-      feature2: { title: 'Built for SMEs in Colombia', desc: 'Services adapted to the reality and budget of the local business market.' },
+      feature2: { title: 'Built for SMEs in Colombia and the U.S.', desc: 'Services adapted to the reality and budget of small businesses in both markets.' },
       feature3: { title: 'Fast, measurable results', desc: 'Agile implementations with visible impact from the very first weeks.' },
       feature4: { title: 'Ongoing support', desc: "We don't leave you on your own — we accompany, optimize and scale with you." }
     },
@@ -234,9 +234,9 @@ const translations = {
     },
     country: { placeholder: 'Select your country', co: 'Colombia', us: 'United States', other: 'Other' },
     footer: {
-      tagline: 'Comprehensive accounting, finance, automation and technology solutions for microbusinesses and SMEs in Colombia.',
+      tagline: 'Comprehensive accounting, finance, automation and technology solutions for microbusinesses and SMEs in Colombia and the United States.',
       servicesHeading: 'Services', companyHeading: 'Company', contactHeading: 'Contact Us',
-      linkAutomatizacion: 'Automation', country: 'Colombia',
+      linkAutomatizacion: 'Automation', linkUs: 'U.S. businesses', country: 'Colombia and the United States',
       copyright: '© 2026 Growing Solutions. All rights reserved.',
       bottomTagline: "Made with dedication for your business's growth.",
       privacy: 'Personal Data Processing Policy'
@@ -270,6 +270,9 @@ let currentLang = getInitialLang();
 function getInitialLang() {
   const param = new URLSearchParams(location.search).get('lang');
   if (param === 'es' || param === 'en') return param;
+  // Páginas con idioma propio (p. ej. /us en inglés) ignoran la preferencia guardada
+  const pageLang = document.body.dataset.defaultLang;
+  if (pageLang === 'en') return pageLang;
   const stored = localStorage.getItem(LANG_KEY);
   if (stored === 'es' || stored === 'en') return stored;
   return (navigator.language || '').toLowerCase().startsWith('en') ? 'en' : 'es';
@@ -302,7 +305,8 @@ function setLanguage(lang) {
   });
 
   // Un solo número de WhatsApp por idioma: ES → Colombia, EN → USA
-  const waCountry = (currentLang === 'en') ? 'us' : 'co';
+  // /us fija el WhatsApp de EE. UU. aunque la página se lea en español
+  const waCountry = document.body.dataset.waCountry || ((currentLang === 'en') ? 'us' : 'co');
   document.querySelectorAll('[data-wa]').forEach(el => {
     const show = el.dataset.wa === waCountry;
     el.style.display = show ? '' : 'none';

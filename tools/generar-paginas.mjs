@@ -22,6 +22,15 @@ const sandbox = { window: {} };
 vm.runInNewContext(read('content/paginas.js'), sandbox);
 const PAGES = sandbox.window.GS_PAGES;
 
+// Las traducciones de script.js (objeto `translations`) se aplican al HTML
+// estático en el idioma por defecto de cada página, para que buscadores y
+// visitantes sin JavaScript vean el menú y el pie en ese idioma.
+const scriptJs = read('script.js');
+const tStart = scriptJs.indexOf('const translations = {');
+const tEnd = scriptJs.indexOf('\n};\n', tStart);
+if (tStart < 0 || tEnd < 0) throw new Error('No se encontró `translations` en script.js');
+const TRANSLATIONS = vm.runInNewContext('(' + scriptJs.slice(tStart + 'const translations = '.length, tEnd + 2) + ')');
+
 const index = read('index.html');
 
 /** Recorta index.html entre dos marcadores (el final no se incluye). */
@@ -50,12 +59,41 @@ function icon(name) {
 const esc = (v) => String(v)
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
+/**
+ * Pone el texto de cada elemento con data-i18n en `lang`. Solo toca elementos
+ * cuyo contenido es texto plano; los que tienen hijos se traducen por sus hijos.
+ */
+function localize(html, lang, pageTexts) {
+  const dict = { ...TRANSLATIONS[lang], page: pageTexts };
+  const lookup = (key) => key.split('.').reduce((o, k) => (o == null ? undefined : o[k]), dict);
+  return html.replace(/(<[a-z0-9]+\b[^>]*\bdata-i18n="([^"]+)"[^>]*>)([^<]*)(<\/)/g,
+    (all, open, key, _text, close) => {
+      const v = lookup(key);
+      return typeof v === 'string' ? open + esc(v) + close : all;
+    });
+}
+
 const WA_ICON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" /><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.71-1.248A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.386 0-4.594-.83-6.326-2.216l-.144-.116-3.491.924.94-3.437-.12-.149A9.957 9.957 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z" /></svg>';
 const CAL_ICON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v4" /><path d="M16 2v4" /><rect width="18" height="18" x="3" y="4" rx="2" /><path d="M3 10h18" /></svg>';
 const CHECK_ICON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>';
 
-/** Botones de agenda + WhatsApp (el de WhatsApp cambia de país con el idioma). */
-function actions() {
+/**
+ * Botones de agenda + WhatsApp (el de WhatsApp cambia de país con el idioma).
+ * Con `wa` fijo (página /us), WhatsApp de ese país va primero como botón principal.
+ */
+function actions(page) {
+  if (page.wa === 'us') {
+    return `<div class="hero-actions">
+          <a href="https://wa.me/19172272181?text=Hi%2C%20I%27d%20like%20information%20about%20Growing%20Solutions%20services"
+            class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">
+            ${WA_ICON}<span data-i18n="wa.ctaMobileUs">WhatsApp USA +1 917 227 2181</span>
+          </a>
+          <a href="/#contacto" class="btn btn-ghost" data-booking>
+            ${CAL_ICON}
+            <span data-i18n="hero.ctaPrimary">Agenda una llamada gratis de 20 minutos</span>
+          </a>
+        </div>`;
+  }
   return `<div class="hero-actions">
           <a href="/#contacto" class="btn btn-green" data-booking>
             ${CAL_ICON}
@@ -72,9 +110,12 @@ function actions() {
         </div>`;
 }
 
+const pagePath = (slug, page) => page.path || `/servicios/${slug}`;
+
 function jsonLd(slug, page) {
-  const url = `${SITE}/servicios/${slug}`;
-  const es = page.es;
+  const url = SITE + pagePath(slug, page);
+  const es = page[page.defaultLang || 'es'];
+  const areas = page.areaServed || ['Colombia', 'United States'];
   return [
     {
       '@context': 'https://schema.org',
@@ -83,7 +124,7 @@ function jsonLd(slug, page) {
       description: es.metaDesc,
       url,
       serviceType: es.kicker,
-      areaServed: [{ '@type': 'Country', name: 'Colombia' }, { '@type': 'Country', name: 'United States' }],
+      areaServed: areas.map((name) => ({ '@type': 'Country', name })),
       availableLanguage: ['es', 'en'],
       provider: { '@type': 'ProfessionalService', name: 'Growing Solutions', url: `${SITE}/` }
     },
@@ -108,8 +149,10 @@ function jsonLd(slug, page) {
 }
 
 function render(slug, page) {
-  const es = page.es;
-  const url = `${SITE}/servicios/${slug}`;
+  const lang = page.defaultLang || 'es';
+  const other = lang === 'es' ? 'en' : 'es';
+  const es = page[lang];
+  const url = SITE + pagePath(slug, page);
   const ogImage = existsSync(join(ROOT, 'og-image.png'))
     ? `\n  <meta property="og:image" content="${SITE}/og-image.png" />\n  <meta property="og:image:width" content="1200" />\n  <meta property="og:image:height" content="630" />\n  <meta name="twitter:image" content="${SITE}/og-image.png" />`
     : '';
@@ -126,7 +169,7 @@ function render(slug, page) {
 
   return `<!DOCTYPE html>
 <!-- Generado por tools/generar-paginas.mjs desde content/paginas.js. No editar a mano. -->
-<html lang="es">
+<html lang="${lang}">
 
 <head>
   <meta charset="UTF-8" />
@@ -134,13 +177,13 @@ function render(slug, page) {
   <title>${esc(es.metaTitle)}</title>
   <meta name="description" content="${esc(es.metaDesc)}" />
   <link rel="canonical" href="${url}" />
-  <link rel="alternate" hreflang="es" href="${url}" />
-  <link rel="alternate" hreflang="en" href="${url}?lang=en" />
+  <link rel="alternate" hreflang="${lang}" href="${url}" />
+  <link rel="alternate" hreflang="${other}" href="${url}?lang=${other}" />
   <link rel="alternate" hreflang="x-default" href="${url}" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Growing Solutions" />
-  <meta property="og:locale" content="es_CO" />
-  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:locale" content="${lang === 'en' ? 'en_US' : 'es_CO'}" />
+  <meta property="og:locale:alternate" content="${lang === 'en' ? 'es_CO' : 'en_US'}" />
   <meta property="og:title" content="${esc(es.metaTitle)}" />
   <meta property="og:description" content="${esc(es.metaDesc)}" />
   <meta property="og:url" content="${url}" />
@@ -161,7 +204,7 @@ ${ld}
   </script>
 </head>
 
-<body data-page="${slug}">
+<body data-page="${slug}" data-default-lang="${lang}"${page.wa ? ` data-wa-country="${page.wa}"` : ''}>
 
 ${nav}
 
@@ -175,7 +218,7 @@ ${nav}
         </div>
         <h1 data-i18n="page.h1">${esc(es.h1)}</h1>
         <p class="sp-intro" data-i18n="page.intro">${esc(es.intro)}</p>
-        ${actions()}
+        ${actions(page)}
       </div>
     </section>
 
@@ -215,7 +258,7 @@ ${nav}
           <h2 data-i18n="pagina.ctaTitle">¿Hablamos de tu caso?</h2>
           <p data-i18n="pagina.ctaText">En una llamada gratis de 20 minutos revisamos tu situación y te decimos por dónde empezar. Sin compromiso.</p>
           <div class="cta-actions">
-          ${actions()}
+          ${actions(page)}
           </div>
         </div>
       </div>
@@ -239,9 +282,12 @@ ${cookies}
 `;
 }
 
-mkdirSync(join(ROOT, 'servicios'), { recursive: true });
 for (const [slug, page] of Object.entries(PAGES)) {
-  const file = join(ROOT, 'servicios', `${slug}.html`);
-  writeFileSync(file, render(slug, page).replace(/\r?\n/g, '\n'));
-  console.log('generada', `servicios/${slug}.html`);
+  const lang = page.defaultLang || 'es';
+  const rel = pagePath(slug, page).slice(1) + '.html';
+  const file = join(ROOT, rel);
+  mkdirSync(dirname(file), { recursive: true });
+  const html = localize(render(slug, page), lang, page[lang]);
+  writeFileSync(file, html.replace(/\r?\n/g, '\n'));
+  console.log('generada', rel);
 }

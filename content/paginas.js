@@ -204,5 +204,58 @@ window.GS_PAGES = {
         { q: 'How much does it cost?', a: 'It depends on the scope. We quote it after a free 20-minute call.' }
       ]
     }
+  },
+
+  // Página para Estados Unidos: en inglés por defecto y con WhatsApp USA.
+  us: {
+    icon: 'chart-line',
+    path: '/us',
+    defaultLang: 'en',
+    wa: 'us',
+    areaServed: ['United States'],
+    en: {
+      metaTitle: 'Bookkeeping, Sales Tax and Reporting for Small Businesses in the U.S. | Growing Solutions',
+      metaDesc: 'QuickBooks bookkeeping, sales & use tax with Avalara and Power BI financial reporting for U.S. small businesses — with service in English and Spanish. Book a free call.',
+      kicker: 'For U.S. businesses',
+      h1: 'Bookkeeping, sales tax and reporting for your U.S. business',
+      intro: 'A senior accountant who keeps your QuickBooks up to date, your sales & use tax under control and your numbers in clear reports — in English or Spanish.',
+      problema: 'Growing small businesses often end up with books months behind, sales tax obligations in several states that nobody is tracking, and reports that arrive too late to make decisions. For Hispanic-owned businesses, finding an accountant who explains it all in Spanish adds another hurdle.',
+      solucion: 'We take care of your monthly bookkeeping in QuickBooks, track and prepare your sales & use tax with Avalara, and build Power BI reports so you see where your business stands. We work remotely and coordinate with your CPA or tax advisor when needed.',
+      entregables: [
+        'Monthly bookkeeping and reconciliations in QuickBooks',
+        'Sales & use tax tracking and preparation with Avalara',
+        'Financial reports and dashboards in Power BI',
+        'Month-end closing and financial statements',
+        'Service in English and Spanish for Hispanic-owned businesses'
+      ],
+      faqs: [
+        { q: 'Do you work with businesses in any U.S. state?', a: 'We work remotely, so we can serve businesses in different states. On the first call we review where you have sales tax obligations.' },
+        { q: 'Can you work with my CPA?', a: 'Yes. We handle the day-to-day bookkeeping and sales tax, and coordinate with your CPA or tax advisor for filings that require them.' },
+        { q: 'Can we talk in Spanish?', a: 'Yes. You can work with us entirely in Spanish, in English, or both.' },
+        { q: 'How much does it cost?', a: 'It depends on your transaction volume and how many states you sell in. We quote it after a free 20-minute call.' }
+      ]
+    },
+    es: {
+      metaTitle: 'Contabilidad, sales tax y reportes para negocios en EE. UU. | Growing Solutions',
+      metaDesc: 'Bookkeeping en QuickBooks, sales & use tax con Avalara y reportes en Power BI para pequeñas empresas en Estados Unidos, con atención en español. Agenda una llamada gratis.',
+      kicker: 'Para negocios en EE. UU.',
+      h1: 'Contabilidad, sales tax y reportes para tu negocio en EE. UU.',
+      intro: 'Un contador senior que mantiene tu QuickBooks al día, tu sales & use tax bajo control y tus números en reportes claros, en español o en inglés.',
+      problema: 'Los negocios pequeños que crecen suelen acabar con la contabilidad atrasada meses, obligaciones de sales tax en varios estados que nadie está siguiendo y reportes que llegan tarde para decidir. Para los negocios hispanos, encontrar un contador que lo explique todo en español es un obstáculo más.',
+      solucion: 'Nos encargamos de tu bookkeeping mensual en QuickBooks, seguimos y preparamos tu sales & use tax con Avalara y armamos reportes en Power BI para que veas cómo va tu negocio. Trabajamos de forma remota y coordinamos con tu CPA o asesor tributario cuando hace falta.',
+      entregables: [
+        'Bookkeeping mensual y conciliaciones en QuickBooks',
+        'Seguimiento y preparación de sales & use tax con Avalara',
+        'Reportes financieros y tableros en Power BI',
+        'Cierre mensual y estados financieros',
+        'Atención en español y en inglés para negocios hispanos'
+      ],
+      faqs: [
+        { q: '¿Atienden negocios en cualquier estado?', a: 'Trabajamos de forma remota, así que podemos atender negocios en distintos estados. En la primera llamada revisamos dónde tienes obligaciones de sales tax.' },
+        { q: '¿Pueden trabajar con mi CPA?', a: 'Sí. Nos encargamos del bookkeeping y del sales tax del día a día, y coordinamos con tu CPA o asesor tributario las declaraciones que lo requieren.' },
+        { q: '¿Podemos hablar en español?', a: 'Sí. Puedes trabajar con nosotros completamente en español, en inglés o en ambos.' },
+        { q: '¿Cuánto cuesta?', a: 'Depende del volumen de transacciones y de en cuántos estados vendes. Lo cotizamos a la medida después de una llamada gratis de 20 minutos.' }
+      ]
+    }
   }
 };
