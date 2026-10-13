@@ -201,7 +201,6 @@
 
   // ── Construccion del widget ─────────────────────────────────────────────
 
-  var ICON_CHAT = '<path d="M12 2C6.5 2 2 5.9 2 10.7c0 2.7 1.4 5.1 3.7 6.7v3.3c0 .4.5.7.9.4l3.2-2.1c.7.1 1.5.2 2.2.2 5.5 0 10-3.9 10-8.5S17.5 2 12 2zM7.5 12.2a1.4 1.4 0 110-2.8 1.4 1.4 0 010 2.8zm4.5 0a1.4 1.4 0 110-2.8 1.4 1.4 0 010 2.8zm4.5 0a1.4 1.4 0 110-2.8 1.4 1.4 0 010 2.8z"/>';
   var ICON_X = '<path d="M19 6.4L17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/>';
   var ICON_SEND = '<path d="M2.5 21L23 12 2.5 3v7l14 2-14 2v7z"/>';
 
@@ -214,6 +213,16 @@
     return s;
   }
 
+  function botImg(cls) {
+    var img = make('img', cls);
+    img.src = '/gs-bot.webp';
+    img.alt = '';
+    img.width = 160;
+    img.height = 160;
+    img.decoding = 'async';
+    return img;
+  }
+
   function build() {
     // Lanzador
     el.launcher = make('button', 'gsb-launcher');
@@ -221,7 +230,7 @@
     el.launcher.setAttribute('aria-expanded', 'false');
     el.launcher.setAttribute('aria-controls', 'gsb-panel');
     el.launcher.setAttribute('aria-label', t('launcherAria'));
-    el.launcher.appendChild(svg(ICON_CHAT, 'gsb-open-icon'));
+    el.launcher.appendChild(botImg('gsb-open-icon'));
     el.launcher.appendChild(svg(ICON_X, 'gsb-close-icon'));
     el.dot = make('span', 'gsb-dot');
     el.launcher.appendChild(el.dot);
@@ -235,7 +244,9 @@
     el.panel.setAttribute('aria-label', 'GS Bot');
 
     var header = make('div', 'gsb-header');
-    header.appendChild(make('div', 'gsb-avatar', 'GS'));
+    var avatar = make('div', 'gsb-avatar');
+    avatar.appendChild(botImg());
+    header.appendChild(avatar);
     var meta = make('div');
     el.title = make('div', 'gsb-title', t('title'));
     el.statusEl = make('div', 'gsb-status', t('status'));

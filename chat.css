@@ -35,6 +35,15 @@
 
 .gsb-launcher svg { width: 28px; height: 28px; fill: currentColor; }
 
+/* Foto del GS Bot: deja ver un aro del degradado de marca alrededor */
+.gsb-launcher img {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #eef2fb;
+}
+
 .gsb-launcher .gsb-close-icon { display: none; }
 .gsb-launcher[aria-expanded="true"] .gsb-open-icon { display: none; }
 .gsb-launcher[aria-expanded="true"] .gsb-close-icon { display: block; }
@@ -120,9 +129,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
-  font-size: .8rem;
   flex-shrink: 0;
+  overflow: hidden;
+}
+
+.gsb-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #eef2fb;
 }
 
 .gsb-title { font-weight: 700; font-size: .98rem; line-height: 1.3; }

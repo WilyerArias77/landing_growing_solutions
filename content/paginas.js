@@ -32,7 +32,7 @@ window.GS_PAGES = {
         { q: '¿Con qué software contable trabajan?', a: 'Trabajamos con SAP y QuickBooks, y usamos Power BI y SQL para los reportes. Si tu empresa usa otra herramienta, lo revisamos en la llamada inicial.' },
         { q: '¿Pueden trabajar junto a mi contador actual?', a: 'Sí. Podemos encargarnos de toda la contabilidad o apoyar a tu contador en lo que hoy no alcanza a cubrir. Lo definimos en el diagnóstico.' },
         { q: '¿Atienden empresas en Estados Unidos?', a: 'Sí. Atendemos pymes en Colombia y en Estados Unidos, en español y en inglés.' },
-        { q: '¿Cuánto cuesta?', a: 'Depende del volumen de transacciones y del alcance. Lo cotizamos a la medida después de una llamada gratis de 20 minutos.' }
+        { q: '¿Cuánto cuesta?', a: 'Desde $700.000 COP (400 USD en Estados Unidos). El valor final depende del volumen de transacciones y del alcance. Lo cotizamos a la medida después de una llamada gratis de 20 minutos.' }
       ]
     },
     en: {
@@ -54,7 +54,7 @@ window.GS_PAGES = {
         { q: 'Which accounting software do you work with?', a: 'We work with SAP and QuickBooks, and use Power BI and SQL for reporting. If your business uses another tool, we review it on the first call.' },
         { q: 'Can you work alongside my current accountant?', a: 'Yes. We can take over all of your accounting or support your accountant with what they cannot cover today. We define it in the assessment.' },
         { q: 'Do you serve businesses in the United States?', a: 'Yes. We serve small businesses in Colombia and the United States, in Spanish and English.' },
-        { q: 'How much does it cost?', a: 'It depends on your transaction volume and scope. We quote it after a free 20-minute call.' }
+        { q: 'How much does it cost?', a: 'Starting at USD 400 (COP 700,000 in Colombia). The final price depends on your transaction volume and scope. We quote it after a free 20-minute call.' }
       ]
     }
   },
@@ -81,7 +81,7 @@ window.GS_PAGES = {
         { q: '¿Necesito tener la contabilidad al día para empezar?', a: 'Ayuda mucho, porque el análisis parte de números reales. Si está atrasada, podemos empezar por ponerla al día con nuestro servicio de contabilidad.' },
         { q: '¿En qué herramienta veo los indicadores?', a: 'Normalmente en un tablero de Power BI o en el formato que ya uses. Lo definimos según cómo trabaja tu equipo.' },
         { q: '¿Cada cuánto se actualiza el flujo de caja?', a: 'Lo acordamos contigo según tu operación. Si automatizamos la captura de datos, puede actualizarse sin trabajo manual.' },
-        { q: '¿Cuánto cuesta?', a: 'Depende del alcance. Lo cotizamos a la medida después de una llamada gratis de 20 minutos.' }
+        { q: '¿Cuánto cuesta?', a: 'Desde $700.000 COP (400 USD en Estados Unidos). El valor final depende del alcance. Lo cotizamos a la medida después de una llamada gratis de 20 minutos.' }
       ]
     },
     en: {
@@ -103,7 +103,7 @@ window.GS_PAGES = {
         { q: 'Do my books need to be up to date to start?', a: 'It helps a lot, because the analysis starts from real numbers. If they are behind, we can start by catching them up with our accounting service.' },
         { q: 'Where do I see the indicators?', a: 'Usually in a Power BI dashboard or in the format you already use. We define it based on how your team works.' },
         { q: 'How often is the cash flow updated?', a: 'We agree on it with you based on your operations. If we automate data capture, it can update with no manual work.' },
-        { q: 'How much does it cost?', a: 'It depends on the scope. We quote it after a free 20-minute call.' }
+        { q: 'How much does it cost?', a: 'Starting at USD 400 (COP 700,000 in Colombia). The final price depends on the scope. We quote it after a free 20-minute call.' }
       ]
     }
   },
@@ -130,7 +130,7 @@ window.GS_PAGES = {
         { q: '¿Tengo que cambiar mis herramientas actuales?', a: 'No necesariamente. Primero buscamos conectar lo que ya usas; solo proponemos cambios cuando de verdad simplifican el proceso.' },
         { q: '¿Qué pasa si una automatización falla?', a: 'Las diseñamos con avisos para que un error no pase desapercibido, y te acompañamos después de la implementación.' },
         { q: '¿Por dónde conviene empezar?', a: 'Por el proceso que más horas manuales consume. Lo identificamos juntos en la llamada inicial.' },
-        { q: '¿Cuánto cuesta?', a: 'Depende de cuántos procesos y herramientas haya que conectar. Lo cotizamos a la medida después de una llamada gratis de 20 minutos.' }
+        { q: '¿Cuánto cuesta?', a: 'Desde $700.000 COP (400 USD en Estados Unidos). El valor final depende de cuántos procesos y herramientas haya que conectar. Lo cotizamos a la medida después de una llamada gratis de 20 minutos.' }
       ]
     },
     en: {
@@ -152,7 +152,7 @@ window.GS_PAGES = {
         { q: 'Do I have to change my current tools?', a: 'Not necessarily. We first look to connect what you already use; we only suggest changes when they truly simplify the process.' },
         { q: 'What happens if an automation fails?', a: 'We build them with alerts so an error does not go unnoticed, and we support you after implementation.' },
         { q: 'Where should we start?', a: 'With the process that takes the most manual hours. We identify it together on the first call.' },
-        { q: 'How much does it cost?', a: 'It depends on how many processes and tools need to be connected. We quote it after a free 20-minute call.' }
+        { q: 'How much does it cost?', a: 'Starting at USD 400 (COP 700,000 in Colombia). The final price depends on how many processes and tools need to be connected. We quote it after a free 20-minute call.' }
       ]
     }
   },
@@ -179,7 +179,7 @@ window.GS_PAGES = {
         { q: '¿Qué tipo de asistente de IA pueden hacer?', a: 'Por ejemplo, un asistente que responda las preguntas frecuentes de tus clientes y tome sus datos de contacto, como el que ves en este sitio.' },
         { q: '¿Mis datos quedan seguros?', a: 'Las claves y los datos sensibles se manejan del lado del servidor, nunca en el navegador, y solo se comparten con los proveedores que la herramienta necesita.' },
         { q: '¿Necesito saber programar?', a: 'No. Nosotros construimos y mantenemos la herramienta; tú la usas.' },
-        { q: '¿Cuánto cuesta?', a: 'Depende del alcance del desarrollo. Lo cotizamos a la medida después de una llamada gratis de 20 minutos.' }
+        { q: '¿Cuánto cuesta?', a: 'Desde $700.000 COP (400 USD en Estados Unidos). El valor final depende del alcance del desarrollo. Lo cotizamos a la medida después de una llamada gratis de 20 minutos.' }
       ]
     },
     en: {
@@ -201,7 +201,7 @@ window.GS_PAGES = {
         { q: 'What kind of AI assistant can you build?', a: 'For example, an assistant that answers your customers’ frequent questions and collects their contact details, like the one on this site.' },
         { q: 'Is my data safe?', a: 'Keys and sensitive data are handled on the server, never in the browser, and are only shared with the providers the tool needs.' },
         { q: 'Do I need to know how to code?', a: 'No. We build and maintain the tool; you use it.' },
-        { q: 'How much does it cost?', a: 'It depends on the scope. We quote it after a free 20-minute call.' }
+        { q: 'How much does it cost?', a: 'Starting at USD 400 (COP 700,000 in Colombia). The final price depends on the scope. We quote it after a free 20-minute call.' }
       ]
     }
   },
@@ -232,7 +232,7 @@ window.GS_PAGES = {
         { q: 'Do you work with businesses in any U.S. state?', a: 'We work remotely, so we can serve businesses in different states. On the first call we review where you have sales tax obligations.' },
         { q: 'Can you work with my CPA?', a: 'Yes. We handle the day-to-day bookkeeping and sales tax, and coordinate with your CPA or tax advisor for filings that require them.' },
         { q: 'Can we talk in Spanish?', a: 'Yes. You can work with us entirely in Spanish, in English, or both.' },
-        { q: 'How much does it cost?', a: 'It depends on your transaction volume and how many states you sell in. We quote it after a free 20-minute call.' }
+        { q: 'How much does it cost?', a: 'Our services start at USD 400. The final price depends on your transaction volume and how many states you sell in, and we confirm it after a free 20-minute call.' }
       ]
     },
     es: {
@@ -254,7 +254,7 @@ window.GS_PAGES = {
         { q: '¿Atienden negocios en cualquier estado?', a: 'Trabajamos de forma remota, así que podemos atender negocios en distintos estados. En la primera llamada revisamos dónde tienes obligaciones de sales tax.' },
         { q: '¿Pueden trabajar con mi CPA?', a: 'Sí. Nos encargamos del bookkeeping y del sales tax del día a día, y coordinamos con tu CPA o asesor tributario las declaraciones que lo requieren.' },
         { q: '¿Podemos hablar en español?', a: 'Sí. Puedes trabajar con nosotros completamente en español, en inglés o en ambos.' },
-        { q: '¿Cuánto cuesta?', a: 'Depende del volumen de transacciones y de en cuántos estados vendes. Lo cotizamos a la medida después de una llamada gratis de 20 minutos.' }
+        { q: '¿Cuánto cuesta?', a: 'Nuestros servicios parten desde 400 USD. El valor final depende del volumen de transacciones y de en cuántos estados vendes, y lo confirmamos después de una llamada gratis de 20 minutos.' }
       ]
     }
   }

@@ -14,15 +14,20 @@ const translations = {
       ctaPrimary: 'Agenda una llamada gratis de 20 minutos', ctaSecondary: 'Conoce Nuestros Servicios', scroll: 'Descubre más'
     },
     heroCard: {
-      chip1: 'Contador Público · +12 años', chip2: 'QuickBooks Advanced ProAdvisor', chip3: 'Atención en español e inglés'
+      chip1: 'Contador Público', chip4: 'Especialista en Finanzas', chip2: 'Bases de datos y desarrollos digitales', chip3: 'Máster en Negocios Digitales (en formación)'
     },
     stats: {
-      benefit1: 'Atención directa con un contador senior', benefit2: 'Respuesta en menos de 24 horas',
-      benefit3: 'Servicio en español e inglés', benefit4: 'Colombia y Estados Unidos'
+      benefit1: 'Atención directa con un profesional experto', benefit2: 'Respuesta en menos de 24 horas',
+      benefit3: 'Servicio en español e inglés', benefit4: 'Colombia, Estados Unidos y cualquier parte del mundo'
+    },
+    video: {
+      aria: 'Video: Growing Solutions, outsourcing contable y financiero para pymes',
+      sound: 'Activar sonido'
     },
     servicios: {
       tag: 'Nuestros Servicios', titleL1: 'Soluciones integrales para', titleL2: 'hacer crecer tu negocio',
       subtitle: 'Una base sólida de contabilidad y finanzas, y un acelerador de automatización e inteligencia artificial para que tu empresa crezca sin crecer en trabajo manual.',
+      priceLead: 'Ofrecemos servicios y soluciones desde', priceValue: '$700.000 COP',
       more: 'Ver el servicio',
       baseTag: 'La base',
       baseDesc: 'Contabilidad y finanzas: tus números en orden y bajo control.',
@@ -50,14 +55,16 @@ const translations = {
       }
     },
     about: {
-      tag: 'Quién está detrás',
-      role: 'Contador Público · Especialista en Finanzas · Responsable de Growing Solutions',
-      bio: 'Contador Público con más de 12 años de experiencia en contabilidad corporativa, análisis y gestión financiera en entornos bancarios, corporativos e internacionales. Elaboro estados financieros bajo NIIF/IFRS, presupuestos y proyecciones, y me encargo del cumplimiento tributario. Uso Power BI, SQL y la inteligencia artificial para automatizar reportes y procesos, de modo que las pymes de Colombia y Estados Unidos tengan sus números al día sin un equipo interno.',
+      tag: 'Quién lidera el equipo',
+      role: 'Contador Público · Especialista en Finanzas · Fundador y director de Growing Solutions',
+      bio: 'Contador Público y especialista en Finanzas, con más de 12 años de experiencia en contabilidad corporativa, análisis y gestión financiera en entornos bancarios, corporativos e internacionales. Elaboro estados financieros bajo NIIF/IFRS, presupuestos y proyecciones, y combino ese criterio contable con conocimiento en bases de datos y desarrollos digitales para automatizar reportes y procesos con Power BI, SQL e inteligencia artificial. Actualmente curso un Máster en Negocios Digitales.',
+      team: 'Lidero un equipo de profesionales altamente calificados en contabilidad, finanzas, tecnología e inteligencia artificial. Cada cliente cuenta con mi acompañamiento directo y con el respaldo de especialistas en cada área: la cercanía de un trato personal con la capacidad de un equipo completo, para entregar soluciones precisas, a tiempo y a la medida de cada empresa.',
       credLabel: 'Formación y certificaciones',
       cred1: 'Contador Público — Universidad de San Buenaventura Medellín',
       cred2: 'Especialización en Finanzas — Instituto Tecnológico Metropolitano',
       cred3: 'QuickBooks Online Advanced ProAdvisor — Intuit',
       cred4: 'Diplomado en Bases de Datos e Inteligencia de Negocios (SQL Server)',
+      cred5: 'Máster en Negocios Digitales (en formación)',
       expLabel: 'Trayectoria',
       exp1Role: 'Director Financiero',
       exp1Org: 'Servintegral Multiservicios · Colombia · 2025',
@@ -129,7 +136,7 @@ const translations = {
     footer: {
       tagline: 'Soluciones integrales en contabilidad, finanzas, automatización y tecnología para microempresas y pymes en Colombia y Estados Unidos.',
       servicesHeading: 'Servicios', companyHeading: 'Empresa', contactHeading: 'Contáctanos',
-      linkAutomatizacion: 'Automatización', linkUs: 'Negocios en EE. UU.', country: 'Colombia y Estados Unidos',
+      linkAutomatizacion: 'Automatización', linkUs: 'Negocios en EE. UU.', country: 'Colombia, Estados Unidos y cualquier parte del mundo',
       copyright: '© 2026 Growing Solutions. Todos los derechos reservados.',
       bottomTagline: 'Hecho con dedicación para el crecimiento de tu empresa.',
       privacy: 'Política de Tratamiento de Datos'
@@ -148,7 +155,7 @@ const translations = {
       q2: '¿Cómo empiezo?',
       a2: 'Agenda una llamada gratis de 20 minutos o déjanos tus datos en el formulario. Te respondemos en menos de 24 horas.',
       q3: '¿Cuánto cuestan los servicios?',
-      a3: 'Depende del tamaño de tu empresa, del volumen de transacciones y del alcance. Lo cotizamos a la medida después de la llamada inicial, sin compromiso.',
+      a3: 'Nuestros servicios y soluciones parten desde $700.000 COP (400 USD para empresas en Estados Unidos). El valor final depende del tamaño de tu empresa, del volumen de transacciones y del alcance, y lo confirmamos después de la llamada inicial, sin compromiso.',
       q4: '¿Puedo contratar un solo servicio?',
       a4: 'Sí. Cada servicio se contrata por separado; muchas empresas empiezan por la contabilidad o por automatizar un proceso puntual.',
       q5: '¿Pueden trabajar con mi contador o CPA actual?',
@@ -232,15 +239,20 @@ const translations = {
       ctaPrimary: 'Book a free 20‑minute call', ctaSecondary: 'Discover Our Services', scroll: 'Discover more'
     },
     heroCard: {
-      chip1: 'Public Accountant · 12+ years', chip2: 'QuickBooks Advanced ProAdvisor', chip3: 'Service in Spanish and English'
+      chip1: 'Public Accountant', chip4: 'Finance Specialist', chip2: 'Databases and digital development', chip3: 'Master\'s in Digital Business (in progress)'
     },
     stats: {
-      benefit1: 'Direct access to a senior accountant', benefit2: 'Response in under 24 hours',
-      benefit3: 'Service in Spanish and English', benefit4: 'Colombia and the United States'
+      benefit1: 'Direct access to an expert professional', benefit2: 'Response in under 24 hours',
+      benefit3: 'Service in Spanish and English', benefit4: 'Colombia, the United States and anywhere in the world'
+    },
+    video: {
+      aria: 'Video: Growing Solutions, accounting and finance outsourcing for small businesses',
+      sound: 'Turn sound on'
     },
     servicios: {
       tag: 'Our Services', titleL1: 'Complete solutions to', titleL2: 'grow your business',
       subtitle: 'A solid foundation of accounting and finance, plus an accelerator of automation and artificial intelligence so your business grows without growing its manual work.',
+      priceLead: 'We offer services and solutions starting at', priceValue: 'USD 400',
       more: 'See the service',
       baseTag: 'The foundation',
       baseDesc: 'Accounting and finance: your numbers in order and under control.',
@@ -268,14 +280,16 @@ const translations = {
       }
     },
     about: {
-      tag: 'Who\'s behind it',
-      role: 'Public Accountant (Colombia) · Finance Specialist · Head of Growing Solutions',
-      bio: 'Public Accountant with more than 12 years of experience in corporate accounting, financial analysis and financial management in banking, corporate and international environments. I prepare financial statements under IFRS, budgets and projections, and handle tax compliance. I use Power BI, SQL and artificial intelligence to automate reports and processes, so small businesses in Colombia and the U.S. keep their numbers up to date without an in-house team.',
+      tag: 'Who leads the team',
+      role: 'Public Accountant (Colombia) · Finance Specialist · Founder and Director of Growing Solutions',
+      bio: 'Public Accountant and Finance specialist with more than 12 years of experience in corporate accounting, financial analysis and financial management in banking, corporate and international environments. I prepare financial statements under IFRS, budgets and projections, and combine that accounting judgment with knowledge of databases and digital development to automate reports and processes with Power BI, SQL and artificial intelligence. I am currently pursuing a Master\'s in Digital Business.',
+      team: 'I lead a team of highly qualified professionals in accounting, finance, technology and artificial intelligence. Every client gets my direct involvement and the backing of specialists in each area: the closeness of a personal relationship with the capacity of a full team, to deliver accurate, on-time solutions tailored to each business.',
       credLabel: 'Education and certifications',
       cred1: 'Public Accounting degree — Universidad de San Buenaventura Medellín',
       cred2: 'Graduate specialization in Finance — Instituto Tecnológico Metropolitano',
       cred3: 'QuickBooks Online Advanced ProAdvisor — Intuit',
       cred4: 'Certificate in Databases and Business Intelligence (SQL Server)',
+      cred5: 'Master\'s in Digital Business (in progress)',
       expLabel: 'Experience',
       exp1Role: 'Chief Financial Officer',
       exp1Org: 'Servintegral Multiservicios · Colombia · 2025',
@@ -347,7 +361,7 @@ const translations = {
     footer: {
       tagline: 'Comprehensive accounting, finance, automation and technology solutions for microbusinesses and SMEs in Colombia and the United States.',
       servicesHeading: 'Services', companyHeading: 'Company', contactHeading: 'Contact Us',
-      linkAutomatizacion: 'Automation', linkUs: 'U.S. businesses', country: 'Colombia and the United States',
+      linkAutomatizacion: 'Automation', linkUs: 'U.S. businesses', country: 'Colombia, the United States and anywhere in the world',
       copyright: '© 2026 Growing Solutions. All rights reserved.',
       bottomTagline: "Made with dedication for your business's growth.",
       privacy: 'Personal Data Processing Policy'
@@ -366,7 +380,7 @@ const translations = {
       q2: 'How do I get started?',
       a2: 'Book a free 20-minute call or leave your details in the form. We reply within 24 hours.',
       q3: 'How much do your services cost?',
-      a3: 'It depends on your company size, transaction volume and scope. We quote it after the first call, with no obligation.',
+      a3: 'Our services and solutions start at USD 400 (COP 700,000 for businesses in Colombia). The final price depends on your company size, transaction volume and scope, and we confirm it after the first call, with no obligation.',
       q4: 'Can I hire just one service?',
       a4: 'Yes. Each service is hired separately; many businesses start with accounting or by automating one specific process.',
       q5: 'Can you work with my current accountant or CPA?',
@@ -498,6 +512,65 @@ function setLanguage(lang) {
     b.classList.toggle('active', active);
     b.setAttribute('aria-pressed', String(active));
   });
+
+  syncPromoVideo();
+}
+
+// ── VIDEO DE PRESENTACIÓN ──
+// Un archivo por idioma. Los navegadores solo permiten la reproducción
+// automática sin sonido, así que arranca silenciado al verse en pantalla y el
+// botón "Activar sonido" lo enciende con un clic.
+const promoVideo = document.getElementById('promoVideo');
+const promoSound = document.getElementById('promoVideoSound');
+
+function syncPromoVideo() {
+  if (!promoVideo) return;
+  const src = promoVideo.dataset['src' + (currentLang === 'en' ? 'En' : 'Es')];
+  if (promoVideo.getAttribute('src') === src) return;
+  const wasPlaying = !promoVideo.paused;
+  promoVideo.poster = promoVideo.dataset['poster' + (currentLang === 'en' ? 'En' : 'Es')];
+  // Sin src hasta que se vea: preload="none" no evita descargar si ya hay fuente
+  if (promoVideo.hasAttribute('src') || wasPlaying) {
+    promoVideo.src = src;
+    if (wasPlaying) promoVideo.play().catch(() => {});
+  } else {
+    promoVideo.dataset.pending = src;
+  }
+}
+
+if (promoVideo) {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const ensureSrc = () => {
+    if (promoVideo.dataset.pending) {
+      promoVideo.src = promoVideo.dataset.pending;
+      delete promoVideo.dataset.pending;
+    }
+  };
+  promoVideo.addEventListener('play', ensureSrc);
+
+  if ('IntersectionObserver' in window && !reduceMotion) {
+    new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          ensureSrc();
+          promoVideo.play().catch(() => {});
+        } else if (!promoVideo.paused) {
+          promoVideo.pause();
+        }
+      });
+    }, { threshold: 0.5 }).observe(promoVideo);
+  }
+
+  if (promoSound) {
+    promoSound.addEventListener('click', () => {
+      ensureSrc();
+      promoVideo.muted = false;
+      promoVideo.play().catch(() => {});
+    });
+    promoVideo.addEventListener('volumechange', () => {
+      promoSound.hidden = !promoVideo.muted;
+    });
+  }
 }
 
 document.querySelectorAll('.lang-btn').forEach(b => {
