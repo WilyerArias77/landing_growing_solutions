@@ -19,26 +19,31 @@ const translations = {
     },
     servicios: {
       tag: 'Nuestros Servicios', titleL1: 'Soluciones integrales para', titleL2: 'hacer crecer tu negocio',
-      subtitle: 'Cuatro líneas de servicio diseñadas para que tu empresa opere de forma profesional, eficiente y escalable.',
+      subtitle: 'Una base sólida de contabilidad y finanzas, y un acelerador de automatización e inteligencia artificial para que tu empresa crezca sin crecer en trabajo manual.',
+      more: 'Ver el servicio',
+      baseTag: 'La base',
+      baseDesc: 'Contabilidad y finanzas: tus números en orden y bajo control.',
+      accelTag: 'El acelerador',
+      accelDesc: 'Automatización e inteligencia artificial: que la operación avance sola.',
       card1: {
         title: 'Contabilidad',
-        desc: 'Mantén tus números en orden con un servicio contable confiable. Nos encargamos de la gestión contable integral para que tomes decisiones basadas en información real y actualizada.',
-        li1: 'Registros contables diarios', li2: 'Conciliaciones Bancarias', li3: 'Impuestos', li4: 'Cierres contables', li5: 'Estados financieros'
+        desc: 'Tus números en orden, todos los meses. Nos encargamos de la contabilidad completa para que decidas con información real y actualizada.',
+        li1: 'Tu contabilidad al día cada mes, sin atrasos', li2: 'Tus bancos conciliados, sin diferencias sin explicar', li3: 'Tus impuestos presentados a tiempo, sin sanciones', li4: 'Estados financieros listos para tu banco o tus socios'
       },
       card2: {
         title: 'Servicios Financieros',
-        desc: 'Obtén claridad sobre la salud de tu negocio. Te ayudamos con análisis financiero, planeación de flujo de caja, presupuestos e indicadores clave para un control total de tus finanzas.',
-        li1: 'Flujo de caja', li2: 'Presupuestos y proyecciones', li3: 'Indicadores KPI', li4: 'Análisis financiero'
+        desc: 'Claridad sobre la salud de tu negocio: sabes cuánta caja tienes, cuánta vas a tener y en qué se está yendo.',
+        li1: 'Tu flujo de caja actualizado cada lunes, sin tocar Excel', li2: 'Sabes cuánto puedes gastar antes de gastarlo', li3: 'Un presupuesto realista para medir el año', li4: 'Indicadores claros para decidir, no solo reportes'
       },
       card3: {
         title: 'Automatización de Procesos',
-        desc: 'Elimina tareas repetitivas y ahorra tiempo. Diseñamos flujos de trabajo automatizados que conectan tus herramientas, optimizan tu operación y liberan a tu equipo para lo importante.',
-        li1: 'Workflows', li2: 'Integraciones', li3: 'Procesos digitales', li4: 'Eficiencia'
+        desc: 'Quitamos el trabajo repetitivo: conectamos las herramientas que ya usas para que la información se mueva sola.',
+        li1: 'Tus facturas entran solas a la contabilidad', li2: 'Tus herramientas conectadas: cada dato se escribe una sola vez', li3: 'Recordatorios y reportes que salen solos', li4: 'Menos horas en tareas que no necesitan a una persona'
       },
       card4: {
-        title: 'Desarrollos a la Medida',
-        desc: 'Soluciones de software personalizadas para tu negocio. Desde aplicaciones web hasta sistemas internos, construimos la tecnología que necesitas sin que tengas un equipo de desarrollo propio.',
-        li1: 'Aplicaciones web', li2: 'Sistemas a medida', li3: 'Dashboards', li4: 'APIs'
+        title: 'Desarrollos con IA',
+        desc: 'Herramientas a la medida con inteligencia artificial: tableros, aplicaciones internas y asistentes hechos para tu negocio, sin montar un equipo de desarrollo.',
+        li1: 'Un tablero con tus números clave, siempre actualizado', li2: 'Un asistente de IA que responde a tus clientes', li3: 'Aplicaciones internas hechas a tu forma de trabajar', li4: 'Tus sistemas conectados entre sí'
       }
     },
     about: {
@@ -94,7 +99,7 @@ const translations = {
     common: { optional: '(opcional)' },
     service: {
       placeholder: '¿En qué podemos ayudarte?', opt1: 'Servicios Contables', opt2: 'Servicios Financieros',
-      opt3: 'Automatización de Procesos', opt4: 'Desarrollos a la Medida'
+      opt3: 'Automatización de Procesos', opt4: 'Desarrollos con IA'
     },
     country: { placeholder: 'Selecciona tu país', co: 'Colombia', us: 'Estados Unidos', other: 'Otro' },
     footer: {
@@ -137,26 +142,31 @@ const translations = {
     },
     servicios: {
       tag: 'Our Services', titleL1: 'Complete solutions to', titleL2: 'grow your business',
-      subtitle: 'Four service lines designed so your business operates professionally, efficiently and at scale.',
+      subtitle: 'A solid foundation of accounting and finance, plus an accelerator of automation and artificial intelligence so your business grows without growing its manual work.',
+      more: 'See the service',
+      baseTag: 'The foundation',
+      baseDesc: 'Accounting and finance: your numbers in order and under control.',
+      accelTag: 'The accelerator',
+      accelDesc: 'Automation and artificial intelligence: operations that move on their own.',
       card1: {
         title: 'Accounting',
-        desc: 'Keep your numbers in order with a reliable accounting service. We handle full accounting management so you make decisions based on real, up-to-date information.',
-        li1: 'Daily bookkeeping', li2: 'Bank reconciliations', li3: 'Taxes', li4: 'Financial closings', li5: 'Financial statements'
+        desc: 'Your numbers in order, every month. We handle your full bookkeeping so you decide with real, up-to-date information.',
+        li1: 'Your books closed every month, no backlog', li2: 'Your bank accounts reconciled, no unexplained differences', li3: 'Your taxes filed on time, no penalties', li4: 'Financial statements ready for your bank or partners'
       },
       card2: {
         title: 'Financial Services',
-        desc: 'Get clarity on the health of your business. We help you with financial analysis, cash flow planning, budgets and key indicators for full control of your finances.',
-        li1: 'Cash flow', li2: 'Budgets and projections', li3: 'KPI indicators', li4: 'Financial analysis'
+        desc: 'Clarity on the health of your business: you know how much cash you have, how much you will have and where it is going.',
+        li1: 'Your cash flow updated every Monday, no Excel needed', li2: 'Know what you can spend before you spend it', li3: 'A realistic budget to measure your year', li4: 'Clear indicators to decide, not just reports'
       },
       card3: {
         title: 'Process Automation',
-        desc: 'Eliminate repetitive tasks and save time. We design automated workflows that connect your tools, optimize your operations and free your team for what matters.',
-        li1: 'Workflows', li2: 'Integrations', li3: 'Digital processes', li4: 'Efficiency'
+        desc: 'We remove the repetitive work: we connect the tools you already use so information moves on its own.',
+        li1: 'Your invoices flow into your books automatically', li2: 'Your tools connected: each piece of data is entered once', li3: 'Reminders and reports that go out on their own', li4: 'Fewer hours on tasks that do not need a person'
       },
       card4: {
-        title: 'Custom Development',
-        desc: 'Custom software solutions for your business. From web applications to internal systems, we build the technology you need without an in-house development team.',
-        li1: 'Web applications', li2: 'Custom systems', li3: 'Dashboards', li4: 'APIs'
+        title: 'AI-Powered Development',
+        desc: 'Custom tools powered by artificial intelligence: dashboards, internal apps and assistants built for your business, with no development team to hire.',
+        li1: 'A dashboard with your key numbers, always up to date', li2: 'An AI assistant that answers your customers', li3: 'Internal apps built around the way you work', li4: 'Your systems connected to each other'
       }
     },
     about: {
@@ -212,7 +222,7 @@ const translations = {
     common: { optional: '(optional)' },
     service: {
       placeholder: 'How can we help you?', opt1: 'Accounting Services', opt2: 'Financial Services',
-      opt3: 'Process Automation', opt4: 'Custom Development'
+      opt3: 'Process Automation', opt4: 'AI-Powered Development'
     },
     country: { placeholder: 'Select your country', co: 'Colombia', us: 'United States', other: 'Other' },
     footer: {

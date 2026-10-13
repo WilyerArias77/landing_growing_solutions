@@ -44,7 +44,7 @@ herramientas que la empresa ya usa y liberan al equipo para lo importante.
 - Procesos digitales (eliminar papel y planillas manuales)
 - Eficiencia operativa
 
-### 4. Desarrollos a la Medida
+### 4. Desarrollos con IA (en el formulario y el chat: "Desarrollos a la Medida")
 Software personalizado, sin que el cliente monte un equipo de desarrollo propio.
 - Aplicaciones web
 - Sistemas internos a la medida

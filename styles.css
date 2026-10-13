@@ -724,6 +724,48 @@ nav .container {
   gap: 24px;
 }
 
+.service-group + .service-group {
+  margin-top: 48px;
+}
+
+.service-group-head {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.service-group-tag {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+.service-group-tag-accent {
+  color: #00A896;
+}
+
+.service-group-head p {
+  color: var(--muted);
+  font-size: 0.98rem;
+}
+
+.service-more {
+  display: inline-block;
+  margin-top: 22px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.service-more:hover {
+  text-decoration: underline;
+}
+
 .service-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -841,7 +883,7 @@ nav .container {
 
 .service-list li {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
   font-size: 0.88rem;
   color: var(--text);
@@ -855,6 +897,7 @@ nav .container {
   min-width: 6px;
   border-radius: 50%;
   background: var(--accent);
+  margin-top: 0.55em;
 }
 
 /* ── ABOUT ── */
