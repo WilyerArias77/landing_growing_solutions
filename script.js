@@ -126,6 +126,13 @@ const translations = {
       tag: 'Casos de éxito', title: 'Resultados con empresas reales',
       situacion: 'La situación', hicimos: 'Qué hicimos', resultado: 'El resultado'
     },
+    recursos: {
+      tag: 'Recursos gratis', title: 'Herramientas gratis para ordenar las finanzas de tu pyme',
+      intro: 'Déjanos tu nombre y correo y descarga la plantilla al instante. También te la enviamos por correo.',
+      submit: 'Descargar gratis', download: 'Descargar',
+      successTitle: '¡Listo! Tu descarga está aquí', successText: 'También te enviamos el enlace a tu correo.',
+      soon: 'Muy pronto publicaremos aquí plantillas y guías gratuitas. Mientras tanto, agenda una llamada o escríbenos por WhatsApp.'
+    },
     pagina: {
       back: 'Todos los servicios',
       problemaTitle: 'El problema', solucionTitle: 'Cómo lo resolvemos',
@@ -265,6 +272,13 @@ const translations = {
     casos: {
       tag: 'Success stories', title: 'Results with real businesses',
       situacion: 'The situation', hicimos: 'What we did', resultado: 'The result'
+    },
+    recursos: {
+      tag: 'Free resources', title: 'Free tools to get your small business finances in order',
+      intro: 'Leave your name and email and download the template instantly. We also send it to your inbox.',
+      submit: 'Download for free', download: 'Download',
+      successTitle: 'Done! Your download is here', successText: 'We also sent the link to your email.',
+      soon: 'Free templates and guides are coming here soon. In the meantime, book a call or message us on WhatsApp.'
     },
     pagina: {
       back: 'All services',
@@ -479,6 +493,14 @@ function renderCases() {
 // ── PÁGINAS DE SERVICIO ──
 // <body data-page="contabilidad"> toma sus textos de content/paginas.js.
 function registerPageTexts() {
+  if (document.body.dataset.page === 'recursos') {
+    // Mismo filtro que el generador: solo recursos con archivo
+    const items = (window.GS_RECURSOS || []).filter(r => r.archivo);
+    ['es', 'en'].forEach(lang => {
+      translations[lang].page = { items: items.map(r => ({ titulo: r.titulo[lang], descripcion: r.descripcion[lang] })) };
+    });
+    return;
+  }
   const page = window.GS_PAGES && window.GS_PAGES[document.body.dataset.page];
   if (!page) return;
   translations.es.page = page.es;
@@ -712,6 +734,58 @@ if (leadForm) leadForm.addEventListener('submit', async (e) => {
   } finally {
     submitBtn.disabled = false;
     submitBtn.textContent = t('form.submit');
+  }
+});
+
+// ── DESCARGA DE RECURSOS (/recursos) ──
+const resourceForm = document.getElementById('resourceForm');
+if (resourceForm) resourceForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const status = document.getElementById('r-status');
+  const button = document.getElementById('r-submit');
+  const say = (type, msg) => { status.className = 'form-status ' + type; status.textContent = msg; };
+
+  const name = clamp(document.getElementById('r-name').value, 80);
+  const email = clamp(document.getElementById('r-email').value, 120);
+  const resource = (resourceForm.querySelector('input[name="resource"]:checked') || {}).value;
+  if (!name || !email || !resource) return say('error', t('form.errRequired'));
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return say('error', t('form.errEmail'));
+  if (!document.getElementById('r-consent').checked) return say('error', t('form.errConsent'));
+
+  button.disabled = true;
+  button.textContent = t('form.sending');
+  try {
+    const res = await fetch('/api/recurso', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name, email, resource, lang: currentLang, consent: true,
+        companyFax: document.getElementById('r-hp').value
+      })
+    });
+    const data = await res.json().catch(() => ({}));
+    if (res.status === 201 && data.url) {
+      track('generate_lead', { lead_type: 'recurso', resource });
+      const link = document.getElementById('r-download');
+      link.href = data.url;
+      resourceForm.hidden = true;
+      const panel = document.getElementById('r-success');
+      panel.hidden = false;
+      panel.focus();
+    } else if (res.status === 422) {
+      say('error', t('form.errConsent'));
+    } else if (res.status === 429) {
+      say('error', t('form.errRateLimit'));
+    } else if (res.status === 400) {
+      say('error', t('form.errRequired'));
+    } else {
+      say('error', t('form.errNetwork'));
+    }
+  } catch {
+    say('error', t('form.errNetwork'));
+  } finally {
+    button.disabled = false;
+    button.textContent = t('recursos.submit');
   }
 });
 

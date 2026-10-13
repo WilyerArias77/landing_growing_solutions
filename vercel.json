@@ -52,6 +52,10 @@
     },
     "api/gsc.js": {
       "maxDuration": 5
+    },
+    "api/recurso.js": {
+      "includeFiles": "content/recursos.js",
+      "maxDuration": 10
     }
   },
   "redirects": [

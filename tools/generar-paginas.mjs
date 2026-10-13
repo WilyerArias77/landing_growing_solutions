@@ -291,3 +291,122 @@ for (const [slug, page] of Object.entries(PAGES)) {
   writeFileSync(file, html.replace(/\r?\n/g, '\n'));
   console.log('generada', rel);
 }
+
+// ── /recursos ──
+// Lista los recursos de content/recursos.js que tienen archivo. Sin ninguno,
+// la página dice "Muy pronto", no muestra formulario y no se indexa.
+const resSandbox = { window: {} };
+vm.runInNewContext(read('content/recursos.js'), resSandbox);
+const RESOURCES = (resSandbox.window.GS_RECURSOS || []).filter((r) => typeof r.archivo === 'string' && r.archivo);
+
+function renderRecursos() {
+  const url = `${SITE}/recursos`;
+  const published = RESOURCES.length > 0;
+  const texts = { items: RESOURCES.map((r) => ({ titulo: r.titulo.es, descripcion: r.descripcion.es })) };
+  const cards = RESOURCES.map((r, n) => `
+          <label class="resource-card">
+            <input type="radio" name="resource" value="${esc(r.id)}"${n === 0 ? ' checked' : ''} />
+            <span class="resource-body">
+              <strong data-i18n="page.items.${n}.titulo">${esc(r.titulo.es)}</strong>
+              <span data-i18n="page.items.${n}.descripcion">${esc(r.descripcion.es)}</span>
+            </span>
+          </label>`).join('');
+
+  const body = published ? `
+        <form class="lead-form resource-form" id="resourceForm" novalidate>
+          <div class="resource-list">${cards}
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="r-name"><span data-i18n="form.labelName">Nombre</span><span class="required">*</span></label>
+              <input type="text" id="r-name" name="name" autocomplete="name" maxlength="80" required data-i18n-placeholder="form.phName" />
+            </div>
+            <div class="form-group">
+              <label for="r-email"><span data-i18n="form.labelEmail">Correo electrónico</span><span class="required">*</span></label>
+              <input type="email" id="r-email" name="email" autocomplete="email" maxlength="120" required data-i18n-placeholder="form.phEmail" />
+            </div>
+            <div class="hp-field" aria-hidden="true">
+              <label for="r-hp">No rellenar</label>
+              <input type="text" id="r-hp" name="companyFax" tabindex="-1" autocomplete="off" />
+            </div>
+          </div>
+          <div class="consent-row">
+            <input type="checkbox" id="r-consent" name="consent" />
+            <label for="r-consent">
+              <span data-i18n="form.consent">Autorizo el tratamiento de mis datos personales para que Growing Solutions me contacte y me envíe información sobre sus servicios, conforme a la</span>
+              <a href="/politica-datos" target="_blank" rel="noopener" data-i18n="form.consentLink">Política de Tratamiento de Datos</a>.<span class="required">*</span>
+            </label>
+          </div>
+          <div class="form-submit-row">
+            <button type="submit" class="btn-submit" id="r-submit" data-i18n="recursos.submit">Descargar gratis</button>
+          </div>
+          <div class="form-status" id="r-status" role="alert"></div>
+        </form>
+        <div class="form-success" id="r-success" tabindex="-1" hidden>
+          <h3 data-i18n="recursos.successTitle">¡Listo! Tu descarga está aquí</h3>
+          <p data-i18n="recursos.successText">También te enviamos el enlace a tu correo.</p>
+          <div class="cta-actions">
+            <a href="#" class="btn btn-green" id="r-download" target="_blank" rel="noopener noreferrer" data-i18n="recursos.download">Descargar</a>
+            <a href="/#contacto" class="btn btn-ghost" data-booking data-i18n="hero.ctaPrimary">Agenda una llamada gratis de 20 minutos</a>
+          </div>
+        </div>` : `
+        <p class="resource-soon" data-i18n="recursos.soon">Muy pronto publicaremos aquí plantillas y guías gratuitas. Mientras tanto, agenda una llamada o escríbenos por WhatsApp.</p>
+        ${actions({})}`;
+
+  const html = `<!DOCTYPE html>
+<!-- Generado por tools/generar-paginas.mjs desde content/recursos.js. No editar a mano. -->
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recursos gratis para pymes | Growing Solutions</title>
+  <meta name="description" content="Plantillas y guías gratuitas de contabilidad y finanzas para pymes en Colombia y Estados Unidos." />${published ? `
+  <link rel="canonical" href="${url}" />
+  <link rel="alternate" hreflang="es" href="${url}" />
+  <link rel="alternate" hreflang="en" href="${url}?lang=en" />
+  <link rel="alternate" hreflang="x-default" href="${url}" />` : `
+  <meta name="robots" content="noindex" />`}
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/chat.css" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+
+<body data-page="recursos" data-default-lang="es">
+
+${nav}
+
+  <main class="service-page">
+    <section class="sp-hero">
+      <div class="container sp-narrow">
+        <div class="section-tag" data-i18n="recursos.tag">Recursos gratis</div>
+        <h1 data-i18n="recursos.title">Herramientas gratis para ordenar las finanzas de tu pyme</h1>
+${published ? '        <p class="sp-intro" data-i18n="recursos.intro">Déjanos tu nombre y correo y descarga la plantilla al instante. También te la enviamos por correo.</p>
+' : ''}${body}
+      </div>
+    </section>
+  </main>
+
+${footer}
+
+${floating}
+
+${cookies}
+
+  <script src="/content/recursos.js"></script>
+  <script src="/script.js"></script>
+  <script src="/analytics.js"></script>
+  <script src="/chat.js"></script>
+</body>
+
+</html>
+`;
+  writeFileSync(join(ROOT, 'recursos.html'), localize(html, 'es', texts).replace(/\r?\n/g, '\n'));
+  console.log('generada', 'recursos.html', published ? `(${RESOURCES.length} recurso/s)` : '(sin recursos: "Muy pronto", noindex)');
+}
+renderRecursos();
