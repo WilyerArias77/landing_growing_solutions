@@ -353,6 +353,12 @@ function renderRecursos() {
         <p class="resource-soon" data-i18n="recursos.soon">Muy pronto publicaremos aquí plantillas y guías gratuitas. Mientras tanto, agenda una llamada o escríbenos por WhatsApp.</p>
         ${actions({})}`;
 
+  // La invitación a descargar solo tiene sentido si hay algo que descargar
+  const intro = published
+    ? '        <p class="sp-intro" data-i18n="recursos.intro">Déjanos tu nombre y correo y descarga la plantilla al instante. También te la enviamos por correo.</p>
+'
+    : '';
+
   const html = `<!DOCTYPE html>
 <!-- Generado por tools/generar-paginas.mjs desde content/recursos.js. No editar a mano. -->
 <html lang="es">
@@ -386,8 +392,7 @@ ${nav}
       <div class="container sp-narrow">
         <div class="section-tag" data-i18n="recursos.tag">Recursos gratis</div>
         <h1 data-i18n="recursos.title">Herramientas gratis para ordenar las finanzas de tu pyme</h1>
-${published ? '        <p class="sp-intro" data-i18n="recursos.intro">Déjanos tu nombre y correo y descarga la plantilla al instante. También te la enviamos por correo.</p>
-' : ''}${body}
+${intro}${body}
       </div>
     </section>
   </main>
