@@ -104,6 +104,10 @@
   ],
   "rewrites": [
     {
+      "source": "/:file(google[0-9a-f]+)",
+      "destination": "/api/gsc?file=:file.html"
+    },
+    {
       "source": "/:file(google[0-9a-f]+\\.html)",
       "destination": "/api/gsc?file=:file"
     }
