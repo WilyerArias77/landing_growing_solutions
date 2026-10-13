@@ -13,6 +13,9 @@ const translations = {
       subtitle: 'Contabilidad, finanzas e inteligencia artificial para pymes en Colombia y Estados Unidos, a cargo de un contador senior que también automatiza.',
       ctaPrimary: 'Agenda una llamada gratis de 20 minutos', ctaSecondary: 'Conoce Nuestros Servicios', scroll: 'Descubre más'
     },
+    heroCard: {
+      chip1: 'Contador Público · +12 años', chip2: 'QuickBooks Advanced ProAdvisor', chip3: 'Atención en español e inglés'
+    },
     stats: {
       benefit1: 'Atención directa con un contador senior', benefit2: 'Respuesta en menos de 24 horas',
       benefit3: 'Servicio en español e inglés', benefit4: 'Colombia y Estados Unidos'
@@ -194,6 +197,9 @@ const translations = {
       titleL1: 'Your books up to date and your processes', titleHighlight: 'on autopilot', titleL2: '— no in-house team required',
       subtitle: 'Accounting, finance and AI for small businesses in Colombia and the U.S., led by a senior accountant who also builds automations.',
       ctaPrimary: 'Book a free 20‑minute call', ctaSecondary: 'Discover Our Services', scroll: 'Discover more'
+    },
+    heroCard: {
+      chip1: 'Public Accountant · 12+ years', chip2: 'QuickBooks Advanced ProAdvisor', chip3: 'Service in Spanish and English'
     },
     stats: {
       benefit1: 'Direct access to a senior accountant', benefit2: 'Response in under 24 hours',

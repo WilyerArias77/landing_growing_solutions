@@ -2401,3 +2401,288 @@ section[hidden],
 .faq-home {
   margin: 0 auto;
 }
+
+/* ════════════════════════════════════════════════════════════════
+   AJUSTES VISUALES 2026-10
+   Capa sobre los estilos anteriores (se puede retirar como bloque).
+   ════════════════════════════════════════════════════════════════ */
+
+:root {
+  --navy: #0b1640;
+  --navy-2: #121f52;
+  --teal: #00A896;
+  --radius-pill: 999px;
+}
+
+/* Títulos y párrafos que cortan mejor las líneas */
+h1, h2, h3 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* Los anclas no quedan tapadas por el menú fijo */
+section[id] {
+  scroll-margin-top: 84px;
+}
+
+/* Foco visible para navegación con teclado */
+:focus-visible {
+  outline: 3px solid var(--accent-light);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Botones en píldora */
+.btn,
+.btn-submit {
+  border-radius: var(--radius-pill);
+}
+
+.hero-actions .btn {
+  border-radius: var(--radius-pill);
+}
+
+/* ── Hero en dos columnas ── */
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+  gap: 56px;
+  align-items: center;
+}
+
+.hero .hero-content {
+  max-width: none;
+}
+
+.hero h1 {
+  font-size: clamp(2.2rem, 4.2vw, 3.6rem);
+}
+
+.hero-visual {
+  position: relative;
+  justify-self: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+.hero-photo {
+  position: relative;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 30px 70px rgba(11, 22, 64, 0.22);
+}
+
+.hero-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+  background: linear-gradient(180deg, transparent 60%, rgba(11, 22, 64, 0.25));
+  pointer-events: none;
+}
+
+.hero-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.hero-chip {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 10px 30px rgba(11, 22, 64, 0.14);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.hero-chip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--teal);
+  box-shadow: 0 0 0 4px rgba(0, 168, 150, 0.18);
+}
+
+.hero-chip-1 {
+  top: 28px;
+  left: -40px;
+}
+
+.hero-chip-2 {
+  top: 46%;
+  right: -36px;
+}
+
+.hero-chip-2 .hero-chip-dot {
+  background: var(--primary);
+  box-shadow: 0 0 0 4px rgba(13, 60, 255, 0.15);
+}
+
+.hero-chip-3 {
+  bottom: 32px;
+  left: -28px;
+}
+
+/* ── Tarjetas: borde degradado sutil al pasar el cursor ── */
+.service-card,
+.sp-card,
+.plan-card {
+  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+}
+
+.service-card:hover,
+.sp-card:hover,
+.plan-card:hover {
+  border-color: transparent;
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    linear-gradient(135deg, rgba(13, 60, 255, 0.55), rgba(0, 168, 150, 0.55)) border-box;
+  box-shadow: 0 24px 48px rgba(11, 22, 64, 0.10);
+}
+
+.service-icon {
+  background: linear-gradient(135deg, rgba(13, 60, 255, 0.12), rgba(0, 168, 150, 0.12)) !important;
+}
+
+/* ── Metodología en banda oscura (ritmo visual entre secciones claras) ── */
+#metodologia {
+  background:
+    radial-gradient(ellipse at 15% 0%, rgba(13, 60, 255, 0.35) 0%, transparent 55%),
+    radial-gradient(ellipse at 90% 100%, rgba(0, 168, 150, 0.22) 0%, transparent 50%),
+    var(--navy);
+  color: #e6e9f5;
+}
+
+#metodologia .section-header h2,
+#metodologia .step h3 {
+  color: #ffffff;
+}
+
+#metodologia .section-header h2 span[style] {
+  color: #8fa6ff !important;
+}
+
+#metodologia .section-header p,
+#metodologia .step p {
+  color: #aab3d6;
+}
+
+#metodologia .section-tag {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #c9d3ff;
+}
+
+#metodologia .step .step-num {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(143, 166, 255, 0.45) !important;
+  color: #ffffff !important;
+}
+
+#metodologia .steps-grid::before {
+  opacity: 0.5;
+}
+
+/* ── Franja de beneficios más ligera ── */
+.stats-bar {
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+}
+
+/* ── Preguntas frecuentes: estado abierto destacado ── */
+.faq-item[open] {
+  border-color: rgba(13, 60, 255, 0.35);
+  box-shadow: 0 10px 28px rgba(13, 60, 255, 0.08);
+}
+
+@media (max-width: 960px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .hero-visual {
+    max-width: 320px;
+  }
+
+  .hero-chip-1 {
+    left: -16px;
+  }
+
+  .hero-chip-2 {
+    right: -16px;
+  }
+
+  .hero-chip-3 {
+    left: -10px;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-visual {
+    max-width: 260px;
+  }
+
+  .hero-chip {
+    font-size: 0.74rem;
+    padding: 8px 12px;
+  }
+}
+
+/* ── Movimiento reducido: sin partículas, órbitas ni rebotes ── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .particles,
+  .orb {
+    display: none;
+  }
+
+  .fade-in {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-badge {
+  font-size: 0.84rem;
+  padding: 8px 18px;
+  border-radius: 16px;
+  line-height: 1.5;
+}
+
+.hero-actions .btn {
+  padding: 16px 28px;
+  font-size: 0.97rem;
+}
+
+@media (min-width: 961px) {
+  .hero-grid {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.6fr);
+    gap: 64px;
+  }
+}
