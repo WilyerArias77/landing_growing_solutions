@@ -355,8 +355,7 @@ function renderRecursos() {
 
   // La invitación a descargar solo tiene sentido si hay algo que descargar
   const intro = published
-    ? '        <p class="sp-intro" data-i18n="recursos.intro">Déjanos tu nombre y correo y descarga la plantilla al instante. También te la enviamos por correo.</p>
-'
+    ? '        <p class="sp-intro" data-i18n="recursos.intro">Déjanos tu nombre y correo y descarga la plantilla al instante. También te la enviamos por correo.</p>\n'
     : '';
 
   const html = `<!DOCTYPE html>
