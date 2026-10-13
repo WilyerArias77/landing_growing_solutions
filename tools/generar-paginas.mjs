@@ -1,0 +1,247 @@
+// Genera las páginas de servicio estáticas a partir de content/paginas.js.
+//
+//   npm run paginas
+//
+// El sitio no tiene paso de build en Vercel: este script se corre en local y
+// los .html generados se suben al repo. El menú, el pie, los botones de
+// WhatsApp y el aviso de cookies se copian de index.html, así que cualquier
+// cambio ahí llega a todas las páginas al volver a generarlas.
+
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import vm from 'node:vm';
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
+const SITE = 'https://www.growingsolutions.online';
+
+const read = (f) => readFileSync(join(ROOT, f), 'utf8');
+
+// content/paginas.js define window.GS_PAGES: se evalúa en un contexto aislado
+const sandbox = { window: {} };
+vm.runInNewContext(read('content/paginas.js'), sandbox);
+const PAGES = sandbox.window.GS_PAGES;
+
+const index = read('index.html');
+
+/** Recorta index.html entre dos marcadores (el final no se incluye). */
+function slice(start, end) {
+  const i = index.indexOf(start);
+  const j = index.indexOf(end, i);
+  if (i < 0 || j < 0) throw new Error(`No se encontró el bloque ${start}`);
+  return index.slice(i, j).trimEnd();
+}
+
+// Los anclas de la portada (#servicios) apuntan a la portada desde otras páginas
+const toHome = (html) => html.replace(/href="#([a-z-]+)"/g, 'href="/#$1"');
+
+const nav = toHome(slice('  <!-- ── NAV ── -->', '  <!-- ── HERO ── -->'));
+const footer = toHome(slice('  <!-- ── FOOTER ── -->', '  <!-- ── WHATSAPP FLOATING BUTTONS ── -->'));
+const floating = slice('  <!-- ── WHATSAPP FLOATING BUTTONS ── -->', '  <!-- ── AVISO DE COOKIES');
+const cookies = slice('  <!-- ── AVISO DE COOKIES', '  <script src="/content/stats.js">');
+
+/** El SVG de Lucide que index.html ya usa para ese ícono. */
+function icon(name) {
+  const m = index.match(new RegExp(`<!-- Lucide: ${name} -->\\s*(<svg[\\s\\S]*?</svg>)`));
+  if (!m) throw new Error(`Ícono ${name} no está en index.html`);
+  return m[1];
+}
+
+const esc = (v) => String(v)
+  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+const WA_ICON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" /><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.71-1.248A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.386 0-4.594-.83-6.326-2.216l-.144-.116-3.491.924.94-3.437-.12-.149A9.957 9.957 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z" /></svg>';
+const CAL_ICON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v4" /><path d="M16 2v4" /><rect width="18" height="18" x="3" y="4" rx="2" /><path d="M3 10h18" /></svg>';
+const CHECK_ICON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>';
+
+/** Botones de agenda + WhatsApp (el de WhatsApp cambia de país con el idioma). */
+function actions() {
+  return `<div class="hero-actions">
+          <a href="/#contacto" class="btn btn-green" data-booking>
+            ${CAL_ICON}
+            <span data-i18n="hero.ctaPrimary">Agenda una llamada gratis de 20 minutos</span>
+          </a>
+          <a href="https://wa.me/573242754406?text=Hola%2C%20quiero%20información%20sobre%20los%20servicios%20de%20Growing%20Solutions"
+            class="btn btn-ghost" target="_blank" rel="noopener noreferrer" data-wa="co">
+            ${WA_ICON}<span data-i18n="pagina.whatsapp">Escríbenos por WhatsApp</span>
+          </a>
+          <a href="https://wa.me/19172272181?text=Hi%2C%20I%27d%20like%20information%20about%20Growing%20Solutions%20services"
+            class="btn btn-ghost" target="_blank" rel="noopener noreferrer" data-wa="us">
+            ${WA_ICON}<span data-i18n="pagina.whatsapp">Escríbenos por WhatsApp</span>
+          </a>
+        </div>`;
+}
+
+function jsonLd(slug, page) {
+  const url = `${SITE}/servicios/${slug}`;
+  const es = page.es;
+  return [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      name: es.kicker,
+      description: es.metaDesc,
+      url,
+      serviceType: es.kicker,
+      areaServed: [{ '@type': 'Country', name: 'Colombia' }, { '@type': 'Country', name: 'United States' }],
+      availableLanguage: ['es', 'en'],
+      provider: { '@type': 'ProfessionalService', name: 'Growing Solutions', url: `${SITE}/` }
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: es.faqs.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a }
+      }))
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Growing Solutions', item: `${SITE}/` },
+        { '@type': 'ListItem', position: 2, name: es.kicker, item: url }
+      ]
+    }
+  ];
+}
+
+function render(slug, page) {
+  const es = page.es;
+  const url = `${SITE}/servicios/${slug}`;
+  const ogImage = existsSync(join(ROOT, 'og-image.png'))
+    ? `\n  <meta property="og:image" content="${SITE}/og-image.png" />\n  <meta property="og:image:width" content="1200" />\n  <meta property="og:image:height" content="630" />\n  <meta name="twitter:image" content="${SITE}/og-image.png" />`
+    : '';
+  const entregables = es.entregables.map((e, n) =>
+    `\n            <li>${CHECK_ICON}<span data-i18n="page.entregables.${n}">${esc(e)}</span></li>`).join('');
+  const faqs = es.faqs.map((f, n) => `
+          <details class="faq-item">
+            <summary data-i18n="page.faqs.${n}.q">${esc(f.q)}</summary>
+            <p data-i18n="page.faqs.${n}.a">${esc(f.a)}</p>
+          </details>`).join('');
+  // JSON-LD es un bloque de datos (no se ejecuta), así que la CSP no lo bloquea.
+  // Se escapa '<' para que ningún texto pueda cerrar la etiqueta <script>.
+  const ld = JSON.stringify(jsonLd(slug, page), null, 2).replace(/</g, '\\u003c');
+
+  return `<!DOCTYPE html>
+<!-- Generado por tools/generar-paginas.mjs desde content/paginas.js. No editar a mano. -->
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>${esc(es.metaTitle)}</title>
+  <meta name="description" content="${esc(es.metaDesc)}" />
+  <link rel="canonical" href="${url}" />
+  <link rel="alternate" hreflang="es" href="${url}" />
+  <link rel="alternate" hreflang="en" href="${url}?lang=en" />
+  <link rel="alternate" hreflang="x-default" href="${url}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Growing Solutions" />
+  <meta property="og:locale" content="es_CO" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:title" content="${esc(es.metaTitle)}" />
+  <meta property="og:description" content="${esc(es.metaDesc)}" />
+  <meta property="og:url" content="${url}" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="${esc(es.metaTitle)}" />
+  <meta name="twitter:description" content="${esc(es.metaDesc)}" />${ogImage}
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/chat.css" />
+  <link rel="stylesheet" href="/styles.css" />
+  <script type="application/ld+json">
+${ld}
+  </script>
+</head>
+
+<body data-page="${slug}">
+
+${nav}
+
+  <main class="service-page">
+    <section class="sp-hero">
+      <div class="container">
+        <a href="/#servicios" class="sp-back">← <span data-i18n="pagina.back">Todos los servicios</span></a>
+        <div class="sp-hero-head">
+          <div class="service-icon icon-blue">${icon(page.icon)}</div>
+          <div class="section-tag" data-i18n="page.kicker">${esc(es.kicker)}</div>
+        </div>
+        <h1 data-i18n="page.h1">${esc(es.h1)}</h1>
+        <p class="sp-intro" data-i18n="page.intro">${esc(es.intro)}</p>
+        ${actions()}
+      </div>
+    </section>
+
+    <section class="section sp-section">
+      <div class="container sp-grid">
+        <div class="sp-card fade-in">
+          <h2 data-i18n="pagina.problemaTitle">El problema</h2>
+          <p data-i18n="page.problema">${esc(es.problema)}</p>
+        </div>
+        <div class="sp-card sp-card-accent fade-in">
+          <h2 data-i18n="pagina.solucionTitle">Cómo lo resolvemos</h2>
+          <p data-i18n="page.solucion">${esc(es.solucion)}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section sp-section">
+      <div class="container sp-narrow fade-in">
+        <h2 class="sp-h2" data-i18n="pagina.entregablesTitle">Qué recibes</h2>
+        <ul class="sp-deliverables">${entregables}
+        </ul>
+      </div>
+    </section>
+
+    <section class="section sp-section">
+      <div class="container sp-narrow fade-in">
+        <h2 class="sp-h2" data-i18n="pagina.faqTitle">Preguntas frecuentes</h2>
+        <div class="faq-list">${faqs}
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="container">
+        <div class="cta-inner fade-in">
+          <div class="section-tag" data-i18n="pagina.ctaTag">Siguiente paso</div>
+          <h2 data-i18n="pagina.ctaTitle">¿Hablamos de tu caso?</h2>
+          <p data-i18n="pagina.ctaText">En una llamada gratis de 20 minutos revisamos tu situación y te decimos por dónde empezar. Sin compromiso.</p>
+          <div class="cta-actions">
+          ${actions()}
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+${footer}
+
+${floating}
+
+${cookies}
+
+  <script src="/content/paginas.js"></script>
+  <script src="/script.js"></script>
+  <script src="/analytics.js"></script>
+  <!-- GS Bot: el widget se construye por JS y habla solo con /api/chat -->
+  <script src="/chat.js"></script>
+</body>
+
+</html>
+`;
+}
+
+mkdirSync(join(ROOT, 'servicios'), { recursive: true });
+for (const [slug, page] of Object.entries(PAGES)) {
+  const file = join(ROOT, 'servicios', `${slug}.html`);
+  writeFileSync(file, render(slug, page).replace(/\r?\n/g, '\n'));
+  console.log('generada', `servicios/${slug}.html`);
+}

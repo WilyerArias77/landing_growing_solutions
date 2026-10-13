@@ -117,6 +117,14 @@ const translations = {
       footerCo: 'WhatsApp Colombia +57 324 275 4406', footerUs: 'WhatsApp USA +1 917 227 2181',
       tooltipCo: '¿Necesitas ayuda? Escríbenos', tooltipUs: 'Need help? Message us (USA)'
     },
+    pagina: {
+      back: 'Todos los servicios',
+      problemaTitle: 'El problema', solucionTitle: 'Cómo lo resolvemos',
+      entregablesTitle: 'Qué recibes', faqTitle: 'Preguntas frecuentes',
+      ctaTag: 'Siguiente paso', ctaTitle: '¿Hablamos de tu caso?',
+      ctaText: 'En una llamada gratis de 20 minutos revisamos tu situación y te decimos por dónde empezar. Sin compromiso.',
+      whatsapp: 'Escríbenos por WhatsApp'
+    },
     cookies: {
       text: 'Usamos cookies de analítica (Google Analytics y Meta) para medir las visitas y mejorar el sitio. Solo se activan si las aceptas.',
       policy: 'Más información', accept: 'Aceptar', reject: 'Rechazar'
@@ -240,6 +248,14 @@ const translations = {
       footerCo: 'WhatsApp Colombia +57 324 275 4406', footerUs: 'WhatsApp USA +1 917 227 2181',
       tooltipCo: 'Need help? Message us (Colombia)', tooltipUs: 'Need help? Message us'
     },
+    pagina: {
+      back: 'All services',
+      problemaTitle: 'The problem', solucionTitle: 'How we solve it',
+      entregablesTitle: 'What you get', faqTitle: 'Frequently asked questions',
+      ctaTag: 'Next step', ctaTitle: 'Shall we talk about your case?',
+      ctaText: 'In a free 20-minute call we review your situation and tell you where to start. No obligation.',
+      whatsapp: 'Message us on WhatsApp'
+    },
     cookies: {
       text: 'We use analytics cookies (Google Analytics and Meta) to measure visits and improve the site. They are only enabled if you accept.',
       policy: 'Learn more', accept: 'Accept', reject: 'Reject'
@@ -252,6 +268,8 @@ const LANG_KEY = 'gs_lang';
 let currentLang = getInitialLang();
 
 function getInitialLang() {
+  const param = new URLSearchParams(location.search).get('lang');
+  if (param === 'es' || param === 'en') return param;
   const stored = localStorage.getItem(LANG_KEY);
   if (stored === 'es' || stored === 'en') return stored;
   return (navigator.language || '').toLowerCase().startsWith('en') ? 'en' : 'es';
@@ -291,8 +309,11 @@ function setLanguage(lang) {
     el.setAttribute('aria-hidden', String(!show));
   });
 
-  const title = t('meta.title');
+  const title = t('page.metaTitle') || t('meta.title');
   if (title) document.title = title;
+  const desc = t('page.metaDesc');
+  const metaDesc = document.querySelector('meta[name="description"]');
+  if (desc && metaDesc) metaDesc.content = desc;
 
   document.querySelectorAll('.lang-btn').forEach(b => {
     const active = b.dataset.lang === currentLang;
@@ -304,8 +325,18 @@ function setLanguage(lang) {
 document.querySelectorAll('.lang-btn').forEach(b => {
   b.addEventListener('click', () => setLanguage(b.dataset.lang));
 });
+registerPageTexts();
 renderStats();
 setLanguage(currentLang);
+
+// ── PÁGINAS DE SERVICIO ──
+// <body data-page="contabilidad"> toma sus textos de content/paginas.js.
+function registerPageTexts() {
+  const page = window.GS_PAGES && window.GS_PAGES[document.body.dataset.page];
+  if (!page) return;
+  translations.es.page = page.es;
+  translations.en.page = page.en;
+}
 
 // ── CIFRAS ──
 // Vienen de content/stats.js. Solo se publican las verificadas; sin ninguna,
