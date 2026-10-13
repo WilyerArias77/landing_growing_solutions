@@ -2447,52 +2447,10 @@ section[hidden],
   opacity: 0.8;
 }
 
-.about-exp {
-  list-style: none;
-  display: grid;
-  gap: 16px;
-  border-left: 2px solid var(--border-light);
-  padding-left: 20px;
-}
-
-.about-exp li {
-  position: relative;
-  display: grid;
-  gap: 2px;
-}
-
-.about-exp li::before {
-  content: '';
-  position: absolute;
-  left: -27px;
-  top: 6px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--surface);
-  border: 2px solid var(--primary);
-}
-
-.about-exp strong {
-  font-size: 0.98rem;
-}
-
-.about-exp-org {
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--primary);
-}
-
-.about-exp-desc {
-  font-size: 0.9rem;
+.about-exp-summary {
+  max-width: 620px;
   color: var(--muted);
-  line-height: 1.6;
-}
-
-.about-note {
-  margin-top: 10px;
-  font-size: 0.78rem;
-  color: var(--muted-2);
+  line-height: 1.8;
 }
 
 @media (max-width: 960px) {

@@ -14,7 +14,7 @@ const translations = {
       ctaPrimary: 'Agenda una llamada gratis de 20 minutos', ctaSecondary: 'Conoce Nuestros Servicios', scroll: 'Descubre más'
     },
     heroCard: {
-      chip1: 'Contador Público', chip4: 'Especialista en Finanzas', chip2: 'Bases de datos y desarrollos digitales', chip3: 'Máster en Negocios Digitales (en formación)'
+      chip1: 'Contador Público', chip4: 'Especialista en Finanzas', chip2: 'Bases de datos y desarrollos digitales', chip3: 'Máster en Negocios Digitales'
     },
     stats: {
       benefit1: 'Atención directa con un profesional experto', benefit2: 'Respuesta en menos de 24 horas',
@@ -57,28 +57,16 @@ const translations = {
     about: {
       tag: 'Quién lidera el equipo',
       role: 'Contador Público · Especialista en Finanzas · Fundador y director de Growing Solutions',
-      bio: 'Contador Público y especialista en Finanzas, con más de 12 años de experiencia en contabilidad corporativa, análisis y gestión financiera en entornos bancarios, corporativos e internacionales. Elaboro estados financieros bajo NIIF/IFRS, presupuestos y proyecciones, y combino ese criterio contable con conocimiento en bases de datos y desarrollos digitales para automatizar reportes y procesos con Power BI, SQL e inteligencia artificial. Actualmente curso un Máster en Negocios Digitales.',
+      bio: 'Contador Público y especialista en Finanzas, con más de 12 años de experiencia en contabilidad corporativa, análisis y gestión financiera en entornos bancarios, corporativos e internacionales. Elaboro estados financieros bajo NIIF/IFRS, presupuestos y proyecciones, y combino ese criterio contable con conocimiento en bases de datos y desarrollos digitales para automatizar reportes y procesos con Power BI, SQL e inteligencia artificial. Complemento esa base con estudios de Máster en Negocios Digitales.',
       team: 'Lidero un equipo de profesionales altamente calificados en contabilidad, finanzas, tecnología e inteligencia artificial. Cada cliente cuenta con mi acompañamiento directo y con el respaldo de especialistas en cada área: la cercanía de un trato personal con la capacidad de un equipo completo, para entregar soluciones precisas, a tiempo y a la medida de cada empresa.',
       credLabel: 'Formación y certificaciones',
       cred1: 'Contador Público — Universidad de San Buenaventura Medellín',
       cred2: 'Especialización en Finanzas — Instituto Tecnológico Metropolitano',
       cred3: 'QuickBooks Online Advanced ProAdvisor — Intuit',
       cred4: 'Diplomado en Bases de Datos e Inteligencia de Negocios (SQL Server)',
-      cred5: 'Máster en Negocios Digitales (en formación)',
+      cred5: 'Máster en Negocios Digitales',
       expLabel: 'Trayectoria',
-      exp1Role: 'Director Financiero',
-      exp1Org: 'Servintegral Multiservicios · Colombia · 2025',
-      exp1Desc: 'Dirigí contabilidad, tesorería, nómina e impuestos; reduje el ciclo de tesorería en un 15 %.',
-      exp2Role: 'Contador Financiero (freelance)',
-      exp2Org: 'Believe and Belong Pty Ltd · Australia · 2023–2026',
-      exp2Desc: 'Automaticé los reportes financieros, reduciendo un 40 % su tiempo de generación, con SQL y Power BI.',
-      exp3Role: 'Analista Administrativo',
-      exp3Org: 'Bancolombia · Colombia · 2014–2021',
-      exp3Desc: 'Conciliaciones y análisis financiero en la gerencia hipotecaria; automaticé los informes de cierre mensual.',
-      exp4Role: 'Contabilidad en empresas',
-      exp4Org: 'Importadoras Asociadas, Experto Seguridad, Hotel Dann Carlton · 2008–2014',
-      exp4Desc: 'Causaciones, conciliaciones bancarias, impuestos y cierres contables.',
-      expNote: 'Resultados obtenidos en esos cargos.',
+      expSummary: 'Más de 12 años de experiencia en el sector bancario, en empresas de comercio, servicios y hotelería, y con clientes internacionales. He dirigido áreas de contabilidad, tesorería, nómina e impuestos, y he liderado conciliaciones, cierres contables y análisis financiero en entornos exigentes. Esa trayectoria me enseñó a convertir la información financiera en decisiones y a automatizar lo repetitivo: he reducido hasta en un 40 % el tiempo de generación de reportes y he acortado ciclos de tesorería con SQL y Power BI.',
       toolsLabel: 'Herramientas con las que trabajo',
       langs: 'Español nativo · Inglés B2',
       linkedin: 'Ver perfil en LinkedIn'
@@ -239,7 +227,7 @@ const translations = {
       ctaPrimary: 'Book a free 20‑minute call', ctaSecondary: 'Discover Our Services', scroll: 'Discover more'
     },
     heroCard: {
-      chip1: 'Public Accountant', chip4: 'Finance Specialist', chip2: 'Databases and digital development', chip3: 'Master\'s in Digital Business (in progress)'
+      chip1: 'Public Accountant', chip4: 'Finance Specialist', chip2: 'Databases and digital development', chip3: 'Master\'s in Digital Business'
     },
     stats: {
       benefit1: 'Direct access to an expert professional', benefit2: 'Response in under 24 hours',
@@ -282,28 +270,16 @@ const translations = {
     about: {
       tag: 'Who leads the team',
       role: 'Public Accountant (Colombia) · Finance Specialist · Founder and Director of Growing Solutions',
-      bio: 'Public Accountant and Finance specialist with more than 12 years of experience in corporate accounting, financial analysis and financial management in banking, corporate and international environments. I prepare financial statements under IFRS, budgets and projections, and combine that accounting judgment with knowledge of databases and digital development to automate reports and processes with Power BI, SQL and artificial intelligence. I am currently pursuing a Master\'s in Digital Business.',
+      bio: 'Public Accountant and Finance specialist with more than 12 years of experience in corporate accounting, financial analysis and financial management in banking, corporate and international environments. I prepare financial statements under IFRS, budgets and projections, and combine that accounting judgment with knowledge of databases and digital development to automate reports and processes with Power BI, SQL and artificial intelligence. I complement that foundation with graduate studies toward a Master\'s in Digital Business.',
       team: 'I lead a team of highly qualified professionals in accounting, finance, technology and artificial intelligence. Every client gets my direct involvement and the backing of specialists in each area: the closeness of a personal relationship with the capacity of a full team, to deliver accurate, on-time solutions tailored to each business.',
       credLabel: 'Education and certifications',
       cred1: 'Public Accounting degree — Universidad de San Buenaventura Medellín',
       cred2: 'Graduate specialization in Finance — Instituto Tecnológico Metropolitano',
       cred3: 'QuickBooks Online Advanced ProAdvisor — Intuit',
       cred4: 'Certificate in Databases and Business Intelligence (SQL Server)',
-      cred5: 'Master\'s in Digital Business (in progress)',
+      cred5: 'Master\'s in Digital Business',
       expLabel: 'Experience',
-      exp1Role: 'Chief Financial Officer',
-      exp1Org: 'Servintegral Multiservicios · Colombia · 2025',
-      exp1Desc: 'Led accounting, treasury, payroll and taxes; cut the treasury cycle by 15%.',
-      exp2Role: 'Financial Accountant (freelance)',
-      exp2Org: 'Believe and Belong Pty Ltd · Australia · 2023–2026',
-      exp2Desc: 'Automated financial reporting with SQL and Power BI, cutting report generation time by 40%.',
-      exp3Role: 'Administrative Analyst',
-      exp3Org: 'Bancolombia · Colombia · 2014–2021',
-      exp3Desc: 'Reconciliations and financial analysis in the mortgage division; automated the monthly closing reports.',
-      exp4Role: 'Accounting roles',
-      exp4Org: 'Importadoras Asociadas, Experto Seguridad, Hotel Dann Carlton · 2008–2014',
-      exp4Desc: 'Accruals, bank reconciliations, taxes and month-end closings.',
-      expNote: 'Results achieved in those roles.',
+      expSummary: 'More than 12 years of experience in banking, in retail, services and hospitality companies, and with international clients. I have led accounting, treasury, payroll and tax functions, and managed reconciliations, month-end closings and financial analysis in demanding environments. That background taught me to turn financial information into decisions and to automate repetitive work: I have cut report generation time by up to 40% and shortened treasury cycles with SQL and Power BI.',
       toolsLabel: 'Tools I work with',
       langs: 'Spanish (native) · English (B2)',
       linkedin: 'View LinkedIn profile'
