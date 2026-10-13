@@ -7,6 +7,7 @@ export const LIMITS = {
   MAX_HISTORY: 20,           // turnos que se reenvian a OpenAI
   MAX_TOTAL_CHARS: 12000,    // suma del historial
   RATE_MAX: 25,              // mensajes por ventana
+  MAX_SESSION_TURNS: 20,     // mensajes del visitante por conversacion (el widget aplica el mismo tope)
   RATE_WINDOW_MS: 10 * 60_000
 };
 

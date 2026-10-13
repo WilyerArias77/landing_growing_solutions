@@ -158,7 +158,24 @@ Cuando el visitante acepta que lo contacten, el bot llama a la herramienta
 `registrar_lead` y el servidor guarda los datos en la tabla **`public.leads`** de
 Supabase (proyecto `growing-solutions-leads`), la misma del formulario.
 
-Se distinguen por la columna `source`: `form` o `chatbot`. La columna `status`
+El bot también califica al prospecto (país, tamaño, servicio): el país va a la
+columna `country` y el tamaño al inicio de `additional_info`.
+
+Se distinguen por la columna `source`: `form`, `chatbot` o `recurso`.
+
+### Agenda dentro del chat
+
+La herramienta `ofrecer_agenda` hace que el widget muestre un botón "Agendar llamada
+gratis (20 min)" con el enlace de `BOOKING_URL` (o el formulario si no hay agenda).
+El clic registra el evento `chat_lead` (Meta: `Schedule`); un lead registrado en el
+chat registra `generate_lead` con `lead_type: "chat"`.
+
+### Límites de la conversación
+
+Además del rate limit por IP, cada conversación admite 20 mensajes del visitante
+(`LIMITS.MAX_SESSION_TURNS`). Al llegar al tope el widget ofrece la agenda y el
+WhatsApp. Hay hasta tres rondas con el modelo por mensaje: dos con herramientas y
+una final solo de texto. La columna `status`
 (`nuevo`, `contactado`, `en_propuesta`, `ganado`, `perdido`, `spam`) sirve para
 llevar el pipeline comercial desde el Table Editor de Supabase.
 

@@ -8,15 +8,16 @@
 
 import OpenAI from 'openai';
 import { getSystemPrompt, promptsLoaded } from './_lib/prompt.js';
-import { leadTool, submitLead } from './_lib/lead.js';
+import { agendaTool, leadTool, submitLead } from './_lib/lead.js';
 import {
-  originAllowed, rateLimited, clientIp, sanitizeMessages
+  LIMITS, originAllowed, rateLimited, clientIp, sanitizeMessages
 } from './_lib/guard.js';
 
 const MODEL = process.env.OPENAI_MODEL || 'gpt-4.1-mini';
 const MAX_OUTPUT_TOKENS = Number(process.env.OPENAI_MAX_TOKENS || 600);
 const TEMPERATURE = Number(process.env.OPENAI_TEMPERATURE || 0.4);
-const MAX_TOOL_ROUNDS = 2;
+// Rondas con el modelo: hasta dos con herramientas y una final solo de texto.
+const MAX_TOOL_ROUNDS = 3;
 
 export default async function handler(req, res) {
   // Diagnostico minimo: solo dice si falta configuracion. Nunca expone valores,
@@ -52,6 +53,12 @@ export default async function handler(req, res) {
   }
 
   const body = typeof req.body === 'string' ? safeParse(req.body) : (req.body || {});
+  // Tope por conversacion. El widget envia el historial completo; quien lo
+  // recorte a proposito igual choca con el rate limit por IP.
+  const turnos = Array.isArray(body.messages) ? body.messages.filter(m => m && m.role === 'user').length : 0;
+  if (turnos > LIMITS.MAX_SESSION_TURNS) {
+    return res.status(429).json({ error: 'limite_sesion' });
+  }
   const messages = sanitizeMessages(body.messages);
   if (messages.length === 0) {
     return res.status(400).json({ error: 'sin_mensajes' });
@@ -59,6 +66,7 @@ export default async function handler(req, res) {
 
   const lang = body.lang === 'en' ? 'en' : 'es';
   const leadYaRegistrado = Boolean(body.leadRegistrado);
+  let agendaOfrecida = Boolean(body.agendaOfrecida);
 
   // Cabeceras SSE. Sin Content-Length para que Vercel no bufferice la respuesta.
   res.writeHead(200, {
@@ -82,7 +90,10 @@ export default async function handler(req, res) {
         `Responde en el idioma del ultimo mensaje del visitante. ` +
         (leadYaRegistrado
           ? 'Los datos de esta persona YA fueron registrados: no vuelvas a pedirlos ni llames a registrar_lead.'
-          : 'Aun no se han registrado sus datos.')
+          : 'Aun no se han registrado sus datos.') +
+        (agendaOfrecida
+          ? ' El boton de agenda ya se mostro: no llames de nuevo a ofrecer_agenda; si hace falta, recuerdale que esta arriba en el chat.'
+          : '')
     },
     ...messages
   ];
@@ -95,7 +106,8 @@ export default async function handler(req, res) {
       const stream = await client.chat.completions.create({
         model: MODEL,
         messages: convo,
-        tools: leadRegistrado ? undefined : [leadTool],
+        // En la ultima ronda no hay herramientas: el modelo tiene que responder con texto
+        ...(round < MAX_TOOL_ROUNDS - 1 ? toolsFor(leadRegistrado, agendaOfrecida) : {}),
         temperature: TEMPERATURE,
         max_tokens: MAX_OUTPUT_TOKENS,
         stream: true
@@ -133,7 +145,11 @@ export default async function handler(req, res) {
 
       for (const call of toolCalls) {
         let resultado;
-        if (call.function.name === 'registrar_lead' && !leadRegistrado) {
+        if (call.function.name === 'ofrecer_agenda' && !agendaOfrecida) {
+          agendaOfrecida = true;
+          send({ type: 'booking' });
+          resultado = { ok: true, mensaje: 'Boton de agenda mostrado. Mencionalo en una frase; no escribas enlaces.' };
+        } else if (call.function.name === 'registrar_lead' && !leadRegistrado) {
           const args = safeParse(call.function.arguments) || {};
           const r = await submitLead(args, { ip: clientIp(req), lang });
           if (r.ok) {
@@ -158,7 +174,7 @@ export default async function handler(req, res) {
       }
     }
 
-    send({ type: 'done', leadRegistrado });
+    send({ type: 'done', leadRegistrado, agendaOfrecida });
   } catch (err) {
     // El detalle queda en los logs de Vercel; al visitante nunca le llega el motivo.
     console.error('[chat] Error:', err?.status || '', err?.message || err);
@@ -166,6 +182,12 @@ export default async function handler(req, res) {
   } finally {
     res.end();
   }
+}
+
+/** Herramientas disponibles en esta ronda (la API no acepta una lista vacia). */
+function toolsFor(leadRegistrado, agendaOfrecida) {
+  const tools = [!leadRegistrado && leadTool, !agendaOfrecida && agendaTool].filter(Boolean);
+  return tools.length ? { tools } : {};
 }
 
 function safeParse(s) {

@@ -15,7 +15,8 @@
     generate_lead: 'Lead',
     click_whatsapp_co: 'Contact',
     click_whatsapp_us: 'Contact',
-    click_booking: 'Contact'
+    click_booking: 'Contact',
+    chat_lead: 'Schedule'
   };
 
   let ids = {};

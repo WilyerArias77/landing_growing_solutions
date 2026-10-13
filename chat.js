@@ -13,19 +13,22 @@
   var ENDPOINT = '/api/chat';
   var STORE_KEY = 'gsb_chat';
   var MAX_CHARS = 1500;
+  var MAX_TURNS = 20; // mismo tope que LIMITS.MAX_SESSION_TURNS en el servidor
 
   var I18N = {
     es: {
       title: 'GS Bot',
-      status: 'En línea',
+      status: 'Asistente automático con IA',
       launcherAria: 'Abrir el chat de ayuda',
       closeAria: 'Cerrar el chat',
       tooltip: '¿Tienes dudas? Escríbenos',
-      welcome: 'Hola, soy GS Bot, el asistente de Growing Solutions. Puedo contarte sobre nuestros servicios de contabilidad, finanzas, automatización y desarrollo de software. ¿En qué te ayudo?',
-      chips: ['¿Qué servicios ofrecen?', '¿Cómo trabajan?', 'Quiero una asesoría'],
+      welcome: 'Hola, soy GS Bot, el asistente automático de Growing Solutions. Puedo contarte sobre nuestros servicios de contabilidad, finanzas, automatización y desarrollos con IA, y ayudarte a agendar una llamada. ¿En qué te ayudo?',
+      chips: ['¿Qué servicios ofrecen?', '¿Cómo trabajan?', 'Quiero agendar una llamada'],
       placeholder: 'Escribe tu mensaje...',
       send: 'Enviar mensaje',
-      legal: 'Asistente virtual. Para temas contables o legales específicos te conecta con un asesor.',
+      legal: 'Asistente automático con IA: puede equivocarse y no reemplaza la asesoría de un contador. Para temas específicos te conecta con una persona.',
+      booking: 'Agendar llamada gratis (20 min)',
+      limit: 'Llegamos al límite de mensajes de esta conversación. Para seguir, agenda una llamada o escríbenos por WhatsApp al +57 324 275 4406.',
       leadOk: '✓ Datos enviados. Un asesor te contacta en menos de 24 horas.',
       errNetwork: 'No pude conectarme. Escríbenos por WhatsApp al +57 324 275 4406 o a wilyer.arias@growingsolutions.online',
       errBusy: 'Hay muchas consultas en este momento. Intenta en unos minutos o escríbenos al WhatsApp +57 324 275 4406',
@@ -34,15 +37,17 @@
     },
     en: {
       title: 'GS Bot',
-      status: 'Online',
+      status: 'Automated AI assistant',
       launcherAria: 'Open the help chat',
       closeAria: 'Close the chat',
       tooltip: 'Questions? Chat with us',
-      welcome: "Hi, I'm GS Bot, the Growing Solutions assistant. I can tell you about our accounting, finance, process automation and software development services. How can I help?",
-      chips: ['What services do you offer?', 'How do you work?', 'I want a consultation'],
+      welcome: "Hi, I'm GS Bot, the Growing Solutions automated assistant. I can tell you about our accounting, finance, automation and AI-powered development services, and help you book a call. How can I help?",
+      chips: ['What services do you offer?', 'How do you work?', "I'd like to book a call"],
       placeholder: 'Type your message...',
       send: 'Send message',
-      legal: 'Virtual assistant. For specific accounting or legal matters it connects you with an advisor.',
+      legal: 'Automated AI assistant: it can make mistakes and does not replace advice from an accountant. For specific matters it connects you with a person.',
+      booking: 'Book a free call (20 min)',
+      limit: 'We reached the message limit for this conversation. To continue, book a call or WhatsApp us at +1 917 227 2181.',
       leadOk: '✓ Details sent. An advisor will contact you within 24 hours.',
       errNetwork: "I couldn't connect. Reach us on WhatsApp at +1 917 227 2181 or at wilyer.arias@growingsolutions.online",
       errBusy: 'There are many requests right now. Try again in a few minutes or WhatsApp us at +1 917 227 2181',
@@ -56,6 +61,7 @@
 
   var history = [];
   var leadRegistrado = false;
+  var agendaOfrecida = false;
   var enviando = false;
   var abierto = false;
   var el = {};
@@ -128,6 +134,40 @@
     return node;
   }
 
+  // Evento de medicion (analytics.js); sin consentimiento no envia nada.
+  function track(evento, params) {
+    if (window.gsTrack) window.gsTrack(evento, params);
+  }
+
+  // Boton de agenda dentro del chat. El enlace sale de /api/config (BOOKING_URL);
+  // sin agenda configurada lleva al formulario de contacto.
+  function addBooking() {
+    var wrap = make('div', 'gsb-booking');
+    var a = make('a', 'gsb-booking-btn', t('booking'));
+    a.href = '/#contacto';
+    a.addEventListener('click', function () {
+      track('chat_lead', { method: 'agenda' });
+    });
+    wrap.appendChild(a);
+    el.messages.appendChild(wrap);
+    scrollDown();
+    if (window.siteConfig) {
+      window.siteConfig.then(function (cfg) {
+        if (cfg && cfg.bookingUrl) {
+          a.href = cfg.bookingUrl;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+        }
+      });
+    }
+  }
+
+  function limiteAlcanzado() {
+    var n = 0;
+    for (var i = 0; i < history.length; i++) if (history[i].role === 'user') n++;
+    return n >= MAX_TURNS;
+  }
+
   function addBadge(text) {
     el.messages.appendChild(make('div', 'gsb-badge', text));
     scrollDown();
@@ -137,7 +177,7 @@
 
   function save() {
     try {
-      sessionStorage.setItem(STORE_KEY, JSON.stringify({ history: history, lead: leadRegistrado }));
+      sessionStorage.setItem(STORE_KEY, JSON.stringify({ history: history, lead: leadRegistrado, agenda: agendaOfrecida }));
     } catch (e) { /* modo privado o cuota llena: el chat sigue funcionando */ }
   }
 
@@ -149,6 +189,7 @@
       if (!data || !Array.isArray(data.history) || !data.history.length) return false;
       history = data.history;
       leadRegistrado = Boolean(data.lead);
+      agendaOfrecida = Boolean(data.agenda);
       for (var i = 0; i < history.length; i++) {
         addMsg(history[i].role === 'user' ? 'user' : 'bot', history[i].content);
       }
@@ -331,6 +372,11 @@
     if (enviando) return;
     texto = String(texto || '').trim().slice(0, MAX_CHARS);
     if (!texto) return;
+    if (limiteAlcanzado()) {
+      errorMsg('limit');
+      addBooking();
+      return;
+    }
 
     el.chips.textContent = '';
     addMsg('user', texto);
@@ -348,11 +394,12 @@
   function stream() {
     var burbuja = null;
     var acumulado = '';
+    var mostrarAgenda = false; // el boton va despues del texto que lo presenta
 
     fetch(ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: history, lang: lang, leadRegistrado: leadRegistrado })
+      body: JSON.stringify({ messages: history, lang: lang, leadRegistrado: leadRegistrado, agendaOfrecida: agendaOfrecida })
     }).then(function (res) {
       if (!res.ok) {
         if (res.status === 429) throw new Error('busy');
@@ -370,9 +417,10 @@
         if (acumulado.trim()) {
           history.push({ role: 'assistant', content: acumulado });
           save();
-        } else if (!burbuja) {
+        } else if (!burbuja && !mostrarAgenda) {
           errorMsg('errNetwork');
         }
+        if (mostrarAgenda) addBooking();
         setBusy(false);
         if (abierto) el.input.focus();
       }
@@ -398,9 +446,18 @@
               renderText(burbuja, acumulado);
               scrollDown();
             } else if (ev.type === 'lead') {
-              if (ev.ok) { leadRegistrado = true; addBadge(t('leadOk')); }
+              if (ev.ok) {
+                leadRegistrado = true;
+                addBadge(t('leadOk'));
+                track('generate_lead', { lead_type: 'chat' });
+              }
+            } else if (ev.type === 'booking') {
+              agendaOfrecida = true;
+              mostrarAgenda = true;
+              save();
             } else if (ev.type === 'done') {
               if (ev.leadRegistrado) leadRegistrado = true;
+              if (ev.agendaOfrecida) agendaOfrecida = true;
             } else if (ev.type === 'error') {
               if (ev.recuperable && acumulado) {
                 acumulado += ' ' + t('errCut');

@@ -336,3 +336,26 @@
   .gsb-launcher, .gsb-panel { transition: none; }
   .gsb-typing span { animation: none; }
 }
+
+/* Botón de agenda que el asistente muestra dentro de la conversación */
+.gsb-booking {
+  display: flex;
+  justify-content: flex-start;
+  margin: 4px 0 8px;
+}
+
+.gsb-booking-btn {
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: #0a2fd4;
+  color: #ffffff;
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 6px 16px rgba(13, 60, 255, 0.25);
+}
+
+.gsb-booking-btn:hover {
+  background: #0d3cff;
+}

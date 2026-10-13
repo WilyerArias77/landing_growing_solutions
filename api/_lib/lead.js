@@ -12,20 +12,37 @@ import { buildLead, configured, hashIp, insertLead, ipOverLimit } from './leads-
 export async function submitLead(data, ctx = {}) {
   if (!configured()) return { ok: false, reason: 'no_configurado' };
   const ipHash = hashIp(ctx.ip);
+  // El tamaño no tiene columna propia: va al inicio de la necesidad.
+  const TAMANOS = { '1-5': '1 a 5', '6-20': '6 a 20', '21-50': '21 a 50', 'mas-50': 'más de 50' };
+  const tamano = TAMANOS[data.tamano] ? `Tamaño: ${TAMANOS[data.tamano]} personas. ` : '';
   const lead = buildLead({
     name: data.nombre,
     email: data.email,
     phone: data.telefono,
     company: data.empresa,
+    country: ['CO', 'US', 'OTRO'].includes(data.pais) ? data.pais : '',
     budget: data.presupuesto || 'Por definir',
     service: data.servicio || 'Sin especificar',
-    additionalInfo: data.necesidad
+    additionalInfo: (tamano + (data.necesidad || '')).trim()
   }, { source: 'chatbot', lang: ctx.lang, ipHash, consentVersion: 'chat-v1' });
 
   if (!lead.ok) return lead;
   if (await ipOverLimit(ipHash)) return { ok: false, reason: 'rate_limit' };
   return insertLead(lead.row);
 }
+
+/** Muestra en el chat un boton para agendar la llamada (lo pinta chat.js). */
+export const agendaTool = {
+  type: 'function',
+  function: {
+    name: 'ofrecer_agenda',
+    description:
+      'Muestra en el chat un boton para agendar una llamada gratis de 20 minutos con el ' +
+      'contador. Usala cuando la persona quiera avanzar, pida hablar con alguien o pregunte ' +
+      'como empezar. Una sola vez por conversacion. No escribas enlaces: el boton ya lleva a la agenda.',
+    parameters: { type: 'object', properties: {}, additionalProperties: false }
+  }
+};
 
 /** Definicion de la herramienta que se expone al modelo. */
 export const leadTool = {
@@ -54,6 +71,16 @@ export const leadTool = {
             'Varios',
             'Sin especificar'
           ]
+        },
+        pais: {
+          type: 'string',
+          description: 'Pais donde opera la empresa, si lo dijo. Opcional.',
+          enum: ['CO', 'US', 'OTRO']
+        },
+        tamano: {
+          type: 'string',
+          description: 'Personas que trabajan en la empresa, si lo dijo. Opcional.',
+          enum: ['1-5', '6-20', '21-50', 'mas-50']
         },
         presupuesto: { type: 'string', description: 'Presupuesto si lo menciono. Opcional.' },
         necesidad: {
