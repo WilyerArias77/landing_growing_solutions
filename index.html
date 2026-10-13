@@ -1688,6 +1688,50 @@
       opacity: 1;
     }
 
+    /* ── COOKIES ── */
+    .cookie-banner {
+      position: fixed;
+      left: 16px;
+      right: 16px;
+      bottom: 16px;
+      z-index: 120;
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 18px 22px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .cookie-banner[hidden] {
+      display: none;
+    }
+
+    .cookie-banner p {
+      font-size: 0.85rem;
+      line-height: 1.55;
+      color: #475569;
+    }
+
+    .cookie-banner a {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .cookie-actions {
+      display: flex;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .cookie-actions .btn {
+      padding: 10px 18px;
+    }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 960px) {
       .nav-links {
@@ -1745,6 +1789,17 @@
     }
 
     @media (max-width: 600px) {
+      .cookie-banner {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 14px;
+      }
+
+      .cookie-actions .btn {
+        flex: 1;
+        justify-content: center;
+      }
+
       .value-grid.no-visual .value-features {
         grid-template-columns: 1fr;
       }
@@ -2352,8 +2407,21 @@
     </a>
   </div>
 
+  <!-- ── AVISO DE COOKIES (solo aparece si hay GA_ID o META_PIXEL_ID configurados) ── -->
+  <div class="cookie-banner" id="cookieBanner" role="dialog" aria-live="polite" aria-labelledby="cookieText" hidden>
+    <p id="cookieText">
+      <span data-i18n="cookies.text">Usamos cookies de analítica (Google Analytics y Meta) para medir las visitas y mejorar el sitio. Solo se activan si las aceptas.</span>
+      <a href="/politica-datos" target="_blank" rel="noopener" data-i18n="cookies.policy">Más información</a>
+    </p>
+    <div class="cookie-actions">
+      <button type="button" class="btn btn-ghost" data-consent="reject" data-i18n="cookies.reject">Rechazar</button>
+      <button type="button" class="btn btn-primary" data-consent="accept" data-i18n="cookies.accept">Aceptar</button>
+    </div>
+  </div>
+
   <script src="content/stats.js"></script>
   <script src="script.js"></script>
+  <script src="analytics.js"></script>
   <!-- GS Bot: el widget se construye por JS y habla solo con /api/chat -->
   <script src="chat.js"></script>
 </body>

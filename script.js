@@ -112,6 +112,10 @@ const translations = {
       footerCo: 'WhatsApp Colombia +57 324 275 4406', footerUs: 'WhatsApp USA +1 917 227 2181',
       tooltipCo: '¿Necesitas ayuda? Escríbenos', tooltipUs: 'Need help? Message us (USA)'
     },
+    cookies: {
+      text: 'Usamos cookies de analítica (Google Analytics y Meta) para medir las visitas y mejorar el sitio. Solo se activan si las aceptas.',
+      policy: 'Más información', accept: 'Aceptar', reject: 'Rechazar'
+    },
     meta: { title: 'Growing Solutions — Soluciones Integrales para tu Empresa' }
   },
   en: {
@@ -225,6 +229,10 @@ const translations = {
       ctaMobileCo: 'WhatsApp Colombia +57 324 275 4406', ctaMobileUs: 'WhatsApp USA +1 917 227 2181',
       footerCo: 'WhatsApp Colombia +57 324 275 4406', footerUs: 'WhatsApp USA +1 917 227 2181',
       tooltipCo: 'Need help? Message us (Colombia)', tooltipUs: 'Need help? Message us'
+    },
+    cookies: {
+      text: 'We use analytics cookies (Google Analytics and Meta) to measure visits and improve the site. They are only enabled if you accept.',
+      policy: 'Learn more', accept: 'Accept', reject: 'Reject'
     },
     meta: { title: 'Growing Solutions — Complete Solutions for Your Business' }
   }
@@ -401,17 +409,34 @@ document.querySelectorAll('.mobile-nav-link').forEach(link => {
 // /api/config entrega el enlace de agenda y los IDs de analítica desde las
 // variables de entorno de Vercel. Sin enlace de agenda, los botones
 // [data-booking] conservan su destino de respaldo (#contacto, el formulario).
-const siteConfig = fetch('/api/config')
+// En window para que analytics.js reutilice la misma petición.
+window.siteConfig = fetch('/api/config')
   .then(res => (res.ok ? res.json() : {}))
   .catch(() => ({}));
 
-siteConfig.then(cfg => {
+window.siteConfig.then(cfg => {
   if (!cfg.bookingUrl) return;
   document.querySelectorAll('[data-booking]').forEach(a => {
     a.href = cfg.bookingUrl;
     a.target = '_blank';
     a.rel = 'noopener noreferrer';
   });
+});
+
+// ── EVENTOS DE MEDICIÓN ──
+// gsTrack lo define analytics.js; sin consentimiento no envía nada.
+const track = (event, params) => { if (window.gsTrack) window.gsTrack(event, params); };
+
+document.addEventListener('click', (e) => {
+  const link = e.target.closest('a');
+  if (!link) return;
+  if (link.hasAttribute('data-booking')) {
+    track('click_booking', { link_url: link.href });
+  } else if (link.href.startsWith('https://wa.me/57')) {
+    track('click_whatsapp_co');
+  } else if (link.href.startsWith('https://wa.me/1')) {
+    track('click_whatsapp_us');
+  }
 });
 
 // ── LEAD FORM ──
@@ -479,6 +504,7 @@ leadForm.addEventListener('submit', async (e) => {
     });
     // Respuesta real del servidor: solo es exito si el lead quedo guardado.
     if (res.status === 201) {
+      track('generate_lead', { lead_type: 'formulario', service });
       showSuccess();
     } else if (res.status === 400) {
       const { error } = await res.json().catch(() => ({}));
