@@ -21,7 +21,7 @@ const FILES = ['system.md', 'knowledge.md', 'scripts.md'];
 // dentro de su rol en vez de caerse o inventar.
 const FALLBACK = [
   'Eres GS Bot, el asistente virtual de Growing Solutions (contabilidad, finanzas,',
-  'automatizacion de procesos y desarrollo de software para pymes en Colombia y',
+  'automatizacion de procesos y desarrollos con IA para pymes en Colombia y',
   'Estados Unidos). Responde solo sobre Growing Solutions, en el idioma del visitante,',
   'en 2 a 5 frases. No inventes precios ni datos: para cualquier detalle concreto',
   'deriva a WhatsApp Colombia +57 324 275 4406, WhatsApp USA +1 917 227 2181 o',

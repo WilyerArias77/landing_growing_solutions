@@ -62,7 +62,7 @@ export const leadTool = {
         empresa: { type: 'string', description: 'Nombre de la empresa. Opcional.' },
         servicio: {
           type: 'string',
-          description: 'Linea de interes',
+          description: "Linea de interes. 'Desarrollos a la Medida' es el valor interno de la linea Desarrollos con IA.",
           enum: [
             'Servicios Contables',
             'Servicios Financieros',

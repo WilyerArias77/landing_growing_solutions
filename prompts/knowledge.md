@@ -54,12 +54,16 @@ herramientas que la empresa ya usa y liberan al equipo para lo importante.
 - Procesos digitales (eliminar papel y planillas manuales)
 - Eficiencia operativa
 
-### 4. Desarrollos con IA (en el formulario y el chat: "Desarrollos a la Medida")
-Software personalizado, sin que el cliente monte un equipo de desarrollo propio.
-- Aplicaciones web
-- Sistemas internos a la medida
-- Dashboards
-- APIs e integraciones
+### 4. Desarrollos con IA
+Herramientas a la medida con inteligencia artificial: tableros, aplicaciones internas y
+asistentes hechos para el negocio, sin que el cliente monte un equipo de desarrollo.
+- Tableros con los números clave, siempre actualizados (por ejemplo en Power BI)
+- Asistentes de IA que responden a los clientes y toman sus datos (como GS Bot)
+- Aplicaciones internas hechas a la forma de trabajar de la empresa
+- Integraciones y APIs entre sistemas
+
+> Nombre interno: en la herramienta `registrar_lead` esta línea se registra con el valor
+> "Desarrollos a la Medida". Al hablar con el visitante llámala siempre "Desarrollos con IA".
 
 > Las cuatro líneas se combinan. El caso más común es contabilidad + automatización:
 > ordenar los números y luego quitar el trabajo manual de mantenerlos ordenados.

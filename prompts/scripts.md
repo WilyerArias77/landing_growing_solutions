@@ -10,7 +10,7 @@ primera respuesta: contesta directamente lo que preguntaron.
 
 Si el primer mensaje es solo "hola", responde corto y abre con una pregunta:
 > Hola. ¿Sobre qué te gustaría saber: contabilidad, finanzas, automatización o
-> desarrollo de software?
+> desarrollos con IA?
 
 ## Cuando preguntan por un servicio
 
