@@ -6,12 +6,12 @@ const translations = {
       servicios: 'Servicios', nosotros: 'Nosotros', metodologia: 'Metodología', contacto: 'Contacto',
       hamburgerAria: 'Menú'
     },
-    brand: { tagline: 'Servicios Contables, Financieros y Desarrollos con IA' },
+    brand: { tagline: 'Finanzas que evolucionan, tecnología que impulsa' },
     hero: {
       badge: 'Aliado estratégico para pequeñas y medianas Empresas en Colombia y Estados Unidos',
-      titleL1: 'Impulsa tu empresa', titleL2: 'con soluciones', titleHighlight: 'integrales',
-      subtitle: 'Ayudamos a micro, pequeñas y medianas empresas a organizar su operación, mejorar su control financiero y automatizar procesos — sin necesidad de un equipo interno especializado.',
-      ctaPrimary: 'Solicitar Asesoría Gratis', ctaSecondary: 'Conoce Nuestros Servicios', scroll: 'Descubre más'
+      titleL1: 'Tu contabilidad al día y tus procesos', titleHighlight: 'en automático,', titleL2: 'sin contratar un equipo interno',
+      subtitle: 'Contabilidad, finanzas e inteligencia artificial para pymes en Colombia y Estados Unidos, a cargo de un contador senior que también automatiza.',
+      ctaPrimary: 'Agenda una llamada gratis de 20 minutos', ctaSecondary: 'Conoce Nuestros Servicios', scroll: 'Descubre más'
     },
     stats: {
       item1: 'Empresas asesoradas en Colombia y Estados Unidos', item2: 'Reducción en tareas manuales',
@@ -112,12 +112,12 @@ const translations = {
       servicios: 'Services', nosotros: 'About Us', metodologia: 'Methodology', contacto: 'Contact',
       hamburgerAria: 'Menu'
     },
-    brand: { tagline: 'Accounting, Financial and AI-Driven Development Services' },
+    brand: { tagline: 'Evolving finance, empowering technology' },
     hero: {
       badge: 'Strategic partner for small and medium-sized businesses in Colombia and the United States',
-      titleL1: 'Grow your business', titleL2: 'with complete', titleHighlight: 'solutions',
-      subtitle: 'We help micro, small and medium-sized businesses organize their operations, improve financial control and automate processes — without needing a specialized in-house team.',
-      ctaPrimary: 'Request a Free Consultation', ctaSecondary: 'Discover Our Services', scroll: 'Discover more'
+      titleL1: 'Your books up to date and your processes', titleHighlight: 'on autopilot', titleL2: '— no in-house team required',
+      subtitle: 'Accounting, finance and AI for small businesses in Colombia and the U.S., led by a senior accountant who also builds automations.',
+      ctaPrimary: 'Book a free 20‑minute call', ctaSecondary: 'Discover Our Services', scroll: 'Discover more'
     },
     stats: {
       item1: 'Businesses advised in Colombia', item2: 'Reduction in manual tasks',
