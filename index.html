@@ -875,6 +875,74 @@
       background: var(--accent);
     }
 
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .about-photo img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 48px rgba(13, 60, 255, 0.12);
+    }
+
+    .about-content h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+
+    .about-role {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin: 6px 0 20px;
+    }
+
+    .about-bio {
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 28px;
+      max-width: 620px;
+    }
+
+    .about-tools-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .about-tools {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .about-tools li {
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .about-linkedin {
+      margin-top: 28px;
+    }
+
     /* ── VALUE PROPOSITION ── */
     .value-section {
       background: var(--surface);
@@ -890,6 +958,10 @@
 
     .value-grid.no-visual {
       grid-template-columns: 1fr;
+    }
+
+    .value-grid.no-visual .value-content>p {
+      max-width: 720px;
     }
 
     .value-grid.no-visual .value-features {
@@ -1617,6 +1689,16 @@
         gap: 40px;
       }
 
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 36px;
+      }
+
+      .about-photo {
+        max-width: 300px;
+        margin: 0 auto;
+      }
+
       .value-visual {
         display: none;
       }
@@ -1950,8 +2032,35 @@
     </div>
   </section>
 
+  <!-- ── QUIÉN ESTÁ DETRÁS ── -->
+  <section class="section about-section" id="nosotros">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-photo fade-in">
+          <img src="wilyer-arias.webp" alt="Wilyer Arias, Senior Accountant de Growing Solutions" width="640" height="800" loading="lazy" decoding="async" />
+        </div>
+        <div class="about-content fade-in">
+          <div class="section-tag" data-i18n="about.tag">Quién está detrás</div>
+          <h2>Wilyer Arias</h2>
+          <p class="about-role" data-i18n="about.role">Senior Accountant · Responsable de Growing Solutions</p>
+          <p class="about-bio" data-i18n="about.bio">Contador senior con experiencia en impuestos, IVA y sales &amp; use tax, cierres y causaciones contables, conciliaciones y coordinación con asesores tributarios. Combino esa base contable con herramientas de datos y automatización para que las pymes de Colombia y Estados Unidos tengan sus números al día sin depender de un equipo interno.</p>
+          <div class="about-tools-label" data-i18n="about.toolsLabel">Herramientas con las que trabajo</div>
+          <ul class="about-tools">
+            <li>SAP</li>
+            <li>QuickBooks</li>
+            <li>Power BI</li>
+            <li>SQL</li>
+            <li>Avalara</li>
+          </ul>
+          <!-- {{PENDIENTE: URL LinkedIn personal}} — el botón vuelve cuando haya enlace:
+          <a href="URL_LINKEDIN_PERSONAL" class="btn btn-ghost about-linkedin" target="_blank" rel="noopener noreferrer" data-i18n="about.linkedin">Ver perfil en LinkedIn</a> -->
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ── PROPUESTA DE VALOR ── -->
-  <section class="section value-section" id="nosotros">
+  <section class="section value-section" id="por-que">
     <div class="container">
       <div class="value-grid no-visual" id="valueGrid">
         <div class="value-content fade-in">

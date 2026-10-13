@@ -41,6 +41,13 @@ const translations = {
         li1: 'Aplicaciones web', li2: 'Sistemas a medida', li3: 'Dashboards', li4: 'APIs'
       }
     },
+    about: {
+      tag: 'Quién está detrás',
+      role: 'Senior Accountant · Responsable de Growing Solutions',
+      bio: 'Contador senior con experiencia en impuestos, IVA y sales & use tax, cierres y causaciones contables, conciliaciones y coordinación con asesores tributarios. Combino esa base contable con herramientas de datos y automatización para que las pymes de Colombia y Estados Unidos tengan sus números al día sin depender de un equipo interno.',
+      toolsLabel: 'Herramientas con las que trabajo',
+      linkedin: 'Ver perfil en LinkedIn'
+    },
     nosotros: {
       tag: '¿Por Qué Elegirnos?', titleL1: 'Tu aliado estratégico', titleL2: 'para crecer',
       subtitle: 'No somos solo proveedores — somos un equipo que combina experiencia financiera, contable y tecnológica para ofrecerte soluciones prácticas y resultados medibles.',
@@ -142,6 +149,13 @@ const translations = {
         desc: 'Custom software solutions for your business. From web applications to internal systems, we build the technology you need without an in-house development team.',
         li1: 'Web applications', li2: 'Custom systems', li3: 'Dashboards', li4: 'APIs'
       }
+    },
+    about: {
+      tag: "Who's behind it",
+      role: 'Senior Accountant · Head of Growing Solutions',
+      bio: 'Senior accountant with experience in taxes, VAT and sales & use tax, month-end closings and accruals, reconciliations and coordination with tax advisors. I combine that accounting foundation with data and automation tools so small businesses in Colombia and the U.S. keep their numbers up to date without relying on an in-house team.',
+      toolsLabel: 'Tools I work with',
+      linkedin: 'View LinkedIn profile'
     },
     nosotros: {
       tag: 'Why Choose Us?', titleL1: 'Your strategic partner', titleL2: 'to grow',
