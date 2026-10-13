@@ -397,6 +397,23 @@ document.querySelectorAll('.mobile-nav-link').forEach(link => {
   link.addEventListener('click', closeMobile);
 });
 
+// ── CONFIGURACIÓN PÚBLICA ──
+// /api/config entrega el enlace de agenda y los IDs de analítica desde las
+// variables de entorno de Vercel. Sin enlace de agenda, los botones
+// [data-booking] conservan su destino de respaldo (#contacto, el formulario).
+const siteConfig = fetch('/api/config')
+  .then(res => (res.ok ? res.json() : {}))
+  .catch(() => ({}));
+
+siteConfig.then(cfg => {
+  if (!cfg.bookingUrl) return;
+  document.querySelectorAll('[data-booking]').forEach(a => {
+    a.href = cfg.bookingUrl;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+  });
+});
+
 // ── LEAD FORM ──
 // El servidor valida y guarda en Supabase (api/lead.js). Mismo origen: la clave
 // de la base nunca pasa por el navegador.

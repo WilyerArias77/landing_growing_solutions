@@ -46,6 +46,9 @@
     },
     "api/keepalive.js": {
       "maxDuration": 10
+    },
+    "api/config.js": {
+      "maxDuration": 5
     }
   },
   "redirects": [
