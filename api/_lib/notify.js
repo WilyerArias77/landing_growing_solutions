@@ -12,7 +12,7 @@ const esc = (v) => String(v ?? '')
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
   .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 
-const ORIGEN = { form: 'Formulario de la web', chatbot: 'GS Bot (chat)', recurso: 'Descarga de recurso (/recursos)' };
+const ORIGEN = { form: 'Formulario de la web', chatbot: 'GS Bot (chat)', recurso: 'Descarga de recurso (/recursos)', calculadora: 'Calculadora de ahorro (/calculadora)' };
 
 function fecha() {
   return new Date().toLocaleString('es-CO', {

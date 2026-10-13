@@ -56,6 +56,9 @@
     "api/recurso.js": {
       "includeFiles": "content/recursos.js",
       "maxDuration": 10
+    },
+    "api/calculadora.js": {
+      "maxDuration": 10
     }
   },
   "redirects": [

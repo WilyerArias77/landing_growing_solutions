@@ -414,3 +414,78 @@ ${cookies}
   console.log('generada', 'recursos.html', published ? `(${RESOURCES.length} recurso/s)` : '(sin recursos: "Muy pronto", noindex)');
 }
 renderRecursos();
+
+// ── /calculadora y /diagnostico ──
+// La interfaz la construye herramientas.js; aquí va el encabezado (indexable)
+// y el contenedor. Los textos salen de translations.*.herr en script.js.
+function renderTool(slug, key) {
+  const url = `${SITE}/${slug}`;
+  const es = TRANSLATIONS.es.herr[key];
+  const ogImage = existsSync(join(ROOT, 'og-image.png'))
+    ? `\n  <meta property="og:image" content="${SITE}/og-image.png" />\n  <meta name="twitter:image" content="${SITE}/og-image.png" />`
+    : '';
+  const html = `<!DOCTYPE html>
+<!-- Generado por tools/generar-paginas.mjs (textos en script.js → herr.${key}). No editar a mano. -->
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>${esc(es.metaTitle)}</title>
+  <meta name="description" content="${esc(es.metaDesc)}" />
+  <link rel="canonical" href="${url}" />
+  <link rel="alternate" hreflang="es" href="${url}" />
+  <link rel="alternate" hreflang="en" href="${url}?lang=en" />
+  <link rel="alternate" hreflang="x-default" href="${url}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Growing Solutions" />
+  <meta property="og:title" content="${esc(es.metaTitle)}" />
+  <meta property="og:description" content="${esc(es.metaDesc)}" />
+  <meta property="og:url" content="${url}" />
+  <meta name="twitter:card" content="summary_large_image" />${ogImage}
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/chat.css" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+
+<body data-page="${slug}" data-default-lang="es">
+
+${nav}
+
+  <main class="service-page">
+    <section class="sp-hero">
+      <div class="container">
+        <div class="section-tag" data-i18n="page.tag">${esc(es.tag)}</div>
+        <h1 data-i18n="page.title">${esc(es.title)}</h1>
+        <p class="sp-intro" data-i18n="page.intro">${esc(es.intro)}</p>
+        <div class="tool-root" id="${slug}">
+          <noscript><p class="resource-soon">${esc(es.noscript)}</p></noscript>
+        </div>
+      </div>
+    </section>
+  </main>
+
+${footer}
+
+${floating}
+
+${cookies}
+
+  <script src="/script.js"></script>
+  <script src="/analytics.js"></script>
+  <script src="/herramientas.js"></script>
+  <script src="/chat.js"></script>
+</body>
+
+</html>
+`;
+  writeFileSync(join(ROOT, `${slug}.html`), localize(html, 'es', es).replace(/\r?\n/g, '\n'));
+  console.log('generada', `${slug}.html`);
+}
+renderTool('calculadora', 'calc');
+renderTool('diagnostico', 'diag');

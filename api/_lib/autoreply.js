@@ -39,6 +39,8 @@ const COPY = {
   es: {
     subject: 'Recibimos tu solicitud — Growing Solutions',
     subjectResource: (t) => `Tu descarga: ${t} — Growing Solutions`,
+    subjectDetail: 'Tu estimación de ahorro — Growing Solutions',
+    thanksDetail: 'Gracias por usar nuestra calculadora. Este es el detalle de tu estimación:',
     hello: (n) => (n ? `Hola, ${n}:` : 'Hola:'),
     thanks: 'Gracias por escribirnos. Recibimos tu solicitud y te contactaremos en menos de 24 horas por correo o WhatsApp.',
     thanksResource: 'Gracias por descargar nuestro recurso. Aquí tienes el enlace:',
@@ -54,6 +56,8 @@ const COPY = {
   en: {
     subject: 'We received your request — Growing Solutions',
     subjectResource: (t) => `Your download: ${t} — Growing Solutions`,
+    subjectDetail: 'Your savings estimate — Growing Solutions',
+    thanksDetail: 'Thank you for using our calculator. Here are the details of your estimate:',
     hello: (n) => (n ? `Hi ${n},` : 'Hi,'),
     thanks: 'Thank you for reaching out. We received your request and will contact you within 24 hours by email or WhatsApp.',
     thanksResource: 'Thank you for downloading our resource. Here is your link:',
@@ -74,7 +78,8 @@ function button(href, label) {
 
 /**
  * @param {object} row fila del lead (name, email, lang, country)
- * @param {{resource?: {title: string, url: string}}} [opts]
+ * @param {{resource?: {title: string, url: string}, detail?: string[]}} [opts]
+ *   detail: lineas generadas por el servidor (nunca texto del visitante)
  * @returns {Promise<boolean>}
  */
 export async function sendAutoReply(row, opts = {}) {
@@ -84,10 +89,15 @@ export async function sendAutoReply(row, opts = {}) {
   const booking = bookingUrl();
   const wa = (row.country === 'US' || (lang === 'en' && row.country !== 'CO')) ? WA.us : WA.co;
   const resource = opts.resource;
+  const detail = Array.isArray(opts.detail) ? opts.detail : null;
 
   const paragraphs = [];
   const textLines = [c.hello(name), ''];
-  if (resource) {
+  if (detail) {
+    paragraphs.push(`<p style="margin:0 0 12px;">${esc(c.thanksDetail)}</p>`,
+      `<ul style="margin:0 0 24px;padding-left:20px;">${detail.map(l => `<li style="margin-bottom:6px;">${esc(l)}</li>`).join('')}</ul>`);
+    textLines.push(c.thanksDetail, ...detail.map(l => '- ' + l), '');
+  } else if (resource) {
     paragraphs.push(`<p style="margin:0 0 16px;">${esc(c.thanksResource)}</p>`,
       `<p style="margin:0 0 24px;">${button(resource.url, `${c.download}: ${resource.title}`)}</p>`);
     textLines.push(c.thanksResource, resource.url, '');
@@ -117,7 +127,7 @@ export async function sendAutoReply(row, opts = {}) {
   return sendEmail({
     to: [row.email],
     replyTo: process.env.LEAD_REPLY_TO || 'wilyer.arias@growingsolutions.online',
-    subject: resource ? c.subjectResource(resource.title) : c.subject,
+    subject: detail ? c.subjectDetail : resource ? c.subjectResource(resource.title) : c.subject,
     html,
     text: textLines.join('\n')
   });

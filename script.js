@@ -164,6 +164,31 @@ const translations = {
       tag: 'Casos de éxito', title: 'Resultados con empresas reales',
       situacion: 'La situación', hicimos: 'Qué hicimos', resultado: 'El resultado'
     },
+    herr: {
+      calc: {
+        metaTitle: 'Calculadora de ahorro por automatización | Growing Solutions',
+        metaDesc: 'Calcula cuántas horas y cuánto dinero podría ahorrar tu pyme al automatizar tareas manuales de contabilidad y administración. Estimación gratuita.',
+        tag: 'Calculadora de ahorro',
+        title: '¿Cuánto te cuestan las tareas manuales?',
+        intro: 'Escribe cuántas horas dedica tu equipo a tareas repetitivas y cuánto cuesta una hora de trabajo. Verás una estimación de lo que podrías ahorrar al mes y al año.',
+        noscript: 'Esta calculadora necesita JavaScript. Si prefieres, agenda una llamada y la hacemos juntos.'
+      },
+      diag: {
+        metaTitle: 'Diagnóstico gratis de automatización para pymes | Growing Solutions',
+        metaDesc: 'Responde 8 preguntas sobre tus procesos contables y administrativos y recibe al instante tus oportunidades de automatización. Gratis y sin registro.',
+        tag: 'Diagnóstico de automatización',
+        title: 'Descubre qué procesos de tu empresa conviene automatizar',
+        intro: '8 preguntas, 2 minutos y sin registro. Al final verás tus oportunidades de mejora por área.',
+        noscript: 'Este diagnóstico necesita JavaScript. Si prefieres, agenda una llamada y lo hacemos juntos.'
+      },
+      band: {
+        title: 'Herramientas gratis para tu empresa',
+        calc: 'Calcula tu ahorro',
+        calcDesc: 'Horas y dinero que podrías recuperar automatizando tareas manuales.',
+        diag: 'Haz el diagnóstico',
+        diagDesc: '8 preguntas para saber qué procesos conviene automatizar primero.'
+      }
+    },
     recursos: {
       tag: 'Recursos gratis', title: 'Herramientas gratis para ordenar las finanzas de tu pyme',
       intro: 'Déjanos tu nombre y correo y descarga la plantilla al instante. También te la enviamos por correo.',
@@ -348,6 +373,31 @@ const translations = {
     casos: {
       tag: 'Success stories', title: 'Results with real businesses',
       situacion: 'The situation', hicimos: 'What we did', resultado: 'The result'
+    },
+    herr: {
+      calc: {
+        metaTitle: 'Automation Savings Calculator | Growing Solutions',
+        metaDesc: 'Estimate how many hours and how much money your small business could save by automating manual accounting and admin tasks. Free estimate.',
+        tag: 'Savings calculator',
+        title: 'How much do manual tasks cost you?',
+        intro: 'Enter how many hours your team spends on repetitive tasks and what an hour of work costs. You will see an estimate of what you could save per month and per year.',
+        noscript: 'This calculator needs JavaScript. If you prefer, book a call and we will do it together.'
+      },
+      diag: {
+        metaTitle: 'Free Automation Assessment for Small Businesses | Growing Solutions',
+        metaDesc: 'Answer 8 questions about your accounting and admin processes and instantly get your automation opportunities. Free, no sign-up.',
+        tag: 'Automation assessment',
+        title: 'Find out which processes in your business are worth automating',
+        intro: '8 questions, 2 minutes, no sign-up. At the end you will see your improvement opportunities by area.',
+        noscript: 'This assessment needs JavaScript. If you prefer, book a call and we will do it together.'
+      },
+      band: {
+        title: 'Free tools for your business',
+        calc: 'Calculate your savings',
+        calcDesc: 'Hours and money you could recover by automating manual tasks.',
+        diag: 'Take the assessment',
+        diagDesc: '8 questions to find out which processes to automate first.'
+      }
     },
     recursos: {
       tag: 'Free resources', title: 'Free tools to get your small business finances in order',
@@ -569,6 +619,12 @@ function renderCases() {
 // ── PÁGINAS DE SERVICIO ──
 // <body data-page="contabilidad"> toma sus textos de content/paginas.js.
 function registerPageTexts() {
+  const tool = { calculadora: 'calc', diagnostico: 'diag' }[document.body.dataset.page];
+  if (tool) {
+    translations.es.page = translations.es.herr[tool];
+    translations.en.page = translations.en.herr[tool];
+    return;
+  }
   if (document.body.dataset.page === 'recursos') {
     // Mismo filtro que el generador: solo recursos con archivo
     const items = (window.GS_RECURSOS || []).filter(r => r.archivo);

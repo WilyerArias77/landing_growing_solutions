@@ -2686,3 +2686,348 @@ section[id] {
     gap: 64px;
   }
 }
+
+/* ── HERRAMIENTAS (calculadora y diagnóstico) ── */
+.tools-band {
+  padding: 24px 0 56px;
+}
+
+.tools-band-title {
+  font-size: clamp(1.3rem, 2.4vw, 1.7rem);
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.tool-card {
+  display: grid;
+  gap: 6px;
+  padding: 26px 28px;
+  border-radius: 20px;
+  text-decoration: none;
+  color: #ffffff;
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(0, 168, 150, 0.35) 0%, transparent 60%),
+    linear-gradient(135deg, var(--primary-dim), var(--primary-light));
+  box-shadow: 0 16px 36px rgba(13, 60, 255, 0.22);
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.tool-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 22px 44px rgba(13, 60, 255, 0.3);
+}
+
+.tool-card strong {
+  font-size: 1.15rem;
+}
+
+.tool-card strong::after {
+  content: ' →';
+}
+
+.tool-card span {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.92rem;
+}
+
+.tool-root {
+  margin-top: 8px;
+}
+
+.calc-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.calc-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 1px 12px rgba(0, 0, 0, 0.06);
+}
+
+.calc-panel-results {
+  background:
+    radial-gradient(ellipse at 0% 0%, rgba(13, 60, 255, 0.06) 0%, transparent 60%),
+    var(--surface);
+}
+
+.calc-inputs {
+  display: grid;
+  gap: 22px;
+}
+
+.calc-row {
+  display: grid;
+  grid-template-columns: 1fr 120px;
+  gap: 14px;
+}
+
+.calc-field {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+}
+
+.calc-field label {
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.calc-field input[type="number"],
+.calc-field input[type="text"],
+.calc-field input[type="email"],
+.calc-field select {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font: inherit;
+  color: var(--text);
+  width: 100%;
+}
+
+.calc-field input[type="range"] {
+  accent-color: var(--primary);
+  width: 100%;
+}
+
+.calc-pct-value {
+  font-weight: 800;
+  color: var(--primary);
+  font-size: 1.1rem;
+}
+
+.calc-help {
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.calc-results {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.calc-card {
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  padding: 18px;
+  background: var(--surface);
+}
+
+.calc-card-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.calc-card-hours {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--primary);
+  margin-top: 6px;
+}
+
+.calc-card-money {
+  font-weight: 700;
+  margin-top: 2px;
+  word-break: break-word;
+}
+
+.calc-disclaimer {
+  margin: 18px 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.6;
+  padding: 12px 14px;
+  border-left: 3px solid var(--teal);
+  background: rgba(0, 168, 150, 0.06);
+  border-radius: 0 10px 10px 0;
+}
+
+.calc-email {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 28px;
+}
+
+.calc-email h3 {
+  font-size: 1.15rem;
+  margin-bottom: 16px;
+}
+
+/* Diagnóstico */
+.diag-card,
+.diag-result {
+  max-width: 760px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 1px 12px rgba(0, 0, 0, 0.06);
+}
+
+.diag-progress {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--border-light);
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.diag-progress span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--teal));
+  transition: width 0.3s;
+}
+
+.diag-step {
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.diag-question {
+  font-size: clamp(1.25rem, 2.4vw, 1.6rem);
+  margin: 8px 0 20px;
+}
+
+.diag-options {
+  display: grid;
+  gap: 10px;
+}
+
+.diag-option {
+  text-align: left;
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  font: inherit;
+  font-weight: 500;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.diag-option:hover,
+.diag-option.selected {
+  border-color: var(--primary);
+  background: var(--green-glow);
+}
+
+.diag-back {
+  margin-top: 16px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.diag-result h2 {
+  font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+  margin-bottom: 8px;
+}
+
+.diag-intro {
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+.diag-area {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px 20px;
+  margin-bottom: 12px;
+}
+
+.diag-area-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.diag-area-head h3 {
+  font-size: 1.05rem;
+}
+
+.diag-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.diag-high .diag-badge {
+  background: rgba(239, 68, 68, 0.12);
+  color: #b91c1c;
+}
+
+.diag-mid .diag-badge {
+  background: rgba(245, 158, 11, 0.15);
+  color: #92400e;
+}
+
+.diag-ok .diag-badge {
+  background: rgba(0, 168, 150, 0.14);
+  color: #047857;
+}
+
+.diag-area ul {
+  padding-left: 18px;
+  color: var(--muted);
+  font-size: 0.92rem;
+  display: grid;
+  gap: 6px;
+}
+
+.diag-area .service-more {
+  margin-top: 10px;
+}
+
+.diag-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 960px) {
+  .calc-layout,
+  .tools-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .calc-results,
+  .calc-row {
+    grid-template-columns: 1fr;
+  }
+
+  .diag-card,
+  .diag-result,
+  .calc-panel,
+  .calc-email {
+    padding: 22px;
+  }
+}
