@@ -370,6 +370,18 @@
     </div>
   </section>
 
+  <!-- ── CASOS Y TESTIMONIOS (solo aparecen si content/casos.js tiene contenido autorizado) ── -->
+  <section class="section" id="casos" hidden>
+    <div class="container">
+      <div class="section-header fade-in">
+        <div class="section-tag" data-i18n="casos.tag">Casos de éxito</div>
+        <h2 data-i18n="casos.title">Resultados con empresas reales</h2>
+      </div>
+      <div class="cases-grid" id="casesGrid" hidden></div>
+      <div class="testimonials-grid" id="testimonialsGrid" hidden></div>
+    </div>
+  </section>
+
   <!-- ── METODOLOGÍA ── -->
   <section class="section" id="metodologia">
     <div class="container">
@@ -401,6 +413,18 @@
           <p data-i18n="metodologia.step4.desc">Te acompañamos con soporte continuo, optimización y escalamiento conforme tu negocio crece.</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ── PLANES (solo aparece si content/planes.js tiene al menos un precio) ── -->
+  <section class="section" id="planes" hidden>
+    <div class="container">
+      <div class="section-header fade-in">
+        <div class="section-tag" data-i18n="planes.tag">Planes</div>
+        <h2 data-i18n="planes.title">Precios de referencia</h2>
+        <p data-i18n="planes.subtitle">Valores de partida: el precio final depende del volumen y del alcance, y lo confirmamos después de la llamada inicial.</p>
+      </div>
+      <div class="plans-grid" id="plansGrid"></div>
     </div>
   </section>
 
@@ -592,6 +616,8 @@
   </div>
 
   <script src="/content/stats.js"></script>
+  <script src="/content/planes.js"></script>
+  <script src="/content/casos.js"></script>
   <script src="/script.js"></script>
   <script src="/analytics.js"></script>
   <!-- GS Bot: el widget se construye por JS y habla solo con /api/chat -->

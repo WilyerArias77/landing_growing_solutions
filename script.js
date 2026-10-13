@@ -117,6 +117,15 @@ const translations = {
       footerCo: 'WhatsApp Colombia +57 324 275 4406', footerUs: 'WhatsApp USA +1 917 227 2181',
       tooltipCo: '¿Necesitas ayuda? Escríbenos', tooltipUs: 'Need help? Message us (USA)'
     },
+    planes: {
+      tag: 'Planes', title: 'Precios de referencia',
+      subtitle: 'Valores de partida: el precio final depende del volumen y del alcance, y lo confirmamos después de la llamada inicial.',
+      from: 'Desde', perMonth: '/ mes', custom: 'Cotización a la medida', cta: 'Agenda una llamada'
+    },
+    casos: {
+      tag: 'Casos de éxito', title: 'Resultados con empresas reales',
+      situacion: 'La situación', hicimos: 'Qué hicimos', resultado: 'El resultado'
+    },
     pagina: {
       back: 'Todos los servicios',
       problemaTitle: 'El problema', solucionTitle: 'Cómo lo resolvemos',
@@ -248,6 +257,15 @@ const translations = {
       footerCo: 'WhatsApp Colombia +57 324 275 4406', footerUs: 'WhatsApp USA +1 917 227 2181',
       tooltipCo: 'Need help? Message us (Colombia)', tooltipUs: 'Need help? Message us'
     },
+    planes: {
+      tag: 'Plans', title: 'Reference pricing',
+      subtitle: 'Starting prices: the final price depends on volume and scope, and we confirm it after the first call.',
+      from: 'From', perMonth: '/ month', custom: 'Custom quote', cta: 'Book a call'
+    },
+    casos: {
+      tag: 'Success stories', title: 'Results with real businesses',
+      situacion: 'The situation', hicimos: 'What we did', resultado: 'The result'
+    },
     pagina: {
       back: 'All services',
       problemaTitle: 'The problem', solucionTitle: 'How we solve it',
@@ -331,7 +349,132 @@ document.querySelectorAll('.lang-btn').forEach(b => {
 });
 registerPageTexts();
 renderStats();
+renderPlans();
+renderCases();
 setLanguage(currentLang);
+
+// ── CONTENIDO EDITABLE (planes, casos, testimonios) ──
+// Los textos bilingües de content/*.js se registran en `translations` bajo
+// una clave propia para que el selector de idioma los cambie como al resto.
+function registerText(key, value) {
+  const set = (lang) => {
+    const parts = key.split('.');
+    let o = translations[lang];
+    parts.slice(0, -1).forEach(p => { o = o[p] = o[p] || {}; });
+    o[parts[parts.length - 1]] = (value && value[lang]) || '';
+  };
+  set('es');
+  set('en');
+  return key;
+}
+
+/** Crea un elemento con texto fijo o con una clave de traducción. */
+function el(tag, className, { text, i18n } = {}) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (i18n) node.dataset.i18n = i18n;
+  else if (text != null) node.textContent = text;
+  return node;
+}
+
+// Declaraciones de función (no const): renderPlans() corre antes de esta línea
+function formatCOP(n) { return '$' + Math.round(n).toLocaleString('es-CO') + ' COP'; }
+function formatUSD(n) { return 'US$' + Math.round(n).toLocaleString('en-US'); }
+function isPrice(n) { return typeof n === 'number' && n > 0; }
+
+function renderPlans() {
+  const section = document.getElementById('planes');
+  const plans = window.GS_PLANES || [];
+  // Sin ningún precio la sección no se publica (ver content/planes.js)
+  if (!section || !plans.some(p => isPrice(p.desdeCOP) || isPrice(p.desdeUSD))) return;
+
+  const grid = document.getElementById('plansGrid');
+  plans.forEach((p, i) => {
+    const base = 'dyn.planes.' + i;
+    const card = el('div', 'plan-card fade-in visible');
+    card.append(
+      el('h3', 'plan-name', { i18n: registerText(base + '.nombre', p.nombre) }),
+      el('p', 'plan-desc', { i18n: registerText(base + '.descripcion', p.descripcion) })
+    );
+
+    const price = el('div', 'plan-price');
+    if (isPrice(p.desdeCOP) || isPrice(p.desdeUSD)) {
+      price.append(el('span', 'plan-from', { i18n: 'planes.from' }));
+      if (isPrice(p.desdeCOP)) price.append(el('strong', null, { text: formatCOP(p.desdeCOP) }));
+      if (isPrice(p.desdeUSD)) price.append(el('strong', null, { text: formatUSD(p.desdeUSD) }));
+      if (p.periodo === 'mes') price.append(el('span', 'plan-period', { i18n: 'planes.perMonth' }));
+    } else {
+      price.append(el('strong', null, { i18n: 'planes.custom' }));
+    }
+    card.append(price);
+
+    const list = el('ul', 'plan-list');
+    const items = (p.incluye && p.incluye.es) || [];
+    items.forEach((_, n) => {
+      list.append(el('li', null, { i18n: registerText(base + '.incluye.' + n, { es: p.incluye.es[n], en: (p.incluye.en || [])[n] }) }));
+    });
+    card.append(list);
+
+    const cta = el('a', 'btn btn-ghost plan-cta', { i18n: 'planes.cta' });
+    cta.href = '#contacto';
+    cta.setAttribute('data-booking', '');
+    card.append(cta);
+    grid.append(card);
+  });
+  section.hidden = false;
+}
+
+function renderCases() {
+  const section = document.getElementById('casos');
+  if (!section) return;
+  const cases = (window.GS_CASOS || []).filter(c => c && c.autorizado === true);
+  const quotes = (window.GS_TESTIMONIOS || []).filter(t => t && t.autorizado === true && t.texto);
+  if (!cases.length && !quotes.length) return;
+
+  const casesGrid = document.getElementById('casesGrid');
+  cases.forEach((c, i) => {
+    const base = 'dyn.casos.' + i;
+    const card = el('article', 'case-card fade-in visible');
+    card.append(el('div', 'case-client', { text: c.cliente || '' }));
+    [['situacion', 'casos.situacion'], ['hicimos', 'casos.hicimos'], ['resultado', 'casos.resultado']].forEach(([field, label]) => {
+      card.append(
+        el('h4', field === 'resultado' ? 'case-label case-label-result' : 'case-label', { i18n: label }),
+        el('p', field === 'resultado' ? 'case-result' : null, { i18n: registerText(base + '.' + field, c[field]) })
+      );
+    });
+    casesGrid.append(card);
+  });
+  casesGrid.hidden = !cases.length;
+
+  const quotesGrid = document.getElementById('testimonialsGrid');
+  quotes.forEach((q, i) => {
+    const base = 'dyn.testimonios.' + i;
+    const card = el('figure', 'quote-card fade-in visible');
+    card.append(el('blockquote', null, { i18n: registerText(base + '.texto', q.texto) }));
+    const who = el('figcaption', 'quote-author');
+    // Foto solo desde el propio sitio: nada de URLs externas
+    if (typeof q.foto === 'string' && q.foto.startsWith('/') && !q.foto.startsWith('//')) {
+      const img = el('img');
+      img.src = q.foto;
+      img.alt = q.nombre || '';
+      img.width = 48;
+      img.height = 48;
+      img.loading = 'lazy';
+      who.append(img);
+    }
+    const meta = el('div');
+    meta.append(el('strong', null, { text: q.nombre || '' }));
+    const role = el('span');
+    role.append(el('span', null, { i18n: registerText(base + '.cargo', q.cargo) }));
+    if (q.empresa) role.append(document.createTextNode(' · ' + q.empresa));
+    meta.append(role);
+    who.append(meta);
+    card.append(who);
+    quotesGrid.append(card);
+  });
+  quotesGrid.hidden = !quotes.length;
+  section.hidden = false;
+}
 
 // ── PÁGINAS DE SERVICIO ──
 // <body data-page="contabilidad"> toma sus textos de content/paginas.js.

@@ -2083,3 +2083,166 @@ footer {
     justify-content: center;
   }
 }
+
+/* ── PLANES ── */
+section[hidden],
+.cases-grid[hidden],
+.testimonials-grid[hidden] {
+  display: none;
+}
+
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.plan-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 1px 12px rgba(0, 0, 0, 0.06);
+}
+
+.plan-name {
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.plan-desc {
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.plan-price {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 16px 0;
+  margin-bottom: 18px;
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.plan-price strong {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.plan-from,
+.plan-period {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.plan-list {
+  list-style: none;
+  display: grid;
+  gap: 10px;
+  margin-bottom: 24px;
+  font-size: 0.9rem;
+}
+
+.plan-list li::before {
+  content: '✓';
+  color: var(--primary);
+  font-weight: 700;
+  margin-right: 8px;
+}
+
+.plan-cta {
+  margin-top: auto;
+  justify-content: center;
+}
+
+/* ── CASOS Y TESTIMONIOS ── */
+.cases-grid,
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.testimonials-grid {
+  margin-top: 24px;
+}
+
+.case-card,
+.quote-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 1px 12px rgba(0, 0, 0, 0.06);
+}
+
+.case-client {
+  font-weight: 800;
+  font-size: 1.1rem;
+  margin-bottom: 16px;
+}
+
+.case-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 14px 0 4px;
+}
+
+.case-label-result {
+  color: var(--primary);
+}
+
+.case-card p {
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+.case-card .case-result {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.quote-card blockquote {
+  font-size: 1rem;
+  line-height: 1.75;
+  margin-bottom: 20px;
+}
+
+.quote-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.quote-author img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.quote-author strong {
+  display: block;
+}
+
+.quote-author span {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+@media (max-width: 960px) {
+  .plans-grid {
+    grid-template-columns: 1fr;
+  }
+}
