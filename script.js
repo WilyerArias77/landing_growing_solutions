@@ -190,11 +190,13 @@ const translations = {
       }
     },
     blog: {
+      metaTitle: 'Blog de contabilidad y finanzas para pymes | Growing Solutions',
       tag: 'Blog', title: 'Ideas para ordenar las finanzas de tu pyme',
       intro: 'Contabilidad, impuestos, flujo de caja y automatización explicados en lenguaje claro.',
       soon: 'Muy pronto publicaremos aquí nuestros primeros artículos.', back: 'Todos los artículos'
     },
     recursos: {
+      metaTitle: 'Recursos gratis para pymes | Growing Solutions',
       tag: 'Recursos gratis', title: 'Herramientas gratis para ordenar las finanzas de tu pyme',
       intro: 'Déjanos tu nombre y correo y descarga la plantilla al instante. También te la enviamos por correo.',
       submit: 'Descargar gratis', download: 'Descargar',
@@ -213,7 +215,7 @@ const translations = {
       text: 'Usamos cookies de analítica (Google Analytics y Meta) para medir las visitas y mejorar el sitio. Solo se activan si las aceptas.',
       policy: 'Más información', accept: 'Aceptar', reject: 'Rechazar'
     },
-    meta: { title: 'Growing Solutions — Soluciones Integrales para tu Empresa' }
+    meta: { title: 'Growing Solutions — Contabilidad, finanzas e IA para pymes en Colombia y EE. UU.' }
   },
   en: {
     lang: { esLabel: 'Español', enLabel: 'English' },
@@ -405,11 +407,13 @@ const translations = {
       }
     },
     blog: {
+      metaTitle: 'Accounting and Finance Blog for Small Businesses | Growing Solutions',
       tag: 'Blog', title: 'Ideas to get your small business finances in order',
       intro: 'Accounting, taxes, cash flow and automation explained in plain language.',
       soon: 'Our first articles are coming here soon.', back: 'All articles'
     },
     recursos: {
+      metaTitle: 'Free Resources for Small Businesses | Growing Solutions',
       tag: 'Free resources', title: 'Free tools to get your small business finances in order',
       intro: 'Leave your name and email and download the template instantly. We also send it to your inbox.',
       submit: 'Download for free', download: 'Download',
@@ -428,7 +432,7 @@ const translations = {
       text: 'We use analytics cookies (Google Analytics and Meta) to measure visits and improve the site. They are only enabled if you accept.',
       policy: 'Learn more', accept: 'Accept', reject: 'Reject'
     },
-    meta: { title: 'Growing Solutions — Complete Solutions for Your Business' }
+    meta: { title: 'Growing Solutions — Accounting, Finance and AI for Small Businesses in Colombia and the U.S.' }
   }
 };
 
@@ -639,8 +643,21 @@ function registerPageTexts() {
     // Mismo filtro que el generador: solo recursos con archivo
     const items = (window.GS_RECURSOS || []).filter(r => r.archivo);
     ['es', 'en'].forEach(lang => {
-      translations[lang].page = { items: items.map(r => ({ titulo: r.titulo[lang], descripcion: r.descripcion[lang] })) };
+      translations[lang].page = {
+        metaTitle: translations[lang].recursos.metaTitle,
+        items: items.map(r => ({ titulo: r.titulo[lang], descripcion: r.descripcion[lang] }))
+      };
     });
+    return;
+  }
+  if (document.body.dataset.page === 'blog') {
+    translations.es.page = { metaTitle: translations.es.blog.metaTitle };
+    translations.en.page = { metaTitle: translations.en.blog.metaTitle };
+    return;
+  }
+  // Un artículo conserva su propio título (está en un solo idioma)
+  if (document.body.dataset.page === 'blog-post') {
+    translations.es.page = translations.en.page = { metaTitle: document.title };
     return;
   }
   const page = window.GS_PAGES && window.GS_PAGES[document.body.dataset.page];
