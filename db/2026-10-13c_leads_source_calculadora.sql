@@ -4,3 +4,5 @@
 alter table public.leads drop constraint leads_source_check;
 alter table public.leads add constraint leads_source_check
   check (source in ('form', 'chatbot', 'recurso', 'calculadora'));
+
+-- Aplicada en produccion el 2026-10-13 (migracion leads_source_calculadora).
