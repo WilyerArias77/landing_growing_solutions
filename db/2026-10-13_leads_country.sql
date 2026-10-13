@@ -8,3 +8,9 @@ alter table public.leads
   constraint leads_country_check check (country in ('CO', 'US', 'OTRO'));
 
 -- consent_version ya admite 'form-v2' (CHECK <= 20 caracteres).
+
+-- Aviso del linter de Supabase: la funcion del event trigger ensure_rls no
+-- debe poder ejecutarse por RPC. El trigger sigue funcionando sin este permiso.
+revoke execute on function public.rls_auto_enable() from public, anon, authenticated;
+
+-- Aplicada en produccion el 2026-10-13 (migracion leads_country_and_revoke_rls_auto_enable).
