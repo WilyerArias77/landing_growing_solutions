@@ -111,7 +111,8 @@ const translations = {
       sending: 'Enviando...',
       success: '¡Recibimos tu solicitud! Un asesor se pondrá en contacto contigo en menos de 24 horas.',
       successTitle: '¡Recibimos tu solicitud!',
-      successNext: 'Te escribiremos en menos de 24 horas por correo o WhatsApp. Si prefieres no esperar, agenda ya una llamada gratis de 20 minutos.',
+      successNext: 'Te escribiremos en menos de 24 horas por correo o WhatsApp. Si prefieres no esperar, escríbenos ya por WhatsApp.',
+      successNextBooking: 'Te escribiremos en menos de 24 horas por correo o WhatsApp. Si prefieres no esperar, agenda ya una llamada gratis de 20 minutos.',
       successCta: 'Agenda una llamada gratis de 20 minutos',
       errNetwork: 'No se pudo enviar el formulario. Verifica tu conexión e intenta de nuevo.',
       errRateLimit: 'Recibimos varias solicitudes desde tu conexión. Intenta más tarde o escríbenos por WhatsApp.',
@@ -328,7 +329,8 @@ const translations = {
       sending: 'Sending...',
       success: 'We received your request! An advisor will contact you within 24 hours.',
       successTitle: 'We received your request!',
-      successNext: "We'll reach out within 24 hours by email or WhatsApp. If you'd rather not wait, book a free 20-minute call now.",
+      successNext: "We'll reach out within 24 hours by email or WhatsApp. If you'd rather not wait, message us on WhatsApp now.",
+      successNextBooking: "We'll reach out within 24 hours by email or WhatsApp. If you'd rather not wait, book a free 20-minute call now.",
       successCta: 'Book a free 20‑minute call',
       errNetwork: 'The form could not be sent. Check your connection and try again.',
       errRateLimit: 'We received several requests from your connection. Please try later or message us on WhatsApp.',
@@ -786,6 +788,9 @@ window.siteConfig = fetch('/api/config')
 
 window.siteConfig.then(cfg => {
   if (!cfg.bookingUrl) return;
+  // Con agenda en línea: se muestran los elementos que solo tienen sentido con ella
+  document.querySelectorAll('[data-booking-only]').forEach(el => { el.hidden = false; });
+  document.querySelectorAll('[data-no-booking]').forEach(el => { el.hidden = true; });
   document.querySelectorAll('[data-booking]').forEach(a => {
     a.href = cfg.bookingUrl;
     a.target = '_blank';

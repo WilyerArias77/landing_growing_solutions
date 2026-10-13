@@ -3136,3 +3136,10 @@ section[id] {
   color: var(--muted);
   margin-bottom: 20px;
 }
+
+/* Elementos que dependen de si hay agenda en línea (BOOKING_URL): el atributo
+   hidden debe ganarle a display: inline-flex de .btn */
+[data-booking-only][hidden],
+[data-no-booking][hidden] {
+  display: none !important;
+}
