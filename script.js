@@ -182,7 +182,8 @@ const translations = {
         calc: 'Calcula tu ahorro',
         calcDesc: 'Horas y dinero que podrías recuperar automatizando tareas manuales.',
         diag: 'Haz el diagnóstico',
-        diagDesc: '8 preguntas para saber qué procesos conviene automatizar primero.'
+        diagDesc: '8 preguntas para saber qué procesos conviene automatizar primero.',
+        cta: 'Accede a herramientas gratis para tu empresa'
       }
     },
     blog: {
@@ -395,7 +396,8 @@ const translations = {
         calc: 'Calculate your savings',
         calcDesc: 'Hours and money you could recover by automating manual tasks.',
         diag: 'Take the assessment',
-        diagDesc: '8 questions to find out which processes to automate first.'
+        diagDesc: '8 questions to find out which processes to automate first.',
+        cta: 'Access free tools for your business'
       }
     },
     blog: {
