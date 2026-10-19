@@ -183,6 +183,8 @@ const translations = {
         calcDesc: 'Horas y dinero que podrías recuperar automatizando tareas manuales.',
         diag: 'Haz el diagnóstico',
         diagDesc: '8 preguntas para saber qué procesos conviene automatizar primero.',
+        task: 'TaskFlow - administrador de tareas',
+        taskDesc: 'Organiza las tareas de tu equipo en un solo lugar.',
         cta: 'Accede a herramientas gratis para tu empresa'
       }
     },
@@ -397,6 +399,8 @@ const translations = {
         calcDesc: 'Hours and money you could recover by automating manual tasks.',
         diag: 'Take the assessment',
         diagDesc: '8 questions to find out which processes to automate first.',
+        task: 'TaskFlow - task manager',
+        taskDesc: 'Organize your team’s tasks in one place.',
         cta: 'Access free tools for your business'
       }
     },

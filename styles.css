@@ -2739,15 +2739,16 @@ section[id] {
 
 .tools-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
 }
 
 .tool-card {
   display: grid;
   gap: 4px;
-  padding: 20px 22px;
-  border-radius: 16px;
+  align-content: start;
+  padding: 16px 18px;
+  border-radius: 14px;
   text-decoration: none;
   color: #ffffff;
   background:
@@ -2763,7 +2764,7 @@ section[id] {
 }
 
 .tool-card strong {
-  font-size: 1.05rem;
+  font-size: 0.98rem;
 }
 
 .tool-card strong::after {
@@ -2772,7 +2773,7 @@ section[id] {
 
 .tool-card span {
   color: rgba(255, 255, 255, 0.85);
-  font-size: 0.88rem;
+  font-size: 0.84rem;
 }
 
 .tool-root {
