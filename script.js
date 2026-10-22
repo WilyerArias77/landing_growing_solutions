@@ -13,15 +13,12 @@ const translations = {
       subtitle: 'Contabilidad, finanzas e inteligencia artificial para pymes en Colombia y Estados Unidos, a cargo de un contador senior que también automatiza.',
       ctaPrimary: 'Agenda una llamada gratis de 20 minutos', ctaSecondary: 'Conoce Nuestros Servicios', scroll: 'Descubre más'
     },
-    heroCard: {
-      chip1: 'Contador Público', chip4: 'Especialista en Finanzas', chip2: 'Bases de datos y desarrollos digitales', chip3: 'Máster en Negocios Digitales'
-    },
     stats: {
       benefit1: 'Atención directa con un profesional experto', benefit2: 'Respuesta en menos de 24 horas',
       benefit3: 'Servicio en español e inglés', benefit4: 'Colombia, Estados Unidos y cualquier parte del mundo'
     },
     video: {
-      aria: 'Video: Growing Solutions, outsourcing contable y financiero para pymes',
+      aria: 'Video de presentación de Growing Solutions',
       sound: 'Activar sonido'
     },
     servicios: {
@@ -229,15 +226,12 @@ const translations = {
       subtitle: 'Accounting, finance and AI for small businesses in Colombia and the U.S., led by a senior accountant who also builds automations.',
       ctaPrimary: 'Book a free 20‑minute call', ctaSecondary: 'Discover Our Services', scroll: 'Discover more'
     },
-    heroCard: {
-      chip1: 'Public Accountant', chip4: 'Finance Specialist', chip2: 'Databases and digital development', chip3: 'Master\'s in Digital Business'
-    },
     stats: {
       benefit1: 'Direct access to an expert professional', benefit2: 'Response in under 24 hours',
       benefit3: 'Service in Spanish and English', benefit4: 'Colombia, the United States and anywhere in the world'
     },
     video: {
-      aria: 'Video: Growing Solutions, accounting and finance outsourcing for small businesses',
+      aria: 'Growing Solutions introduction video',
       sound: 'Turn sound on'
     },
     servicios: {
